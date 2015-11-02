@@ -15,9 +15,7 @@ public class Reposts {
 			String[] line = sc.nextLine().split("\\s+");
 			String author = line[2].toLowerCase();
 			String repost = line[0].toLowerCase();
-			if ("polycarp".equals(author)) {
-				reposts.put(repost, 2);
-			} else if (reposts.containsKey(author)) {
+			if (reposts.containsKey(author)) {
 				reposts.put(repost, reposts.get(author) + 1);
 			}
 		}
