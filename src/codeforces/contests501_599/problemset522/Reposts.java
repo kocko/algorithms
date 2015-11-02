@@ -21,16 +21,8 @@ public class Reposts {
 				reposts.put(repost, reposts.get(author) + 1);
 			}
 		}
-
-		int chainSize = 0;
-		for (Map.Entry<String, Integer> entry : reposts.entrySet()) {
-			Integer value = entry.getValue();
-			if (value > chainSize) {
-				chainSize = value;
-			}
-		}
-		System.out.println(chainSize);
 		sc.close();
+		System.out.println(reposts.entrySet().stream().mapToInt(x -> x.getValue()).max().getAsInt());
 	}
 
 }
