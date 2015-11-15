@@ -2,7 +2,7 @@ package codeforces.contests001_100.problemset034;
 
 import java.util.Scanner;
 
-public class RoadMap {
+public class RoadMap { 
 
 	static int n;
 	static int[] parentMap;
