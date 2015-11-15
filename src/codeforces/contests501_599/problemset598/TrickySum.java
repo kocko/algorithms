@@ -2,6 +2,9 @@ package codeforces.contests501_599.problemset598;
 
 import java.util.Scanner;
 
+/**
+ * Code forces - Problem 598 A
+ */
 public class TrickySum {
 
 	public static void main(String[] args) {

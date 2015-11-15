@@ -2,6 +2,9 @@ package codeforces.contests501_599.problemset595;
 
 import java.util.Scanner;
 
+/**
+ * Code forces - Problem 595 A
+ */
 public class VitalyAndNight {
 
 	public static void main(String[] args) {

@@ -2,6 +2,9 @@ package codeforces.contests501_599.problemset591;
 
 import java.util.Scanner;
 
+/**
+ * Code forces - Problem 592 B
+ */
 public class Rebranding {
 
 	public static void main(String[] args) {

@@ -2,6 +2,9 @@ package codeforces.contests501_599.problemset593;
 
 import java.util.Scanner;
 
+/**
+ * Code forces - Problem 593 A
+ */
 public class TwoChar {
 
 	public static void main(String[] args) {

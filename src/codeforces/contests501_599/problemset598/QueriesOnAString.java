@@ -2,6 +2,9 @@ package codeforces.contests501_599.problemset598;
 
 import java.util.Scanner;
 
+/**
+ * Code forces - Problem 598 B
+ */
 public class QueriesOnAString {
 
 	static char[] word;

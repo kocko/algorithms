@@ -2,6 +2,9 @@ package codeforces.contests501_599.problemset592;
 
 import java.util.Scanner;
 
+/**
+ * Code forces - Problem 592 B
+ */
 public class TheMonsterAndTheSquirel {
 
 	public static void main(String[] args) {
