@@ -1,4 +1,4 @@
-package codeforces.contests501_599.problemset599;
+package codeforces.contests501_599.problemset596;
 
 import java.util.Scanner;
 
