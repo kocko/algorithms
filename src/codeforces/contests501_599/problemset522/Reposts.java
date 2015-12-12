@@ -20,7 +20,7 @@ public class Reposts {
 			}
 		}
 		sc.close();
-		System.out.println(reposts.entrySet().stream().mapToInt(x -> x.getValue()).max().getAsInt());
+		System.out.println(reposts.entrySet().stream().mapToInt(Map.Entry::getValue).max().getAsInt());
 	}
 
 }
