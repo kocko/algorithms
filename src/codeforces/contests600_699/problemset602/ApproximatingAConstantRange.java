@@ -20,7 +20,7 @@ public class ApproximatingAConstantRange {
         int min = Math.min(list[0], list[1]);
         int result = 2;
         int current = 2;
-        int lastChange = 0;
+        int lastChange = list[0] == list[1] ? 0 : 1;
         for (int i = 2; i < n; i++) {
             if (list[i] == list[i - 1]) {
                 current++;
@@ -38,5 +38,4 @@ public class ApproximatingAConstantRange {
         return Math.max(current, result);
     }
 
-    //10 5 4 4 4 3 3 3 2 1 1
 }
