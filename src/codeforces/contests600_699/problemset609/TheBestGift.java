@@ -21,4 +21,5 @@ public class TheBestGift {
         System.out.println(result / 2);
         sc.close();
     }
+
 }
