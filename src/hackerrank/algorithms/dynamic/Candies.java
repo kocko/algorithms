@@ -30,12 +30,11 @@ public class Candies {
 			if (rating[i] > rating[i - 1]) {
 				dp[i] = dp[i - 1] + 1;
 			} else if (rating[i] < rating[i - 1] && dp[i] == dp[i - 1]) {
-				back: for (int j = i; j >= 1; j--) {
+                for (int j = i; j >= 1; j--) {
 					if (rating[j - 1] > rating[j]) {
 						if (dp[j] >= dp[j - 1])
 							dp[j - 1] = dp[j] + 1;
-					} else
-						break back;
+					} else break;
 				}
 			}
 		}
