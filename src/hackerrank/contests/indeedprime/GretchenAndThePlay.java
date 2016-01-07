@@ -18,7 +18,7 @@ public class GretchenAndThePlay {
         }
         int[] result = new int[n + 1];
         for (int i = 1; i <= n; i++) {
-            result[i] = n;
+            result[i] = m;
         }
         for (int i = 0; i < n; i++) {
             int scene = sc.nextInt();
@@ -34,13 +34,15 @@ public class GretchenAndThePlay {
                 int ni = sc.nextInt();
                 int mi = sc.nextInt();
                 Integer currentScene = actorToScene.get(ni);
-                Integer a = sceneToActors.get(currentScene) - 1;
-                Integer b = sceneToActors.get(mi) + 1;
-                result[a + 1]++;
-                result[b]--;
-                actorToScene.put(ni, mi);
-                sceneToActors.put(currentScene, a);
-                sceneToActors.put(mi, b);
+                if (currentScene != mi) {
+                    Integer a = sceneToActors.get(currentScene) - 1;
+                    Integer b = sceneToActors.get(mi) + 1;
+                    result[a + 1]++;
+                    result[b]--;
+                    actorToScene.put(ni, mi);
+                    sceneToActors.put(currentScene, a);
+                    sceneToActors.put(mi, b);
+                }
             } else if (action == 2) {
                 int p = sc.nextInt();
                 System.out.println(result[p]);
