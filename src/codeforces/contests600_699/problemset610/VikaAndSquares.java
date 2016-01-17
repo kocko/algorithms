@@ -1,6 +1,5 @@
 package codeforces.contests600_699.problemset610;
 
-import java.math.BigInteger;
 import java.util.Scanner;
 
 public class VikaAndSquares {
