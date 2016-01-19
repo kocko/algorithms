@@ -73,6 +73,13 @@ public class TheLabyrinth {
     }
 
     static void print() throws IOException {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                System.out.print(result[i][j]);
+            }
+            System.out.println();
+        }
+        System.out.println();
         PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
@@ -83,7 +90,7 @@ public class TheLabyrinth {
                     for (int[] d : dir) {
                         int x = i + d[0];
                         int y = j + d[1];
-                        if (x >= 1 && x <= n && y >= 1 && y <= m && graph[x][y] == '.') {
+                        if (graph[x][y] == '.') {
                             int component = result[x][y];
                             if (!used[component]) {
                                 used[component] = true;
@@ -99,3 +106,11 @@ public class TheLabyrinth {
         out.flush();
     }
 }
+
+/*
+    test with:
+    1 3
+    *..
+*/
+
+
