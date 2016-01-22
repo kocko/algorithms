@@ -14,7 +14,7 @@ import java.util.Set;
 public class PearlsInARow implements Closeable {
 
     private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
+    private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
 
     @Override
     public void close() throws IOException {
@@ -58,7 +58,9 @@ public class PearlsInARow implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        new PearlsInARow().solve();
+        try (PearlsInARow instance = new PearlsInARow()) {
+            instance.solve();
+        }
     }
 
 }
