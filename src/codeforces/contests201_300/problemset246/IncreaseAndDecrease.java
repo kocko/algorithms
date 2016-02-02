@@ -14,4 +14,5 @@ public class IncreaseAndDecrease {
         System.out.println((total % n == 0) ? n : (n - 1));
         sc.close();
     }
+
 }
