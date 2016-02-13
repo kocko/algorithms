@@ -16,33 +16,14 @@ public class Lawnmower implements Closeable {
 
     public void solve() {
         int n = in.ni(), m = in.ni();
-        int[][] length = new int[n][2];
+        char dir = 'R';
         for (int i = 0; i < n; i++) {
             char[] line = in.next().toCharArray();
-            int min = 0, max = m;
+            int dist = 0;
             boolean weed = false;
-            for (int j = 0; j < m; j++) {
-                if (line[j] == 'W') {
-                    weed = true;
-                    min = Math.min(min, j);
-                    max = Math.max(max, j);
-                }
-            }
-            if (weed) {
-                length[i] = new int[] { min, max };
-            } else {
-                length[i] = null;
-            }
+
         }
-        char dir = 'R';
-        int result = length[0][1] - length[0][0];
-        for (int i = 1; i < n; i++) {
-//            if (i != null &&) {
-//                result++;
-//            } else {
-//
-//            }
-        }
+
     }
 
     @Override
