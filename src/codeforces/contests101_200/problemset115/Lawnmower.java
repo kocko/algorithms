@@ -21,9 +21,7 @@ public class Lawnmower implements Closeable {
             char[] line = in.next().toCharArray();
             int dist = 0;
             boolean weed = false;
-
         }
-
     }
 
     @Override
