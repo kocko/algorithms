@@ -16,11 +16,9 @@ public class AAndBAndTeamTraining implements Closeable {
 
     public void solve() {
         int n = in.ni(), m = in.ni();
-        int min = Math.min(n, m);
-        int max = Math.max(n, m);
-
-        
-        out.println(min);
+        int a = (n > m) ? m : n;
+        int b = (n + m) / 3;
+        out.println(a > b ? b : a);
     }
 
     @Override
