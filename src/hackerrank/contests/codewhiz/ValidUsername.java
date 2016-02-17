@@ -11,7 +11,7 @@ public class ValidUsername {
 		int testCases = Integer.parseInt(in.nextLine());
 		while (testCases > 0) {
 			String username = in.nextLine();
-			String pattern = "^([a-zA-Z_]){1}[a-zA-Z0-9_]{7,29}$";
+			String pattern = "^([a-zA-Z_])[a-zA-Z0-9_]{7,29}$";
 			Pattern r = Pattern.compile(pattern);
 			Matcher m = r.matcher(username);
 			if (m.find()) {
