@@ -19,17 +19,16 @@ public class HammingDistanceSum implements Closeable {
         char[] b = in.next().toCharArray(); int m = b.length;
 
         int[] prefix = new int[b.length + 1];
-        prefix[0] = b[0] - '0';
-        for (int i = 1; i < m; i++) {
-            prefix[i] = prefix[i - 1] + (b[i] - '0');
+        for (int i = 0; i < m; i++) {
+            prefix[i + 1] = prefix[i] + (b[i] - '0');
         }
 
         long result = 0L;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0, j = m - n; i < n; i++, j++) {
             if (a[i] == '0') {
-                result += prefix[m - n + i] - prefix[i];
+                result += prefix[j + 1] - prefix[i];
             } else {
-                result += m - n + 1 - (prefix[m - n + i] - prefix[i]);
+                result += m - n + 1 - (prefix[j + 1] - prefix[i]);
             }
         }
         out.println(result);
