@@ -33,7 +33,7 @@ public class PrateekAndHisFriends implements Closeable {
         for (int i = 1; i < f.length; i++) {
              prefix[i] = prefix[i - 1] + f[i];
         }
-        for (int i = 1; i < f.length; i++) {
+        for (int i = 0; i < f.length; i++) {
             if (prefix[i] == x) return "YES";
             if (prefix[i] > x) {
                 int left = 0, right = i - 1;
