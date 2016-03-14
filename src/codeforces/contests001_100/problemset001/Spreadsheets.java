@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class Spreadsheets {
 
-	static final Pattern PATTERN = Pattern.compile("R[0-9]+C[0-9]+");
+	static final Pattern PATTERN = Pattern.compile("^R[0-9]+C[0-9]+$");
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -44,13 +44,13 @@ public class Spreadsheets {
 		char[] chars = input.toCharArray();
 		int row = -1;
 		String col = "";
-		for (int i = 0; i < chars.length; i++) {
-			if (Character.isDigit(chars[i])) {
-				row = row == -1 ? chars[i] - '0' : (10 * row) + (chars[i] - '0');
-			} else {
-				col += chars[i];
-			}
-		}
+        for (char ch : chars) {
+            if (Character.isDigit(ch)) {
+                row = row == -1 ? ch - '0' : (10 * row) + (ch - '0');
+            } else {
+                col += ch;
+            }
+        }
 		int column = 0;
 		char[] letters = col.toCharArray();
 		int n = letters.length;
