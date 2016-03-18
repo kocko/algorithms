@@ -20,25 +20,11 @@ public class ParliamentOfBerland implements Closeable {
             out.println(-1);
         } else {
             int k = 1;
-            if (a != b) {
-                int max = Math.max(a, b);
-                int min = Math.min(a, b);
-                for (int i = 0; i < max; i++) {
-                    for (int j = 0; j < min; j++) {
-                        if (k <= n) {
-                            out.print(k++);
-                        } else {
-                            out.print(0);
-                        }
-                        out.print(" ");
-                    }
-                    out.println();
-                }
-            } else {
+            if (b % 2 == 0) {
                 for (int i = 0; i < a; i++) {
-                    int[] row = new int[a];
+                    int[] row = new int[b];
                     if (i % 2 == 0) {
-                        for (int j = 0; j < a; j++) {
+                        for (int j = 0; j < b; j++) {
                             if (k <= n) {
                                 row[j] = k++;
                             } else {
@@ -46,7 +32,7 @@ public class ParliamentOfBerland implements Closeable {
                             }
                         }
                     } else {
-                        for (int j = a - 1; j >= 0; j--) {
+                        for (int j = b - 1; j >= 0; j--) {
                             if (k <= n) {
                                 row[j] = k++;
                             } else {
@@ -56,6 +42,18 @@ public class ParliamentOfBerland implements Closeable {
                     }
                     for (int x : row) {
                         out.print(x + " ");
+                    }
+                    out.println();
+                }
+            } else {
+                for (int i = 0; i < a; i++) {
+                    for (int j = 0; j < b; j++) {
+                        if (k <= n) {
+                            out.print(k++);
+                        } else {
+                            out.print(0);
+                        }
+                        out.print(" ");
                     }
                     out.println();
                 }
