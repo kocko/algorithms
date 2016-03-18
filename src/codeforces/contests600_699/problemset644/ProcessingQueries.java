@@ -7,8 +7,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class ProcessingQueries implements Closeable {
@@ -16,51 +18,34 @@ public class ProcessingQueries implements Closeable {
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
 
-    class Query {
-        int index;
-        long duration;
-
-        Query(int index, long duration) {
-            this.index = index;
-            this.duration = duration;
-        }
-    }
-
     public void solve() {
         int n = in.ni(), b = in.ni();
-        List<Query> queue = new ArrayList<>();
-        long[] result = new long[n];
-        long busyUntil = in.nl() + in.nl();
-        result[0] = busyUntil;
-        for (int i = 1; i < n; i++) {
-            long arrival = in.nl();
-            long duration = in.nl();
-            Query query = new Query(i, duration);
-            if (arrival < busyUntil) {
-                if (queue.size() == b) {
-                    result[i] = -1;
-                } else {
-                    queue.add(query);
-                }
+        long[] time = new long[n];
+        long[] duration = new long[n];
+        long[] end = new long[n];
+        Queue<Integer> q = new ArrayDeque<>();
+        long free = 0;
+        for (int i = 0; i < n; i++) {
+            time[i] = in.ni();
+            duration[i] = in.ni();
+            while (free <= time[i] && q.size() > 0) {
+                int id = q.poll();
+                free = Math.max(free, time[id]) + duration[id];
+                end[id] = free;
+            }
+            if (q.size() < b) {
+                q.add(i);
             } else {
-                if (queue.isEmpty()) {
-                    busyUntil += duration;
-                    result[i] = busyUntil;
-                } else {
-                    Query top = queue.get(0);
-                    busyUntil += top.duration;
-                    queue.remove(0);
-                    result[top.index] = busyUntil;
-                    queue.add(query);
-                }
+                end[i] = -1;
             }
         }
-        for (Query query : queue) {
-            busyUntil += query.duration;
-            result[query.index] = busyUntil;
+        while (q.size() > 0) {
+            int id = q.poll();
+            free = Math.max(free, time[id]) + duration[id];
+            end[id] = free;
         }
-        for (long i : result) {
-            out.print(i + " ");
+        for (int i = 0; i < n; i++) {
+            out.print(end[i] + " ");
         }
         out.println();
     }
