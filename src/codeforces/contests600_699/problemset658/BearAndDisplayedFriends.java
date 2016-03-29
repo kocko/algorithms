@@ -27,7 +27,7 @@ public class BearAndDisplayedFriends implements Closeable {
 
         @Override
         public boolean equals(Object obj) {
-            return this.id == ((Friend) obj).id;
+            return (obj instanceof Friend) && this.id == ((Friend) obj).id;
         }
     }
 
@@ -35,7 +35,7 @@ public class BearAndDisplayedFriends implements Closeable {
         int n = in.ni(), k = in.ni(), q = in.ni();
         Friend[] f = new Friend[n + 1];
         for (int i = 1; i <= n; i++) { f[i] = new Friend(i, in.ni()); }
-        PriorityQueue<Friend> queue = new PriorityQueue<Friend>(new Comparator<Friend>() {
+        PriorityQueue<Friend> queue = new PriorityQueue<>(new Comparator<Friend>() {
             @Override
             public int compare(Friend o1, Friend o2) {
                 return Integer.compare(o1.value, o2.value);
