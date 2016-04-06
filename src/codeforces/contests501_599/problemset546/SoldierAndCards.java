@@ -27,33 +27,32 @@ public class SoldierAndCards implements Closeable {
         ArrayDeque<Integer> first = new ArrayDeque<>(), second = new ArrayDeque<>();
         int a = in.ni();
         for (int i = 0; i < a; i++) {
-            first.push(in.ni());
+            first.addLast(in.ni());
         }
         int b = in.ni();
         for (int i = 0; i < b; i++) {
-            second.push(in.ni());
+            second.addLast(in.ni());
         }
         int count = 0, limit = fact(n);
-        
         while(true) {
             if (count > limit)  {
                 out.println(-1);
                 break;
             } else if (first.isEmpty()) {
-                out.print(count + " " + 1);
+                out.println(count + " " + 2);
                 break;
             } else if (second.isEmpty()) {
-                out.print(count + " " + 2);
+                out.println(count + " " + 1);
                 break;
             } else {
-                int x = first.peek(), y = second.peek();
+                int x = first.peekFirst(), y = second.peekFirst();
                 if (x > y) {
-                    first.push(second.pop());
-                    first.push(x);
+                    first.addLast(second.pop());
+                    first.addLast(x);
                     first.pop();
                 } else {
-                    second.push(first.pop());
-                    second.push(y);
+                    second.addLast(first.pop());
+                    second.addLast(y);
                     second.pop();
                 }
                 count++;
