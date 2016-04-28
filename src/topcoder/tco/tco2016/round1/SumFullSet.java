@@ -22,9 +22,4 @@ public class SumFullSet {
         return "closed";
     }
 
-    public static void main(String[] args) {
-        SumFullSet temp = new SumFullSet();
-        System.out.println(temp.isSumFullSet(int[] elements));
-    }
-
 }
