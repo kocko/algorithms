@@ -1,4 +1,4 @@
-package codeforces.contests600_699.problemset644;
+package codeforces.gyms.acm;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -7,45 +7,44 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
-public class ProcessingQueries implements Closeable {
+public class ClassTime implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
 
+    class Student implements Comparable<Student> {
+        String first;
+        String last;
+        
+        Student(String first, String last) {
+            this.first = first;
+            this.last = last;
+        }
+
+        @Override
+        public int compareTo(Student o) {
+            int x = this.last.compareTo(o.last);
+            if (x == 0) {
+                return this.first.compareTo(o.first);
+            }
+            return x;
+        }
+    }
+    
     public void solve() {
-        int n = in.ni(), b = in.ni();
-        long[] time = new long[n];
-        long[] duration = new long[n];
-        long[] end = new long[n];
-        Queue<Integer> q = new ArrayDeque<>();
-        long free = 0;
-        for (int i = 0; i < n; i++) {
-            time[i] = in.ni();
-            duration[i] = in.ni();
-            while (free <= time[i] && q.size() > 0) {
-                int id = q.poll();
-                free = Math.max(free, time[id]) + duration[id];
-                end[id] = free;
-            }
-            if (q.size() < b) {
-                q.add(i);
-            } else {
-                end[i] = -1;
-            }
+        int n = in.ni();
+        Set<Student> set = new TreeSet<>();
+        while (2 * n > 0) {
+            set.add(new Student(in.next(), in.next()));
+            n--;
         }
-        while (q.size() > 0) {
-            int id = q.poll();
-            free = Math.max(free, time[id]) + duration[id];
-            end[id] = free;
+        for (Student s : set) {
+            out.println(s.first + " " + s.last);
         }
-        for (int i = 0; i < n; i++) {
-            out.print(end[i] + " ");
-        }
-        out.println();
     }
 
     @Override
@@ -88,6 +87,6 @@ public class ProcessingQueries implements Closeable {
     }
 
     public static void main(String[] args) {
-        new ProcessingQueries().solve();
+        new ClassTime().solve();
     }
 }

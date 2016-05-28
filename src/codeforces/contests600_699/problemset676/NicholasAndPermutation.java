@@ -1,4 +1,4 @@
-package codeforces.contests600_699.problemset644;
+package codeforces.contests600_699.problemset676;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -7,45 +7,27 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class ProcessingQueries implements Closeable {
+public class NicholasAndPermutation implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
 
     public void solve() {
-        int n = in.ni(), b = in.ni();
-        long[] time = new long[n];
-        long[] duration = new long[n];
-        long[] end = new long[n];
-        Queue<Integer> q = new ArrayDeque<>();
-        long free = 0;
-        for (int i = 0; i < n; i++) {
-            time[i] = in.ni();
-            duration[i] = in.ni();
-            while (free <= time[i] && q.size() > 0) {
-                int id = q.poll();
-                free = Math.max(free, time[id]) + duration[id];
-                end[id] = free;
-            }
-            if (q.size() < b) {
-                q.add(i);
-            } else {
-                end[i] = -1;
+        int n = in.ni();
+        int a = 0, b = 0;
+        for (int i = 1; i <= n; i++) {
+            int next = in.ni();
+            if (next == 1) {
+                a = i;
+            } else if (next == n) {
+                b = i;
             }
         }
-        while (q.size() > 0) {
-            int id = q.poll();
-            free = Math.max(free, time[id]) + duration[id];
-            end[id] = free;
-        }
-        for (int i = 0; i < n; i++) {
-            out.print(end[i] + " ");
-        }
-        out.println();
+        int result = Math.max(n - b, b - 1);
+        result = Math.max(result, Math.max(n - a, a - 1));
+        out.println(result);
     }
 
     @Override
@@ -88,6 +70,6 @@ public class ProcessingQueries implements Closeable {
     }
 
     public static void main(String[] args) {
-        new ProcessingQueries().solve();
+        new NicholasAndPermutation().solve();
     }
 }

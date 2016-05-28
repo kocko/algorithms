@@ -1,4 +1,4 @@
-package codeforces.contests600_699.problemset644;
+package codeforces.contests600_699.problemset638;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -7,47 +7,51 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class ProcessingQueries implements Closeable {
+public class MakingGenomeInBerland implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
 
+    StringBuilder sb = new StringBuilder();
+    
+    char[] adj = new char[26];
+    boolean[] mark = new boolean[26];
+    int[] inDegree = new int[26];
+    
     public void solve() {
-        int n = in.ni(), b = in.ni();
-        long[] time = new long[n];
-        long[] duration = new long[n];
-        long[] end = new long[n];
-        Queue<Integer> q = new ArrayDeque<>();
-        long free = 0;
+        int n = in.ni();
         for (int i = 0; i < n; i++) {
-            time[i] = in.ni();
-            duration[i] = in.ni();
-            while (free <= time[i] && q.size() > 0) {
-                int id = q.poll();
-                free = Math.max(free, time[id]) + duration[id];
-                end[id] = free;
-            }
-            if (q.size() < b) {
-                q.add(i);
-            } else {
-                end[i] = -1;
+            char[] next = in.next().toCharArray();
+            for (int j = 0; j < next.length; j++) {
+                if (j != next.length - 1) {
+                    adj[next[j] - 'a'] = next[j + 1];
+                    inDegree[next[j + 1] - 'a']++;
+                }
+                mark[next[j] - 'a'] = true;
             }
         }
-        while (q.size() > 0) {
-            int id = q.poll();
-            free = Math.max(free, time[id]) + duration[id];
-            end[id] = free;
+        
+        for (int i = 0; i < 26; i++) {
+            if (inDegree[i] == 0 && mark[i]) {
+                dfs(i);
+            }
         }
-        for (int i = 0; i < n; i++) {
-            out.print(end[i] + " ");
-        }
-        out.println();
+        
+        out.println(sb.toString());
     }
-
+    
+    boolean[] vis = new boolean[26];
+    
+    private void dfs(int u) {
+        vis[u] = true;
+        sb.append((char)('a' + u));
+        if (adj[u] != '\u0000' && !vis[adj[u] - 'a']) {
+            dfs(adj[u] - 'a');
+        }
+    }
+    
     @Override
     public void close() throws IOException {
         in.close();
@@ -88,6 +92,6 @@ public class ProcessingQueries implements Closeable {
     }
 
     public static void main(String[] args) {
-        new ProcessingQueries().solve();
+        new MakingGenomeInBerland().solve();
     }
 }
