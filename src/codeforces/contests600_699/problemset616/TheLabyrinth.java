@@ -1,110 +1,145 @@
 package codeforces.contests600_699.problemset616;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
-public class TheLabyrinth {
+public class TheLabyrinth implements Closeable {
 
-    static int n, m;
-    static char[][] graph;
-    static int[][] result;
-    static Map<Integer, Integer> components;
-    static Set<int[]> visited;
+    private InputReader in = new InputReader(System.in);
+    private PrintWriter out = new PrintWriter(System.out);
 
-    static int[][] dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    static class DisjointSet {
+        int[] root;
+        int[] rank;
 
-    static List<int[]> path = new ArrayList<>();
+        public DisjointSet(int n) {
+            root = new int[n];
+            for (int i = 0; i < n; i++) {
+                root[i] = i;
+            }
+            rank = new int[n];
+            Arrays.fill(rank, 1);
+        }
+
+        int root(int x) {
+            return x == root[x] ? x : (root[x] = root(root[x]));
+        }
+
+        void union(int x, int y) {
+            x = root(x);
+            y = root(y);
+            if (x != y) {
+                if (rank[y] < rank[x]) {
+                    int tmp = x;
+                    x = y;
+                    y = tmp;
+                }
+                rank[x] += rank[y];
+                root[y] = x;
+            }
+        }
+        
+    }
+
+    public void solve() {
+        int n = in.ni();
+        int m = in.ni();
+        char[][] g = new char[n][m];
+        for (int i = 0; i < n; i++) {
+            g[i] = in.next().toCharArray();
+        }
+
+        DisjointSet union = new DisjointSet(n * m);
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (g[i][j] == '.') {
+                    if (i + 1 < n && g[i + 1][j] == '.')
+                        union.union(i * m + j, i * m + j + m);
+                    if (j + 1 < m && g[i][j + 1] == '.')
+                        union.union(i * m + j, i * m + j + 1);
+                }
+            }
+        }
+
+        final int[][] dir = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (g[i][j] == '.')
+                    continue;
+                int[] roots = new int[4];
+                int curRoot = 0;
+                int total = 0;
+                out: for (int[] d : dir) {
+                    int x = i + d[0], y = j + d[1];
+                    if (x < n && x >= 0 && y < m && y >= 0 && g[x][y] == '.') {
+                        int root = union.root(x * m + y);
+                        for (int u = 0; u < curRoot; u++) {
+                            if (root == roots[u])
+                                continue out;
+                        }
+                        roots[curRoot++] = root;
+                        total += union.rank[root];
+                    }
+                }
+                g[i][j] = (char) ('0' + (1 + total) % 10);
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            out.println(g[i]);
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        in.close();
+        out.close();
+    }
+
+    static class InputReader {
+        public BufferedReader reader;
+        public StringTokenizer tokenizer;
+
+        public InputReader(InputStream stream) {
+            reader = new BufferedReader(new InputStreamReader(stream), 32768);
+            tokenizer = null;
+        }
+
+        public String next() {
+            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+                try {
+                    tokenizer = new StringTokenizer(reader.readLine());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return tokenizer.nextToken();
+        }
+
+        public int ni() {
+            return Integer.parseInt(next());
+        }
+
+        public long nl() {
+            return Long.parseLong(next());
+        }
+
+        public void close() throws IOException {
+            reader.close();
+        }
+    }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String[] line = reader.readLine().split("\\s+");
-        n = Integer.parseInt(line[0]);
-        m = Integer.parseInt(line[1]);
-        graph = new char[n + 2][m + 2];
-        result = new int[n + 2][m + 2];
-        components = new HashMap<>();
-        visited = new HashSet<>();
-        for (int i = 1; i <= n; i++) {
-            char[] next = reader.readLine().toCharArray();
-            System.arraycopy(next, 0, graph[i], 1, m);
-        }
-        reader.close();
-        run();
-        long end = System.currentTimeMillis();
-    }
-
-    static void run() {
-        PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
-        int componentNumber = 1;
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= m; j++) {
-                Set<Integer> neighbourComponentNumbers = new HashSet<>();
-                if (graph[i][j] == '.') {
-                    out.write('.');
-                } else {
-                    int score = 1;
-                    for (int[] d : dir) {
-                        int x = i + d[0];
-                        int y = j + d[1];
-                        if (x >= 1 && x <= n && y >= 1 && y <= m) {
-                            if (graph[x][y] == '*') continue;
-                            if (result[x][y] == 0) {
-                                path = new ArrayList<>();
-                                path.add(new int[]{x, y});
-                                visited = new HashSet<>();
-                                result[x][y] = componentNumber;
-                                dfs(x, y, path, componentNumber);
-                                components.put(componentNumber, path.size());
-                                neighbourComponentNumbers.add(componentNumber);
-                                score += path.size();
-                                componentNumber++;
-                            } else {
-                                int component = result[x][y];
-                                if (!neighbourComponentNumbers.contains(component)) {
-                                    score += components.get(component);
-                                    neighbourComponentNumbers.add(component);
-                                }
-                            }
-                        }
-                    }
-                    out.write('0' + (score % 10));
-                }
-            }
-            out.write('\n');
-        }
-        out.flush();
-    }
-
-    static void dfs(int i, int j, List<int[]> path, int componentNumber) {
-        visited.add(new int[]{i, j});
-        for (int[] d : dir) {
-            int x = i + d[0];
-            int y = j + d[1];
-            int[] cell = {x, y};
-            if (x >= 1 && x <= n && y >= 1 && y <= m) {
-                if (graph[x][y] == '.' && !visited(cell)) {
-                    path.add(new int[]{x, y});
-                    result[x][y] = componentNumber;
-                    dfs(x, y, path, componentNumber);
-                }
-            }
+        try (TheLabyrinth instance = new TheLabyrinth()) {
+            instance.solve();
         }
     }
-
-    static boolean visited(int[] cell) {
-        for (int[] c : visited) {
-            if (c[0] == cell[0] && c[1] == cell[1]) return true;
-        }
-        return false;
-    }
-
 }
