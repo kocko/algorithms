@@ -28,16 +28,4 @@ public class NonDeterministicSubstring {
         return result;
     }
 
-    long count(char[] a) {
-        long result = 0;
-        for (char c : a) {
-            if (c == '?') result++;
-        }
-        return result;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new NonDeterministicSubstring().ways("00000000001111111111000000000011111111111111100000", "???????????????????"));
-    }
-
 }
