@@ -34,7 +34,7 @@ public class Anagrams implements Closeable {
                 map.put(value, 1);
             }
         }
-        out.println(result);
+        out.println(result != 0 ? result : 1);
     }
 
     @Override
