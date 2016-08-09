@@ -19,7 +19,11 @@ public class CookieParty implements Closeable {
             out.println(n - m);
         } else {
             int rem = m % n;
-            out.println(n - rem);
+            if (rem != 0) {
+                out.println(n - rem);
+            } else {
+                out.println(0);
+            }
         }
     }
 
