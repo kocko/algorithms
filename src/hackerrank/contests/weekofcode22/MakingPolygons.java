@@ -22,14 +22,14 @@ public class MakingPolygons implements Closeable {
         }
         Arrays.sort(x);
         if (n == 1) {
-            out.println(3);
+            out.println(2);
         } else if (n == 2) {
             out.println(1);
         } else if (n == 3) {
-            if (x[0] * x[0] + x[1] * x[1] != x[2] * x[2]) {
-                out.println(1);
-            } else {
+            if (x[0] + x[1] > x[2] && x[0] + x[2] > x[1] && x[2] + x[1] > x[0]) {
                 out.println(0);
+            } else {
+                out.println(1);
             }
         } else {
             out.println(0);
