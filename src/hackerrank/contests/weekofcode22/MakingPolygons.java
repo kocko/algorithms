@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class MakingPolygons implements Closeable {
@@ -16,23 +19,35 @@ public class MakingPolygons implements Closeable {
 
     public void solve() {
         int n = in.ni();
-        int[] x = new int[n];
+        List<Integer> x = new ArrayList<>();
+        int sum = 0;
         for (int i = 0; i < n; i++) {
-            x[i] = in.ni();
+            int next = in.ni();
+            x.add(next);
+            sum += next;
         }
-        Arrays.sort(x);
         if (n == 1) {
             out.println(2);
         } else if (n == 2) {
             out.println(1);
-        } else if (n == 3) {
-            if (x[0] + x[1] > x[2] && x[0] + x[2] > x[1] && x[2] + x[1] > x[0]) {
-                out.println(0);
-            } else {
-                out.println(1);
-            }
         } else {
-            out.println(0);
+            int cuts = 0;
+            while (true) {
+                Collections.sort(x);
+                int last = x.get(x.size() - 1);
+                if (sum - last > last) {
+                    break;
+                }
+                x.remove(x.size() - 1);
+                x.add(last / 2);
+                if (last % 2 == 1) {
+                    x.add((last / 2) + 1);
+                } else {
+                    x.add(last / 2);    
+                }
+                cuts++;
+            }
+            out.println(cuts);
         }
     }
 
