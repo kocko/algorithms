@@ -29,7 +29,11 @@ public class MakingPolygons implements Closeable {
         if (n == 1) {
             out.println(2);
         } else if (n == 2) {
-            out.println(1);
+            if (x.get(0).equals(x.get(1))) {
+                out.println(2);
+            } else {
+                out.println(1);
+            }
         } else {
             int cuts = 0;
             while (true) {
