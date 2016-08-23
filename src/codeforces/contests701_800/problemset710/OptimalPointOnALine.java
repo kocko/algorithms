@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class OptimalPointOnALine implements Closeable {
@@ -16,12 +19,12 @@ public class OptimalPointOnALine implements Closeable {
 
     public void solve() {
         int n = in.ni();
-        int[] x = new int[n];
+        List<Integer> x = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            x[i] = in.ni();
+            x.add(in.ni());
         }
-        Arrays.sort(x);
-        out.println(x[n / 2 + n % 2 - 1]);
+        Collections.sort(x);
+        out.println(x.get(n / 2 + n % 2 - 1));
     }
 
     @Override
