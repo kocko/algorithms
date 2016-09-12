@@ -1,4 +1,4 @@
-package codeforces.gyms.acm.year2015.syria;
+package acm.subregionals.year2015.africamiddleeast.syria;
 
 import java.io.BufferedReader;
 import java.io.Closeable;

@@ -1,4 +1,4 @@
-package codeforces.gyms.acm.year2015.syria;
+package acm.subregionals.year2015.africamiddleeast.syria;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,45 +6,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Chance implements Closeable {
+public class ParadiseCity implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
-    private int[] primes = {2, 3, 5, 7, 11, 13, 17};
-    
-    private int[] storage = new int[100001];
-    
     public void solve() {
         int t = in.ni();
-        init();
         while (t-- > 0) {
-            int a = in.ni(), b = in.ni();
-            if (a == 0) a = 1;
-            if (b == 0) b = 1;
-            out.println(storage[b] - storage[a - 1]);
-        }
-    }
-    
-    private void init() {
-        for (int i = 2; i <= 100000; i++) {
-            int count = BigInteger.valueOf(i).bitCount();
-            boolean ok = false;
-            for (int p : primes) {
-                if (p == count) {
-                    ok = true;
-                    break;
+            int n = in.ni();
+            int[] res = new int[n];
+            for (int i = 0; i < 3; i++) {
+                String a = in.next();
+                for (int j = 0; j < 3 * n; j++) {
+                    if (a.charAt(j) == '*') {
+                        res[j / 3]++;
+                    }
                 }
             }
-            storage[i] = storage[i - 1];
-            if (ok) {
-                storage[i]++;
-            }
+            Arrays.sort(res);
+            out.println(4 * res[n - 1]);
         }
     }
 
@@ -88,7 +72,7 @@ public class Chance implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Chance instance = new Chance()) {
+        try (ParadiseCity instance = new ParadiseCity()) {
             instance.solve();
         }
     }
