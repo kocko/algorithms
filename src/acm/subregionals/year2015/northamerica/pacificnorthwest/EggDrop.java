@@ -1,4 +1,4 @@
-package codeforces.gyms.acm;
+package acm.subregionals.year2015.northamerica.pacificnorthwest;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -7,44 +7,26 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
-public class ClassTime implements Closeable {
+public class EggDrop implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
 
-    class Student implements Comparable<Student> {
-        String first;
-        String last;
-        
-        Student(String first, String last) {
-            this.first = first;
-            this.last = last;
-        }
-
-        @Override
-        public int compareTo(Student o) {
-            int x = this.last.compareTo(o.last);
-            if (x == 0) {
-                return this.first.compareTo(o.first);
-            }
-            return x;
-        }
-    }
-    
     public void solve() {
-        int n = in.ni();
-        Set<Student> set = new TreeSet<>();
-        while (2 * n > 0) {
-            set.add(new Student(in.next(), in.next()));
-            n--;
+        int n = in.ni(), l = in.ni();
+        int a = 1, b = l;
+        while (n-- > 0) {
+            int value = in.ni();
+            String action = in.next();
+            if ("SAFE".equals(action)) {
+                a = Math.max(value, a);
+            } else {
+                b = Math.min(value, b);
+            }
         }
-        for (Student s : set) {
-            out.println(s.first + " " + s.last);
-        }
+        out.println((a + 1) + " " + (b - 1));
     }
 
     @Override
@@ -87,6 +69,6 @@ public class ClassTime implements Closeable {
     }
 
     public static void main(String[] args) {
-        new ClassTime().solve();
+        new EggDrop().solve();
     }
 }

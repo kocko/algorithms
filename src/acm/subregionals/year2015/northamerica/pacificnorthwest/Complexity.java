@@ -1,4 +1,4 @@
-package codeforces.gyms.acm;
+package acm.subregionals.year2015.northamerica.pacificnorthwest;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -7,26 +7,40 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class EggDrop implements Closeable {
+public class Complexity implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
 
     public void solve() {
-        int n = in.ni(), l = in.ni();
-        int a = 1, b = l;
-        while (n-- > 0) {
-            int value = in.ni();
-            String action = in.next();
-            if ("SAFE".equals(action)) {
-                a = Math.max(value, a);
-            } else {
-                b = Math.min(value, b);
+        String s = in.next();
+        boolean[] used = new boolean[26];
+        int[] count = new int[26];
+        int complexity = 0;
+        for (char c : s.toCharArray()) {
+            if (!used[c - 'a']) {
+                complexity++;
+                used[c - 'a'] = true;
             }
+            count[c - 'a']++;
         }
-        out.println((a + 1) + " " + (b - 1));
+        if (complexity > 2) {
+            int result = 0;
+            Arrays.sort(count);
+            for (int i = 0; i < 26; i++) {
+                if (count[i] > 0) {
+                    result += count[i];
+                    complexity--;
+                }
+                if (complexity <= 2) break;
+            }
+            out.println(result);
+        } else {
+            out.println(0);
+        }
     }
 
     @Override
@@ -69,6 +83,6 @@ public class EggDrop implements Closeable {
     }
 
     public static void main(String[] args) {
-        new EggDrop().solve();
+        new Complexity().solve();
     }
 }

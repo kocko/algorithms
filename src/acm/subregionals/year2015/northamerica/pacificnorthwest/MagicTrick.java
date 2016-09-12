@@ -1,4 +1,4 @@
-package codeforces.gyms.acm;
+package acm.subregionals.year2015.northamerica.pacificnorthwest;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -14,11 +14,11 @@ public class MagicTrick implements Closeable {
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
 
-    class Operation {
+    private class Operation {
         String command;
         int value;
         
-        public Operation(String command, int value) {
+        Operation(String command, int value) {
             this.command = command;
             this.value = value;
         }

@@ -1,4 +1,4 @@
-package codeforces.gyms.acm;
+package acm.subregionals.year2015.northamerica.pacificnorthwest;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -7,39 +7,43 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.Arrays;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
-public class Complexity implements Closeable {
+public class ClassTime implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
 
-    public void solve() {
-        String s = in.next();
-        boolean[] used = new boolean[26];
-        int[] count = new int[26];
-        int complexity = 0;
-        for (char c : s.toCharArray()) {
-            if (!used[c - 'a']) {
-                complexity++;
-                used[c - 'a'] = true;
-            }
-            count[c - 'a']++;
+    class Student implements Comparable<Student> {
+        String first;
+        String last;
+        
+        Student(String first, String last) {
+            this.first = first;
+            this.last = last;
         }
-        if (complexity > 2) {
-            int result = 0;
-            Arrays.sort(count);
-            for (int i = 0; i < 26; i++) {
-                if (count[i] > 0) {
-                    result += count[i];
-                    complexity--;
-                }
-                if (complexity <= 2) break;
+
+        @Override
+        public int compareTo(Student o) {
+            int x = this.last.compareTo(o.last);
+            if (x == 0) {
+                return this.first.compareTo(o.first);
             }
-            out.println(result);
-        } else {
-            out.println(0);
+            return x;
+        }
+    }
+    
+    public void solve() {
+        int n = in.ni();
+        Set<Student> set = new TreeSet<>();
+        while (2 * n > 0) {
+            set.add(new Student(in.next(), in.next()));
+            n--;
+        }
+        for (Student s : set) {
+            out.println(s.first + " " + s.last);
         }
     }
 
@@ -83,6 +87,6 @@ public class Complexity implements Closeable {
     }
 
     public static void main(String[] args) {
-        new Complexity().solve();
+        new ClassTime().solve();
     }
 }
