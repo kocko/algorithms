@@ -42,45 +42,13 @@ public class Braces implements Closeable {
             }
         }
     }
-
-     String[] braces(String[] values) {
-        int n = values.length;
-        String[] result = new String[n];
-        for (int i = 0; i < n; i++) {
-            char[] next = values[i].toCharArray();
-            Stack<Character> stack = new Stack<>();
-            for (char c : next) {
-                if (isOpening(c)) {
-                    stack.add(c);
-                } else {
-                    if (stack.isEmpty()) {
-                        result[i] = "NO";
-                    } else {
-                        Character top = stack.pop();
-                        if (!match(top, c)) {
-                            result[i] = "NO";
-                        }
-                    }
-                }
-                result[i] = "YES";
-            }
-            
-        }
-        return result;
-    }
     
     private boolean match(char a, char b) {
-        return (a == '(' && b == ')') || 
-                (a == '{' && b == '}') ||
-                (a == '[' && b == ']');
+        return (a == '(' && b == ')') || (a == '{' && b == '}') || (a == '[' && b == ']');
     }
     
     private boolean isOpening(char c) {
         return "{[(".indexOf(c) != -1;
-    }
-
-    private boolean isClosing(char c) {
-        return "}])".indexOf(c) != -1;
     }
 
     @Override
