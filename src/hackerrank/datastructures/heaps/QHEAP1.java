@@ -5,62 +5,29 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class QHEAP1 implements Closeable {
 
     private InputReader in = new InputReader(System.in);
-    private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
-
-    int[] heap;
-    int index;
+    private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
         int n = in.ni();
-        heap = new int[n];
-        for (int i = 0; i < n; i++) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        while (n-- > 0) {
             int command = in.ni();
             switch(command) {
-                case 1: {
-                    save(in.ni());
-                    break;
-                }
-                case 2: {
-                    delete(in.ni());
-                    break;
-                }
-                case 3: {
-                    printTop();
-                    break;
-                }
+                case 1: { queue.add(in.ni()); break; }
+                case 2: { queue.remove(in.ni()); break; }
+                case 3: { out.println(queue.peek()); break; }
                 default: throw new IllegalArgumentException("Invalid command");
             }
         }
-    }
-
-    private void save(int value) {
-        heap[index] = value;
-        int childIndex = index;
-        while (childIndex > 0) {
-            int parentIndex = index / 2 - index % 2;
-            if (heap[childIndex] < heap[parentIndex]) {
-                int temp = heap[parentIndex];
-                heap[parentIndex] = heap[childIndex];
-                heap[childIndex] = temp;
-            }
-        }
-        index++;
-    }
-
-    private void delete(int value) {
-
-    }
-
-    private void printTop() {
-        out.println(heap[0]);
     }
 
     @Override
@@ -102,7 +69,10 @@ public class QHEAP1 implements Closeable {
         }
     }
 
-    public static void main(String[] args) {
-        new QHEAP1().solve();
+    public static void main(String[] args) throws IOException {
+        try (QHEAP1 instance = new QHEAP1()) {
+            instance.solve();
+        }
     }
+    
 }
