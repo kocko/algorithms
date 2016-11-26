@@ -1,4 +1,4 @@
-package codeforces.contests201_300.problemset274;
+package codeforces.contests401_500.problemset479;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
