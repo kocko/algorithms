@@ -1,4 +1,4 @@
-package codeforces.contests501_600.problemset582;
+package codeforces.contests501_600.problemset584;
 
 import java.math.BigInteger;
 import java.util.Scanner;
