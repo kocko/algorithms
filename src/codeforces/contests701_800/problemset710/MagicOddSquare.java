@@ -13,18 +13,16 @@ public class MagicOddSquare implements Closeable {
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
-    private int[][] result;
     public void solve() {
         int n = in.ni();
-        result = new int[n][n];
-        int nextOdd = 1, nextEven = 2;
+        int[][] result = new int[n][n];
+        int nextOdd = 1, nextEven = 0;
         for (int i = 0; i < n; i++) {
             int odds = 2 * Math.min(i, n - i - 1) + 1;
             int evens = (n - odds) / 2;
             for (int j = 0; j < evens; j++) {
-                result[i][j] = nextEven;
-                result[i][n - evens + j] = nextEven + 2;
-                nextEven += 4;
+                result[i][j] = (nextEven += 2);
+                result[i][n - evens + j] = (nextEven += 2);
             }
         }
         for (int i = 0; i < n; i++) {
