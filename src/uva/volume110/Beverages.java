@@ -1,62 +1,50 @@
 package uva.volume110;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Stack;
 
 public class Beverages {
 
-    private int[][] graph;
+    private List<List<Integer>> graph;
     private Map<Integer, String> inverse;
+    private int[] in;
 
-    private Beverages(int[][] graph, Map<Integer, String> inverse) {
+    private Beverages(List<List<Integer>> graph, Map<Integer, String> inverse, int[] in) {
         this.graph = graph;
         this.inverse = inverse;
+        this.in = in;
     }
 
     public void solve(int testCase) {
-        int root = -1;
-        int n = graph.length - 1;
-        for (int i = 1; i <= n; i++) {
-            boolean ok = true;
-            for (int j = 1; j <= n; j++) {
-                if (graph[j][i] == 1) {
-                    ok = false;
-                    break;
+        List<Integer> order = new ArrayList<>();
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        for (int i = 1; i < in.length; i++) {
+            if (in[i] == 0) {
+                queue.add(i);
+            }
+        }
+        while (!queue.isEmpty()) {
+            int top = queue.poll();
+            for (int i = 0; i < graph.get(top).size(); i++) {
+                int next = graph.get(top).get(i);
+                in[next]--;
+                if (in[next] == 0) {
+                    queue.add(next);
                 }
             }
-            if (ok) {
-                root = i;
-                break;
-            }
+            order.add(top);
         }
-        visited = new boolean[n + 1];
-        order = new Stack<>();
-        dfs(root);
-        for (int i = 1; i <= n; i++) {
-            if (!visited[i]) {
-                dfs(i);
-            }
+        System.out.print("Case #" + testCase + ": Dilbert should drink beverages in this order:");
+        for (Integer o : order) {
+            System.out.print(" " + inverse.get(o));
         }
-        System.out.print("Case #" + testCase + ": Dilbert should drink beverages in this order: ");
-        for (Integer i : order) {
-            System.out.print(inverse.get(i) + " ");
-        }
-        System.out.println();
-    }
-
-    private boolean[] visited;
-    private Stack<Integer> order;
-
-    private void dfs(int x) {
-        visited[x] = true;
-        for (int u = 1; u <= graph.length - 1; u++) {
-            if (!visited[u] && graph[x][u] == 1) {
-                dfs(u);
-            }
-        }
-        order.push(x);
+        System.out.println(".\n");
     }
 
     public static void main(String[] args) {
@@ -72,12 +60,19 @@ public class Beverages {
                 inverse.put(i, next);
             }
             int m = Integer.parseInt(sc.nextLine());
-            int[][] graph = new int[n + 1][n + 1];
+            int[] in = new int[n + 1];
+            List<List<Integer>> graph = new ArrayList<>();
+            for (int i = 0; i <= n; i++) {
+                graph.add(new ArrayList<>());
+            }
             for (int i = 0; i < m; i++) {
                 String[] split = sc.nextLine().split("\\s+");
-                graph[order.get(split[1])][order.get(split[0])] = 1;
+                graph.get(order.get(split[0])).add(order.get(split[1]));
+                in[order.get(split[1])]++;
+                
             }
-            new Beverages(graph, inverse).solve(testCase++);
+            new Beverages(graph, inverse, in).solve(testCase++);
+            if (sc.hasNextLine()) sc.nextLine();
         }
         sc.close();
     }
