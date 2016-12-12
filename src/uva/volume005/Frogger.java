@@ -3,11 +3,11 @@ package uva.volume005;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public class Main {
+public class Frogger {
 
     private final List<Point> points;
 
-    private Main(List<Point> points) {
+    private Frogger(List<Point> points) {
         this.points = points;
     }
 
@@ -60,7 +60,7 @@ public class Main {
                 String[] split = sc.nextLine().split("\\s+");
                 points.add(new Point(i, Integer.parseInt(split[0]), Integer.parseInt(split[1])));
             }
-            new Main(points).solve(testCase++);
+            new Frogger(points).solve(testCase++);
             sc.nextLine();
             System.out.println();
         }
