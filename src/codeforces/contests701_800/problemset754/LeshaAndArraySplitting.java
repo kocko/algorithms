@@ -18,33 +18,30 @@ public class LeshaAndArraySplitting implements Closeable {
     public void solve() {
         int n = in.ni();
         int[] x = new int[n];
-        boolean allAreZeroes = true;
+        int sum = 0;
         for (int i = 0; i < n; i++) {
             x[i] = in.ni();
-            allAreZeroes &= (x[i] == 0);
+            sum += x[i];
         }
-        if (allAreZeroes) {
-            out.println("NO");
-        } else {
+        if (sum != 0) {
             out.println("YES");
-            List<int[]> lists = new ArrayList<>();
-            int[] k = new int[2];
-            int left = 1, right = 1;
+            out.println(1);
+            out.println(1 + " " + n);
+        } else {
+            int f = -1;
             for (int i = 0; i < n; i++) {
-                if (x[i] == 0) {
-                    right++;
-                } else {
-                    k[0] = left;
-                    k[1] = right;
-                    lists.add(k);
-                    k = new int[2];
-                    left = right + 1;
-                    right = right + 1;
+                if (x[i] != 0) {
+                    f = i + 1;
+                    break;
                 }
             }
-            out.println(lists.size());
-            for (int[] t : lists) {
-                out.println(t[0] + " " + t[1]);
+            if (f != -1) {
+                out.println("YES");
+                out.println(2);
+                out.println(1 + " " + f);
+                out.println((f + 1) + " " + n);
+            } else {
+                out.println("NO");
             }
         }
     }
