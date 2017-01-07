@@ -14,43 +14,59 @@ public class IlyaAndTicTacToeGame implements Closeable {
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        String[] x = new String[4];
+        char[][] x = new char[4][4];
         for (int i = 0; i < 4; i++) {
-            x[i] = in.next();
+            x[i] = in.next().toCharArray();
         }
         for (int i = 0; i < 4; i++) {
-            String next = x[i];
+            for (int j = 0; j < 4; j++) {
+                if (x[i][j] == '.') {
+                    x[i][j] = 'x';
+                    if (valid(x)) {
+                        out.println("YES");
+                        return;
+                    }
+                    x[i][j] = '.';
+                }
+            }
+        }
+        out.println("NO");
+    }
+
+    private boolean valid(char[][] x) {
+        for (int i = 0; i < 4; i++) {
+            String next = new String(x[i]);
             if (ok(next)) {
-                out.println("YES"); return;
+                return true;
             }
         }
         for (int i = 0; i < 4; i++) {
             String next = "";
             for (int j = 0; j < 4; j++) {
-                next += x[j].charAt(i);
+                next += x[j][i];
             }
             if (ok(next)) {
-                out.println("YES"); return;
+                return true;
             }
         }
         String main = "", secondary = "";
         for (int i = 0; i < 4; i++) {
-            main += x[i].charAt(i);
-            secondary += x[i].charAt(3 - i);
+            main += x[i][i];
+            secondary += x[i][3 - i];
         }
         if (ok(main) || ok(secondary)) {
-            out.println("YES"); return;
+            return true;
         }
-        out.println("NO");
+        String p = String.valueOf(new char[]{x[0][1], x[1][2], x[2][3]});
+        String q = String.valueOf(new char[]{x[1][0], x[2][1], x[3][2]});
+        String r = String.valueOf(new char[]{x[0][2], x[1][1], x[2][0]});
+        String t = String.valueOf(new char[]{x[1][3], x[2][2], x[3][1]});
+
+        return "xxx".equals(p) || "xxx".equals(q) || "xxx".equals(r) || "xxx".equals(t);
     }
 
-    private boolean ok (String x) {
-        return x.substring(0, 3).equals(".xx") ||
-                x.substring(0, 3).equals("xx.") ||
-                x.substring(0, 3).equals("x.x") ||
-                x.substring(1, 4).equals(".xx") ||
-                x.substring(1, 4).equals("xx.") ||
-                x.substring(1, 4).equals("x.x");
+    private boolean ok(String x) {
+        return x.substring(0, 3).equals("xxx") || x.substring(1, 4).equals("xxx");
     }
 
     @Override
