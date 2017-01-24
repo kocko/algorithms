@@ -5,48 +5,52 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class MaximumElement implements Closeable {
 
     private InputReader in = new InputReader(System.in);
-    private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
+    private PrintWriter out = new PrintWriter(System.out);
 
     private Stack<Integer> stack = new Stack<>();
-    private int[] heap;
+    private PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.reverseOrder());
 
     public void solve() {
         int n = in.ni();
-        heap = new int[n + 1];
         for (int i = 0; i < n; i++) {
             int command = in.ni();
             switch (command) {
                 case 1:
-                    push();
+                    int x = in.ni();
+                    push(x);
                     break;
                 case 2:
                     pop();
                     break;
                 case 3:
-//                    printMaximum();
+                    printMaximum();
                     break;
             }
         }
     }
-
-    private void push() {
-        int n = in.ni();
+    
+    private void push(int n) {
         stack.push(n);
-
+        queue.offer(n);
     }
-
+    
     private void pop() {
-        int top = stack.peek();
+        queue.remove(stack.pop());
     }
-
+    
+    private void printMaximum() {
+        out.println(queue.peek());
+    } 
+    
     @Override
     public void close() throws IOException {
         in.close();
@@ -86,7 +90,9 @@ public class MaximumElement implements Closeable {
         }
     }
 
-    public static void main(String[] args) {
-        new MaximumElement().solve();
+    public static void main(String[] args) throws IOException {
+        try (MaximumElement instance = new MaximumElement()) {
+            instance.solve();
+        }
     }
 }
