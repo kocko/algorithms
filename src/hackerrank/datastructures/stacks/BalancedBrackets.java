@@ -9,14 +9,14 @@ import java.io.PrintWriter;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-public class Braces implements Closeable {
+public class BalancedBrackets implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
         int n = in.ni();
-        while (n-- > 0) {
+        out: while (n-- > 0) {
             char[] next = in.next().toCharArray();
             Stack<Character> stack = new Stack<>();
             for (char c : next) {
@@ -25,12 +25,12 @@ public class Braces implements Closeable {
                 } else {
                     if (stack.isEmpty()) {
                         out.println("NO");
-                        return;
+                        continue out;
                     } else {
                         Character top = stack.pop();
                         if (!match(top, c)) {
                             out.println("NO");
-                            return;
+                            continue out;
                         }
                     }
                 }
@@ -91,7 +91,7 @@ public class Braces implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Braces instance = new Braces()) {
+        try (BalancedBrackets instance = new BalancedBrackets()) {
             instance.solve();
         }
     }
