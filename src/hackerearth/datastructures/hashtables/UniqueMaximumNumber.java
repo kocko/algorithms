@@ -1,4 +1,4 @@
-package hackerearth.datastructures;
+package hackerearth.datastructures.hashtables;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
