@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class Main implements Closeable {
+public class SplittingNumbers implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -16,19 +16,15 @@ public class Main implements Closeable {
     public void solve() {
         int n;
         while ((n = in.ni()) != 0) {
-            int a = 0, b = 0;
-            boolean odd = true;
+            int[] x = new int[2];
+            int idx = 0;
             while (n > 0) {
                 int lsb = n & -n;
                 n -= lsb;
-                if (odd) {
-                    a |= lsb;
-                } else {
-                    b |= lsb;
-                }
-                odd = !odd;
+                x[idx] |= lsb;
+                idx ^= 1;
             }
-            out.println(a + " " + b);
+            out.println(x[0] + " " + x[1]);
         }
     }
 
@@ -72,7 +68,7 @@ public class Main implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Main instance = new Main()) {
+        try (SplittingNumbers instance = new SplittingNumbers()) {
             instance.solve();
         }
     }
