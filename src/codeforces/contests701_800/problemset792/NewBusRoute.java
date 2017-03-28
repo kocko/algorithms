@@ -1,4 +1,4 @@
-package uva.volume109;
+package codeforces.contests701_800.problemset792;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,30 +6,35 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.PriorityQueue;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.StringTokenizer;
 
-public class AddAll implements Closeable {
+public class NewBusRoute implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int n;
-        while ((n = in.ni()) != 0) {
-            PriorityQueue<Integer> queue = new PriorityQueue<>(); 
-            for (int i = 0; i < n; i++) {
-                int next = in.ni();
-                queue.offer(next);
-            }
-            int result = 0;
-            while (queue.size() > 1) {
-                int next = queue.poll() + queue.poll();
-                result += next;
-                queue.offer(next);
-            }
-            out.println(result);
+        int n = in.ni();
+        List<Integer> x = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            x.add(in.ni());
         }
+        Collections.sort(x);
+        int min = Integer.MAX_VALUE, count = 1;
+        for (int i = 1; i < n; i++) {
+            int diff = x.get(i) - x.get(i - 1);
+            if (diff < min) {
+                min = diff;
+                count = 1;
+            } else if (diff == min) {
+                count++;
+            }
+        }
+        out.println(min + " " + count);
     }
 
     @Override
@@ -72,7 +77,7 @@ public class AddAll implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (AddAll instance = new AddAll()) {
+        try (NewBusRoute instance = new NewBusRoute()) {
             instance.solve();
         }
     }
