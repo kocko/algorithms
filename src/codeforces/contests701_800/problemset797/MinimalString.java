@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class MinimalString implements Closeable {
@@ -14,7 +15,39 @@ public class MinimalString implements Closeable {
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        
+        char[] s = in.next().toCharArray();
+        int n = s.length;
+        int[] cnt = new int[26];
+        for (char c : s) {
+            cnt[c - 'a']++;
+        }
+        char[] result = new char[n];
+        Stack<Character> stack = new Stack<>();
+        int idx = 0;
+        for (char current : s) {
+            char next = 'z' + 1;
+            for (int i = 0; i < 26; i++) {
+                if (cnt[i] > 0) {
+                    next = (char) ('a' + i);
+                    break;
+                }
+            }
+            while (!stack.isEmpty() && stack.peek() <= next) {
+                result[idx++] = stack.pop();
+            }
+            if (current == next) {
+                result[idx++] = current;
+            } else {
+                stack.add(current);
+            }
+            cnt[current - 'a']--;
+        }
+        while (!stack.isEmpty()) {
+            result[idx++] = stack.pop();
+        }
+        for (char c : result) {
+            out.print(c);
+        }
     }
 
     @Override
