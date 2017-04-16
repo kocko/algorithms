@@ -18,24 +18,19 @@ public class VeryImportantPersons implements Closeable {
         while (t-- > 0) {
             int n = in.ni(), m = in.ni();
             int[][] matrix = new int[n][m];
-
             int number = 0;
-
-            for (int i = 0; number < matrix.length * matrix[0].length; i++) {
+            for (int i = 0; number < m * n; i++) {
                 int row = 0;
                 int col = i;
-
                 do {
-                    if (row < matrix.length && col < matrix[row].length) {
+                    if (row < n && col < m) {
                         matrix[row][col] = m * n - number;
                         number++;
                     }
-
                     row++;
                     col--;
                 } while (row >= 0 && col >= 0);
             }
-
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < m; j++) {
                     out.print(matrix[i][j]);
@@ -44,8 +39,6 @@ public class VeryImportantPersons implements Closeable {
                 out.println();
             }
         }
-
-
     }
 
     @Override
