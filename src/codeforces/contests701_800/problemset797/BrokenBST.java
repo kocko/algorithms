@@ -18,44 +18,52 @@ public class BrokenBST implements Closeable {
     
     public void solve() {
         int n = in.ni();
-        value = new int[n + 1];
-        left = new int[n + 1];
-        right = new int[n + 1];
-        boolean[] vis = new boolean[n + 1];
+        Node[] nodes = new Node[n + 1];
         for (int i = 1; i <= n; i++) {
-            value[i] = in.ni(); left[i] = in.ni(); right[i] = in.ni();
-            if (left[i] != -1) {
-                vis[left[i]] = true;
-            }
-            if (right[i] != -1) {
-                vis[right[i]] = true;
-            }
+            int value = in.ni(), left = in.ni(), right = in.ni();
+            nodes[i] = new Node(value, left, right);
         }
+        int root = 0;
         for (int i = 1; i <= n; i++) {
-            if (!vis[i]) {
-                validate(i, -INF, INF);
+            int left = nodes[i].leftIdx, right = nodes[i].rightIdx;
+            if (left > 0) {
+                nodes[i].left = nodes[left];
+                root ^= left;
             }
+            if (right > 0) {
+                nodes[i].right = nodes[right];
+                root ^= right;
+            }
+            root ^= i;
         }
+        validate(nodes[root], -INF, INF);
         int ans = 0;
         for (int i = 1; i <= n; i++) {
-            if (!result.contains(value[i])) {
+            if (!result.contains(nodes[i].value)) {
                 ans++;
             }
         }
         out.println(ans);
     }
-    
-    private int[] value;
-    private int[] left;
-    private int[] right;
+
+    private class Node {
+        private int value, leftIdx, rightIdx;
+        private Node left, right;
+
+        private Node(int value, int leftIdx, int rightIdx) {
+            this.value = value;
+            this.leftIdx = leftIdx;
+            this.rightIdx = rightIdx;
+        }
+    }
     
     private final int INF = (int) (1e9);
     private Set<Integer> result = new HashSet<>();
     
-    private void validate(int node, int min, int max) {
-        if (value[node] > min && value[node] < max) result.add(value[node]);
-        if (left[node] != -1)  validate(left[node], min, Math.min(max, value[node]));
-        if (right[node] != -1) validate(right[node], Math.max(min, value[node]), max);
+    private void validate(Node node, int min, int max) {
+        if (node.value > min && node.value < max) result.add(node.value);
+        if (node.left != null)  validate(node.left, min, Math.min(max, node.value));
+        if (node.right != null) validate(node.right, Math.max(min, node.value), max);
     }
 
     @Override
