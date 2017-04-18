@@ -14,37 +14,16 @@ public class ViciousKeyboard implements Closeable {
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        char[] s = in.next().toCharArray();
-        int sum = 0;
-        int flag = 0, n = s.length;
-        for (int i = 0; i < n - 1; i++) {
-            if (s[i] == 'V' && s[i + 1] == 'K') {
-                s[i] = '@';
-                s[i + 1] = '@';
-                sum++; i++;
-            }
+        char[] x = in.next().toCharArray();
+        int result = count(x), n = x.length;
+        for (int i = 0; i < n; i++) {
+            x[i] = x[i] == 'V' ? 'K' : 'V';
+            result = Math.max(result, count(x));
+            x[i] = x[i] == 'V' ? 'K' : 'V';
         }
-        if (flag == 0) {
-            for (int i = 0; i < n - 1; i++) {
-                if (s[i] == 'V' && s[i + 1] != '@') {
-                    sum++;
-                    flag = 1;
-                    break;
-                }
-            }
-        }
-        if (flag == 0) {
-            for (int i = 1; i <= n - 1; i++) {
-                if (s[i] == 'K' && s[i - 1] != '@') {
-                    sum++;
-                    flag = 1;
-                    break;
-                }
-            }
-        }
-        out.println(sum);
+        out.println(result);
     }
-    
+
     private int count(char[] x) {
         int result = 0, n = x.length;
         for (int i = 1; i < n; i++) {
