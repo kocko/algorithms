@@ -7,50 +7,39 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 public class TreeConstruction implements Closeable {
 
     private InputReader in = new InputReader(System.in);
-    private PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out), true);
-
-    static class Node {
-        int value;
-        Node left;
-        Node right;
-        
-        public Node(int value) {
-            this.value = value;
-        }
-    }
-    
+    private PrintWriter out = new PrintWriter(System.out);
+   
     public void solve() {
         int n = in.ni();
-        Node root = new Node(in.ni());
-        while (n-- > 1) {
+        TreeSet<Integer> tree = new TreeSet<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        tree.add(in.ni());
+        map.put(tree.first(), 0);
+        for (int i = 1; i < n; i++) {
             int next = in.ni();
-            Node current = root;
-            while (true) {
-                if (current.value > next) {
-                    if (current.left == null) {
-                        out.print(current.value + " ");
-                        current.left = new Node(next);
-                        break;
-                    } else {
-                        current = current.left;
-                    }
-                } else {
-                    if (current.right == null) {
-                        out.print(current.value + " ");
-                        current.right = new Node(next);
-                        break;
-                    } else {
-                        current = current.right;
-                    }
-                }
+            Integer lo = tree.lower(next);
+            Integer hi = tree.higher(next);
+            if (hi == null) {
+                out.print(lo);
+            } else if (lo == null) {
+                out.print(hi);
+            } else {
+                out.print(map.get(hi) < map.get(lo) ? lo : hi);
             }
+            out.print(' ');
+            tree.add(next);
+            map.put(next, i);
         }
-        out.println();
     }
 
     @Override
@@ -92,7 +81,9 @@ public class TreeConstruction implements Closeable {
         }
     }
 
-    public static void main(String[] args) {
-        new TreeConstruction().solve();
+    public static void main(String[] args) throws IOException {
+        try (TreeConstruction instance = new TreeConstruction()) {
+            instance.solve();
+        }
     }
 }
