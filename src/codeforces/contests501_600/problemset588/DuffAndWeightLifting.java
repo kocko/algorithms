@@ -15,16 +15,19 @@ public class DuffAndWeightLifting implements Closeable {
 
     public void solve() {
         final int n = in.ni();
-        int[] bit = new int[2000000];
+        int[] bit = new int[1000500];
         for (int i = 0; i < n; i++) {
             int next = in.ni();
             bit[next]++;
+            for (int j = next; ; j++) {
+                if (bit[j] == 2) {
+                    bit[j] = 0;
+                    bit[j + 1]++;
+                } else break;
+            }
         }
         int cnt = 0;
-        for (int i = 1; i < bit.length; i++) {
-            bit[i] += bit[i - 1] / 2;
-            cnt += bit[i - 1] % 2;
-        }
+        for (int b : bit) if (b == 1) cnt++;
         out.println(cnt);
     }
 
