@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -47,20 +46,11 @@ public class DQuery implements Closeable {
 
     private class Query implements Comparable<Query> {
         private int idx, left, right;
-        private int answer;
 
         private Query(int idx, int left, int right) {
             this.idx = idx;
             this.left = left;
             this.right = right;
-        }
-
-        int getIdx() {
-            return idx;
-        }
-
-        int getAnswer() {
-            return answer;
         }
 
         @Override
@@ -85,6 +75,7 @@ public class DQuery implements Closeable {
         Collections.sort(queries);
         FenwickTree tree = new FenwickTree(n);
         int idx = 0;
+        int[] result = new int[q];
         for (int i = 1; i <= n; i++) {
             if (idx == queries.size()) break;
             
@@ -96,12 +87,13 @@ public class DQuery implements Closeable {
             tree.update(i, 1);
             while (idx < queries.size() && queries.get(idx).right == i) {
                 Query query = queries.get(idx);
-                query.answer = tree.query(query.left, query.right);
+                result[query.idx] = tree.query(query.left, query.right);
                 idx++;
             }
         }
-        queries.sort(Comparator.comparingInt(Query::getIdx));
-        queries.stream().map(Query::getAnswer).forEach(out::println);
+        for (int i = 0; i < q; i++) {
+            out.println(result[i]);
+        }
     }
 
     @Override
