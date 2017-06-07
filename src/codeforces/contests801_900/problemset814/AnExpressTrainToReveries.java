@@ -25,34 +25,58 @@ public class AnExpressTrainToReveries implements Closeable {
         }
         boolean[] used = new boolean[n + 1];
         int[] result = new int[n];
+        int[] indices = new int[2];
+        int idx = 0;
         for (int i = 0; i < n; i++) {
             if (a[i] == b[i]) {
                 result[i] = a[i];
                 used[a[i]] = true;
+            } else {
+                indices[idx++] = i;
             }
         }
-        for (int i = 0; i < n; i++) {
-            if (result[i] == 0) {
-                if (!used[a[i]]) {
-                    result[i] = a[i];
-                } else if (!used[b[i]]) {
-                    result[i] = b[i];
-                } else {
-                    for (int j = 1; j <= n; j++) {
-                        if (!used[j]) {
-                            result[i] = j;
-                            used[j] = true;
-                            break;
-                        }
-                    }
+        if (idx == 1) {
+            int value = 0;
+            for (int i = 1; i <= n; i++) {
+                if (!used[i]) {
+                    value = i;
+                    break;
                 }
-                used[result[i]] = true;
+            }
+            for (int i = 0; i < n; i++) {
+                if (result[i] == 0) {
+                    result[i] = value;
+                    break;
+                }
+            }
+        } else {
+            int[] values = new int[2];
+            idx = 0;
+            for (int i = 1; i <= n; i++) {
+                if (!used[i]) {
+                    values[idx++] = i;
+                }
+            }
+            result[indices[0]] = values[0];
+            result[indices[1]] = values[1];
+            if (!diff(result, a) || !diff(result, b)) {
+                int t = result[indices[0]];
+                result[indices[0]] = result[indices[1]];
+                result[indices[1]] = t;
             }
         }
         for (int i = 0; i < n; i++) {
             out.print(result[i]);
             out.print(' ');
         }
+    }
+
+    private boolean diff(int[] result, int[] x) {
+        int count = 0;
+        for (int i = 0; i < x.length; i++) {
+            if (result[i] != x[i]) count++;
+        }
+        return count == 1;
     }
 
     @Override
