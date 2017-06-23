@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 
 import static java.lang.Math.abs;
 
-public class Main implements Closeable {
+public class Divisibility implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -83,7 +83,7 @@ public class Main implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Main instance = new Main()) {
+        try (Divisibility instance = new Divisibility()) {
             instance.solve();
         }
     }
