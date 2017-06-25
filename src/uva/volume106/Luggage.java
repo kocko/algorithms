@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Main implements Closeable {
+public class Luggage implements Closeable {
 
     private Scanner in = new Scanner(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -58,7 +58,7 @@ public class Main implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Main instance = new Main()) {
+        try (Luggage instance = new Luggage()) {
             instance.solve();
         }
     }
