@@ -17,11 +17,14 @@ public class MisterBAndAngleInPolygon implements Closeable {
 
     public void solve() {
         double n = in.ni(), a = in.ni();
+        double angle = (180 * (n - 2)) / n;
+        double segments = n - 2;
+        double x = angle / segments;
         int result = 3;
         double best = abs(180 / n - a);
         for (int i = 4; i <= n; i++) {
-            double temp = abs(180 / n * (i - 2) - a);
-            if (best == -1 || temp < best) {
+            double temp = abs((i - 2) * x - a);
+            if (temp < best) {
                 best = temp;
                 result = i;
             }
