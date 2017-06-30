@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
 
 import static java.lang.Math.min;
 
-public class Main implements Closeable {
+public class CuttingSticks implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -88,7 +88,7 @@ public class Main implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Main instance = new Main()) {
+        try (CuttingSticks instance = new CuttingSticks()) {
             instance.solve();
         }
     }
