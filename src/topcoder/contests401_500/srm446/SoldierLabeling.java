@@ -11,11 +11,4 @@ public class SoldierLabeling {
         return hi - lo;
     }
 
-    public static void main(String[] args) {
-        System.out.println(new SoldierLabeling().count(100, 2, 2));
-        System.out.println(new SoldierLabeling().count(31, 2, 3));
-        System.out.println(new SoldierLabeling().count(1, 2, 8));
-        System.out.println(new SoldierLabeling().count(10000000, 8, 8));
-        System.out.println(new SoldierLabeling().count(2718317, 3, 7));
-    }
 }
