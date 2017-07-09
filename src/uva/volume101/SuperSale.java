@@ -1,0 +1,100 @@
+package uva.volume101;
+
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class SuperSale implements Closeable {
+
+    private InputReader in = new InputReader(System.in);
+    private PrintWriter out = new PrintWriter(System.out);
+
+    public void solve() {
+        int t = in.ni();
+        while (t-- > 0) {
+            int n = in.ni();
+            price = new int[n];
+            weight = new int[n];
+            for (int i = 0; i < n; i++) {
+                price[i] = in.ni();
+                weight[i] = in.ni();
+            }
+            int g = in.ni();
+            dp = new int[n][35];
+            int total = 0;
+            for (int i = 0; i < g; i++) {
+                for (int j = 0; j < n; j++) {
+                    Arrays.fill(dp[j], -1);
+                }    
+                total += recurse(n - 1, in.ni());
+            }
+            out.println(total);
+        }
+    }
+
+    private int[] price, weight;
+    private int[][] dp;
+    
+    private int recurse(int idx, int w) {
+        if (idx < 0 || w == 0) return 0;
+        if (dp[idx][w] != -1) return dp[idx][w];
+        
+        int ans;
+        if (weight[idx] > w) {
+            ans = recurse(idx - 1, w);
+        } else {
+            ans = Math.max(recurse(idx - 1, w), price[idx] + recurse(idx - 1, w - weight[idx]));
+        }
+        return dp[idx][w] = ans;
+    }
+
+    @Override
+    public void close() throws IOException {
+        in.close();
+        out.close();
+    }
+
+    static class InputReader {
+        public BufferedReader reader;
+        public StringTokenizer tokenizer;
+
+        public InputReader(InputStream stream) {
+            reader = new BufferedReader(new InputStreamReader(stream), 32768);
+            tokenizer = null;
+        }
+
+        public String next() {
+            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+                try {
+                    tokenizer = new StringTokenizer(reader.readLine());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return tokenizer.nextToken();
+        }
+
+        public int ni() {
+            return Integer.parseInt(next());
+        }
+
+        public long nl() {
+            return Long.parseLong(next());
+        }
+
+        public void close() throws IOException {
+            reader.close();
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        try (SuperSale instance = new SuperSale()) {
+            instance.solve();
+        }
+    }
+}
