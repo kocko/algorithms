@@ -8,45 +8,48 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-import static java.util.Arrays.fill;
-
 public class MaximumGcdAndSum implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int n = in.ni();
-        int[] a = new int[n], b = new int[n];
-        for (int i = 0; i < n; i++) a[i] = in.ni();
-        for (int i = 0; i < n; i++) b[i] = in.ni();
-        int max = 0, gcd = 0;
-        int[] sieve = new int[20];
-        fill(sieve, 1);
-        for (int i = 0; i < n; i++) {
-            if (a[i] != 1) {
-                for (int j = a[i]; j < sieve.length; j += a[i]) {
-                    sieve[j] = Math.max(a[i], sieve[i]);
+        int t = in.ni();
+        int n = 1000000;
+        int[] a = new int[n + 1], b = new int[n + 1];
+        for (int i = 1; i <= t; i++) a[i] = in.ni();
+        for (int i = 1; i <= t; i++) b[i] = in.ni();
+        int[] cnt_a = new int[n + 1];
+        int[] mul_a = new int[n + 1];
+        int[] cnt_b = new int[n + 1];
+        int[] mul_b = new int[n + 1];
+        for (int i = 1; i <= n; ++i) {
+            cnt_a[a[i]]++;
+        }
+        for (int i = 1; i <= n; ++i) {
+            for (int j = i; j <= n; j += i) {
+                if (cnt_a[j] > 0) {
+                    mul_a[i] = j;
                 }
             }
         }
-        int y = -1;
-        for (int i = 0; i < n; i++) {
-            if (sieve[b[i]] > gcd) {
-                gcd = sieve[b[i]];
-                y = b[i];
+        for (int i = 1; i <= n; ++i) {
+            cnt_b[b[i]]++;
+        }
+        for (int i = 1; i <= n; ++i) {
+            for (int j = i; j <= n; j += i) {
+                if (cnt_b[j] > 0) {
+                    mul_b[i] = j;
+                }
             }
         }
-        for (int i = 0; i < n; i++) {
-            if (gcd(a[i], y) == gcd) {
-                max = Math.max(a[i] + y, max);
+        int max = 0;
+        for (int i = 1; i <= n; ++i) {
+            if (mul_a[i] > 0 && mul_b[i] > 0) {
+                max = i;
             }
         }
-        out.println(max);
-    }
-
-    private int gcd(int a, int b) {
-        return b == 0 ? a : gcd(b, a % b);
+        out.println(mul_a[max] + mul_b[max]);
     }
 
     @Override

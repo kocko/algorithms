@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Main implements Closeable {
+public class Vacation implements Closeable {
 
     private Scanner in = new Scanner(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -51,7 +51,7 @@ public class Main implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Main instance = new Main()) {
+        try (Vacation instance = new Vacation()) {
             instance.solve();
         }
     }
