@@ -19,23 +19,7 @@ public class TheNumberOnTheBoard implements Closeable {
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int k = in.ni();
-        String x = in.next();
-        List<Integer> list = new ArrayList<>();
-        int sum = 0;
-        for (char c : x.toCharArray()) {
-            int value = c - '0';
-            sum += value;
-            list.add(value);
-        }
-        Collections.sort(list);
-        int idx = 0, result = 0;
-        while (sum < k) {
-            sum += abs(list.get(idx) - 9);
-            result++;
-            idx++;
-        }
-        out.println(result);
+        //
     }
 
     @Override

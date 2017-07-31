@@ -8,15 +8,16 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class StarSky implements Closeable {
+public class D implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
-    
+
     public void solve() {
-        //
+        char[] x = in.next().toCharArray();
+        
     }
-    
+
     @Override
     public void close() throws IOException {
         in.close();
@@ -57,7 +58,7 @@ public class StarSky implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (StarSky instance = new StarSky()) {
+        try (D instance = new D()) {
             instance.solve();
         }
     }
