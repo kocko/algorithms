@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main implements Closeable {
+public class LCA implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -132,7 +132,7 @@ public class Main implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Main instance = new Main()) {
+        try (LCA instance = new LCA()) {
             instance.solve();
         }
     }
