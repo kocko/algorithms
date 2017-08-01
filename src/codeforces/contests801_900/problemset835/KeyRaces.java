@@ -14,7 +14,16 @@ public class KeyRaces implements Closeable {
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        //
+        int s = in.ni(), v1 = in.ni(), v2 = in.ni(), t1 = in.ni(), t2 = in.ni();
+        int a = t1 + s * v1 + t1;
+        int b = t2 + s * v2 + t2;
+        if (a == b) {
+            out.println("Friendship");
+        } else if (a > b) {
+            out.println("Second");
+        } else {
+            out.println("First");
+        }
     }
 
     @Override
