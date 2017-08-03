@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class Main implements Closeable {
+public class EraseValue implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -72,7 +72,7 @@ public class Main implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Main instance = new Main()) {
+        try (EraseValue instance = new EraseValue()) {
             instance.solve();
         }
     }
