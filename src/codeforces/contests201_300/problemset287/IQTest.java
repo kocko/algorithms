@@ -21,15 +21,9 @@ public class IQTest implements Closeable {
         boolean ok = false;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (grid[i][j] == '.') {
-                    grid[i][j] = '#';
-                    ok |= check(grid);
-                    grid[i][j] = '.';
-                } else {
-                    grid[i][j] = '.';
-                    ok |= check(grid);
-                    grid[i][j] = '#';
-                }
+                grid[i][j] ^= 13;
+                ok |= check(grid);
+                grid[i][j] ^= 13;
             }
         }
         out.println(ok ? "YES" : "NO");
