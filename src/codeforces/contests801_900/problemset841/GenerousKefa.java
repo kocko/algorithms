@@ -17,14 +17,13 @@ public class GenerousKefa implements Closeable {
         int n = in.ni(), k = in.ni();
         char[] x = in.next().toCharArray();
         int[] cnt = new int[26];
+        int max = 0;
         for (int i = 0; i < n; i++) {
-            cnt[x[i] - 'a']++;
+            int value = x[i] - 'a';
+            cnt[value]++;
+            max = Math.max(cnt[value], max);
         }
-        boolean can = true;
-        for (int i = 0; i < 26; i++) {
-            can &= (cnt[i] % k == 0);
-        }
-        out.println(can ? "YES" : "NO");
+        out.println(max > k ? "NO" : "YES");
     }
 
     @Override
