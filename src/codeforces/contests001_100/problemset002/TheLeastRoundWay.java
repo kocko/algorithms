@@ -1,110 +1,169 @@
 package codeforces.contests001_100.problemset002;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
 
-import static java.lang.Math.min;
+public class TheLeastRoundWay implements Closeable {
 
-public class TheLeastRoundWay {
+    private InputReader in = new InputReader(System.in);
+    private PrintWriter out = new PrintWriter(System.out);
 
-	static int n;
-	static int[][] input;
-
-    static int[][][] dp;
-    static String[][] path;
-
-    static boolean zero;
-    static int zeroX, zeroY;
-
-	public static void main(String[] args) {
-		readInput();
-		init();
-		findLeastRoundWay();
-	}
-
-	static void readInput() {
-		Scanner sc = new Scanner(System.in);
-		n = sc.nextInt();
-		input = new int[n][n];
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				input[i][j] = sc.nextInt();
-                if (input[i][j] == 0) {
-                    zero = true;
-                    zeroX = j; zeroY = i;
-                    input[i][j] = 10;
-                }
-			}
-		}
-		sc.close();
-	}
-
-    static void init() {
+    public void solve() {
+        n = in.ni();
+        x = new int[n][n];
         dp = new int[n][n][2];
-        path = new String[n][n];
-    }
-
-    static void findLeastRoundWay() {
-        dp[0][0][0] = divCount(input[0][0], 2);
-        dp[0][0][1] = divCount(input[0][0], 5);
-        path[0][0] = "";
-        for (int i = 1; i < n; i++) {
-            dp[i][0][0] = dp[i - 1][0][0] + divCount(input[i][0], 2);
-            dp[i][0][1] = dp[i - 1][0][1] + divCount(input[i][0], 5);
-            path[i][0] = path[i - 1][0] + "D";
-        }
-        for (int i = 1; i < n; i++) {
-            dp[0][i][0] = dp[0][i - 1][0] + divCount(input[0][i], 2);
-            dp[0][i][1] = dp[0][i - 1][1] + divCount(input[0][i], 5);
-            path[0][i] = path[0][i - 1] + "R";
-        }
-        for (int i = 1; i < n; i++) {
-            for (int j = 1; j < n; j++) {
-                int twos = divCount(input[i][j], 2);
-                int fives = divCount(input[i][j], 5);
-                int x = min(dp[i - 1][j][0] + twos, dp[i - 1][j][1] + fives);
-                int y = min(dp[i][j - 1][0] + twos, dp[i][j - 1][1] + fives);
-                if (x <= y) {
-                    dp[i][j][0] = dp[i - 1][j][0] + twos;
-                    dp[i][j][1] = dp[i - 1][j][1] + fives;
-                    path[i][j] = path[i - 1][j] + "D";
-                } else {
-                    dp[i][j][0] = dp[i][j - 1][0] + twos;
-                    dp[i][j][1] = dp[i][j - 1][1] + fives;
-                    path[i][j] = path[i][j - 1] + "R";
+        best = new char[n][n][2];
+        boolean hasZero = false;
+        int row = -1, col = -1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                x[i][j] = in.ni();
+                if (x[i][j] == 0) {
+                    hasZero = true;
+                    row = i;
+                    col = j;
+                    x[i][j] = 10;
+                }
+                for (int k = 0; k < 2; k++) {
+                    dp[i][j][k] = -1;
                 }
             }
         }
-        int result = min(dp[n - 1][n - 1][0], dp[n - 1][n - 1][1]);
-        if (zero && result > 1) {
-            System.out.println(1);
-            findZeroWay();
-        } else {
-            System.out.println(result);
-            System.out.println(path[n - 1][n - 1]);
+        int ans = 10001;
+        String path = "";
+        if (hasZero) {
+            ans = 1;
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < row; i++) {
+                builder.append('D');
+            }
+            for (int i = 1; i < n; i++) {
+                builder.append('R');
+            }
+            for (int i = row + 1; i < n; i++) {
+                builder.append('D');
+            }
+            path = builder.toString();
         }
+        int twos = recurse(n - 1, n - 1, 0);
+        int fives = recurse(n - 1, n - 1, 1);
+        if (Math.min(twos, fives) < ans) {
+            if (twos < fives) {
+                ans = twos;
+                path = fetchPath(0);
+            } else {
+                ans = fives;
+                path = fetchPath(1);
+            }
+        }
+        out.println(ans);
+        out.println(path);
     }
-
-    static int divCount(int n, int k) {
+    
+    private int n;
+    private int[][] x;
+    private int[][][] dp;
+    private char[][][] best;
+    
+    private int recurse(int i, int j, int idx) {
+        if (i < 0 || j < 0) return -1;
+        
+        if (dp[i][j][idx] != -1) return dp[i][j][idx];
+        
+        int ans = get(x[i][j], idx == 0 ? 2 : 5);
+        int up = recurse(i - 1, j, idx), left = recurse(i, j - 1, idx);
+        if (up != -1 && left != -1) {
+            if (up > left) {
+                ans += left;
+                best[i][j][idx] = 'L';
+            } else {
+                ans += up;
+                best[i][j][idx] = 'U';
+            }
+        } else if (up != -1) {
+            ans += up;
+            best[i][j][idx] = 'U';
+        } else if (left != -1) {
+            ans += left;
+            best[i][j][idx] = 'L';
+        }
+        return dp[i][j][idx] = ans;
+    }
+    
+    private int get(int n, int k) {
         int result = 0;
-        while (true) {
-            if (n % k == 0) {
-                n /= k;
-                result++;
-            } else break;
+        while (n % k == 0) {
+            n /= k;
+            result++;
         }
         return result;
     }
+    
+    private String fetchPath(int idx) {
+        StringBuilder builder = new StringBuilder();
+        int i = n - 1, j = n - 1;
+        while (i > 0 || j > 0) {
+            char value = best[i][j][idx];
+            if (value == 'L') {
+                value = 'R';
+                j--;
+            }
+            if (value == 'U') {
+                value = 'D';
+                i--;
+            } 
+            builder.append(value);
+        }
+        return builder.reverse().toString();
+    }
+    
+    @Override
+    public void close() throws IOException {
+        in.close();
+        out.close();
+    }
 
-    static void findZeroWay() {
-        for (int i = 0; i < zeroX; i++) {
-            System.out.print("R");
+    static class InputReader {
+        public BufferedReader reader;
+        public StringTokenizer tokenizer;
+
+        public InputReader(InputStream stream) {
+            reader = new BufferedReader(new InputStreamReader(stream), 32768);
+            tokenizer = null;
         }
-        for (int j = 1; j < n; j++) {
-            System.out.print("D");
+
+        public String next() {
+            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+                try {
+                    tokenizer = new StringTokenizer(reader.readLine());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return tokenizer.nextToken();
         }
-        for (int i = zeroX + 1; i < n; i++) {
-            System.out.print("R");
+
+        public int ni() {
+            return Integer.parseInt(next());
+        }
+
+        public long nl() {
+            return Long.parseLong(next());
+        }
+
+        public void close() throws IOException {
+            reader.close();
         }
     }
 
+    public static void main(String[] args) throws IOException {
+        try (TheLeastRoundWay instance = new TheLeastRoundWay()) {
+            instance.solve();
+        }
+    }
 }
