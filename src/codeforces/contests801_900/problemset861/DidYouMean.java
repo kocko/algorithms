@@ -17,39 +17,33 @@ public class DidYouMean implements Closeable {
 
     public void solve() {
         char[] x = in.next().toCharArray();
-        int n = x.length;
         List<String> result = new ArrayList<>();
-        StringBuilder current = new StringBuilder();
-        int cnt = 0;
-        char key = 0x00;
-        for (int i = 0; i < n; i++) {
-            if (isVowel(x[i])) {
-                current.append(x[i]);
-                cnt = 0;
-                key = 0x00;
+        StringBuilder current = new StringBuilder(), consonants = new StringBuilder();
+        for (char ch : x) {
+            if (isVowel(ch)) {
+                current.append(consonants);
+                consonants = new StringBuilder();
+                current.append(ch);
             } else {
-                if (key == 0x00) {
-                    key = x[i];
-                    current.append(x[i]);
-                    cnt++;
-                } else {
-                    if (cnt < 2) {
-                        current.append(x[i]);
-                        cnt++;
-                    } else {
-                        if (x[i] == key) {
-                            current.append(x[i]);
-                        } else {
-                            result.add(current.toString());
-                            current = new StringBuilder();
-                            current.append(x[i]);
-                            cnt++;
-                            key = x[i];
-                        }
+                if (consonants.length() >= 2) {
+                    boolean allAreSame = true;
+                    for (int i = 0; i < consonants.length(); i++) {
+                        allAreSame &= consonants.charAt(i) == ch;
                     }
+                    if (allAreSame) {
+                        consonants.append(ch);
+                    } else {
+                        current.append(consonants);
+                        result.add(current.toString());
+                        current = new StringBuilder();
+                        consonants = new StringBuilder().append(ch);
+                    }
+                } else {
+                    consonants.append(ch);
                 }
             }
         }
+        if (consonants.length() > 0) current.append(consonants);
         if (current.length() > 0) result.add(current.toString());
         for (String word : result) {
             out.print(word);
