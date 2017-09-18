@@ -13,27 +13,17 @@ public class LazySecurityGuard implements Closeable {
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
-    private double round1(double d) {
-        return Math.floor(d + 0.5);
-    }
-    
-    public void solve(int k, int ans) {
-//        long n = in.nl();
-//        out.println(result);
-        int n = (int) Math.sqrt(k);
-        int result = 2 * n;
-        k = k - n * n;
-        result += 2 * n;
-        if (k == 0) {
-            result = result;
-        } else if (k <= n) {
-            result += 2;
-        } else {
-            result += 4;
+    public void solve() {
+        long n = in.nl();
+        long sqrt = (int) Math.sqrt(n);
+        long result = sqrt << 2;
+        long rem = n - (sqrt * sqrt);
+        if (rem > 0) {
+            result++;
+            if (rem > sqrt) result += 3;
+            else result++;
         }
-        if (result != ans) {
-            throw new RuntimeException("Wrong solution for input [n = " + k + "]; [expected = " + ans + " actual = " + result + "]");
-        }
+        out.println(result);
     }
 
     @Override
@@ -77,13 +67,7 @@ public class LazySecurityGuard implements Closeable {
 
     public static void main(String[] args) throws IOException {
         try (LazySecurityGuard instance = new LazySecurityGuard()) {
-            instance.solve(1000000, 4000);
-            instance.solve(1, 4);
-            instance.solve(777122, 3528);
-            instance.solve(5, 10);
-            instance.solve(7, 12);
-            instance.solve(25, 20);
-            instance.solve(999, 128);
+            instance.solve();
         }
     }
 }
