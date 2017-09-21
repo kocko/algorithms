@@ -57,7 +57,7 @@ public class ArpasWeakAmphitheaterAndMehrdadsValuableHoses implements Closeable 
         for (int i = 0; i < n; i++) {
             beauty[i] = in.ni();
         }
-        dsu = new DisjointSet(n);
+        DisjointSet dsu = new DisjointSet(n);
         for (int i = 0; i < pairs; i++) {
             dsu.join(in.ni() - 1, in.ni() - 1);
         }
@@ -80,7 +80,6 @@ public class ArpasWeakAmphitheaterAndMehrdadsValuableHoses implements Closeable 
         out.println(recurse(0, max));
     }
 
-    private DisjointSet dsu;
     private List<List<Integer>> data;
     private int k;
     private int[] weights, beauty;
