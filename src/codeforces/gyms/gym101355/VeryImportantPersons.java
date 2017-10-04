@@ -1,4 +1,4 @@
-package codeforces.gyms.gymrccq2;
+package codeforces.gyms.gym101355;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
