@@ -23,23 +23,19 @@ public class QualificationRounds implements Closeable {
             }
             has[Integer.valueOf(sb.toString(), 2)] = true;
         }
+        if (has[0]) {
+            out.println("YES");
+            return;
+        }
         for (int i = 0; i < has.length; i++) {
-            if (has[i]) {
-                for (int j = 0; j < has.length; j++) {
-                    if (has[j] && ((i & j) == 0)) {
+            for (int j = 0; j < has.length; j++) {
+                if (has[i] && has[j]) {
+                    if ((i ^ j) == (i | j)) {
                         out.println("YES");
                         return;
                     }
                 }
             }
-//            for (int j = 0; j < has.length; j++) {
-//                if (has[i] && has[j] && i != j) {
-//                    if ((i ^ j) == (i | j)) {
-//                        out.println("YES");
-//                        return;
-//                    }
-//                }
-//            }
         }
         out.println("NO");
     }
