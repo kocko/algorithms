@@ -18,17 +18,13 @@ public class TheEternalImmortality implements Closeable {
         if (a == b) {
             out.println(1);
         } else {
-            a++;
-            a %= 10; b %= 10;
-            if (b < a) {
-                out.println(0);
-            } else {
-                long result = 1L;
-                for (long i = a; i <= b; i++) {
-                    result *= i;
-                }
-                out.println(result % 10);
+            long result = 1L;
+            for (long i = a + 1; i <= b; i++) {
+                result *= (i % 10);
+                result %= 10;
+                if (result == 0L) break;
             }
+            out.println(result);
         }
     }
 
