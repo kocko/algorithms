@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main implements Closeable {
+public class TheForrestForTheTrees implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -114,7 +114,7 @@ public class Main implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Main instance = new Main()) {
+        try (TheForrestForTheTrees instance = new TheForrestForTheTrees()) {
             instance.solve();
         }
     }
