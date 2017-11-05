@@ -1,4 +1,4 @@
-package codeforces.contests101_200.problemset189;
+package codeforces.contests001_100.problemset094;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,17 +8,30 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class CountingRhombi implements Closeable {
+public class Friends implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int w = in.ni(), h = in.ni();
-        long n = 0, m = 0;
-        for (int i = 2; i <= w; i += 2) n += w - i + 1;
-        for (int i = 2; i <= h; i += 2) m += h - i + 1;
-        out.println(m * n);
+        boolean[][] know = new boolean[6][6];
+        int m = in.ni();
+        while (m-- > 0) {
+            int u = in.ni(), v = in.ni();
+            know[u][v] = know[v][u] = true;
+        }
+        boolean all = false, none = false;
+        for (int i = 1; i <= 5; i++) {
+            for (int j = 1; j <= 5; j++) {
+                for (int k = 1; k <= 5; k++) {
+                    if (i != j && i != k && k != j) {
+                        all |= (know[i][j] && know[i][k] && know[j][k]);
+                        none |= (!know[i][j] && !know[i][k] && !know[j][k]);
+                    }
+                }
+            }
+        }
+        out.println(all || none ? "WIN" : "FAIL");
     }
 
     @Override
@@ -61,7 +74,7 @@ public class CountingRhombi implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (CountingRhombi instance = new CountingRhombi()) {
+        try (Friends instance = new Friends()) {
             instance.solve();
         }
     }
