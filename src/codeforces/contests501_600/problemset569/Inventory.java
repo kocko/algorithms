@@ -1,4 +1,4 @@
-package codeforces.contests301_400.problemset315;
+package codeforces.contests501_600.problemset569;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,19 +8,37 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class Music implements Closeable {
+public class Inventory implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int t = in.ni(), s = in.ni(), q = in.ni();
-        int result = 0;
-        while (s < t) {
-            result++;
-            s += s * (q - 1);
+        int n = in.ni();
+        int[] x = new int[n];
+        int[] count = new int[100001];
+        for (int i = 0; i < n; i++) {
+            x[i] = in.ni();
+            count[x[i]]++;
         }
-        out.println(result);
+        int next = 1;
+        for (int i = 0; i < n; i++) {
+            int k = x[i];
+            if (count[k] >= 2 || k > n) {
+                count[k]--;
+                while (next <= n && count[next] != 0) {
+                    next++;
+                }
+                count[next]++;
+                x[i] = next;
+            }
+        }
+        for (int i : x) {
+            out.print(i + " ");
+        }
+        
+        
+        out.println();
     }
 
     @Override
@@ -63,7 +81,7 @@ public class Music implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Music instance = new Music()) {
+        try (Inventory instance = new Inventory()) {
             instance.solve();
         }
     }

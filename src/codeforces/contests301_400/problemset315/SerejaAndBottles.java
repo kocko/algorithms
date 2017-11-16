@@ -6,40 +6,33 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Inventory implements Closeable {
+public class SerejaAndBottles implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
         int n = in.ni();
-        int[] x = new int[n];
-        int[] count = new int[100001];
+        int[] a = new int[n], b = new int[n];
         for (int i = 0; i < n; i++) {
-            x[i] = in.ni();
-            count[x[i]]++;
+            a[i] = in.ni();
+            b[i] = in.ni();
         }
-        int next = 1;
+        boolean[] opened = new boolean[n];
         for (int i = 0; i < n; i++) {
-            int k = x[i];
-            if (count[k] >= 2 || k > n) {
-                count[k]--;
-                while (next <= n && count[next] != 0) {
-                    next++;
+            for (int j = 0; j < n; j++) {
+                if (i != j && b[i] == a[j]) {
+                    opened[j] = true;
                 }
-                count[next]++;
-                x[i] = next;
             }
         }
-        for (int i : x) {
-            out.print(i + " ");
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            if (!opened[i]) result++;
         }
-        
-        
-        out.println();
+        out.println(result);
     }
 
     @Override
@@ -82,7 +75,7 @@ public class Inventory implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Inventory instance = new Inventory()) {
+        try (SerejaAndBottles instance = new SerejaAndBottles()) {
             instance.solve();
         }
     }
