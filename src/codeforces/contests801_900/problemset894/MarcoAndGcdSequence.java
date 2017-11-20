@@ -14,31 +14,27 @@ public class MarcoAndGcdSequence implements Closeable {
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int n = in.ni();
-        boolean[] have = new boolean[1000001];
+        int n = in.ni(), gcd = 0;
         int[] x = new int[n];
         for (int i = 0; i < n; i++) {
             x[i] = in.ni();
-            have[x[i]] = true;
-            if (i == 0) {
-                for (int j = 2 * x[i]; j < have.length; j += x[i]) {
-                    have[j] = true;
-                }
+            gcd = gcd(gcd, x[i]);
+        }
+        if (x[0] != gcd) {
+            out.println(-1);
+            return;
+        }
+        int[] result = new int[2 * n - 1];
+        int idx = 0;
+        for (int i = 0; i < result.length; i += 2) {
+            result[i] = x[idx++];
+            if (i < result.length - 1) {
+                result[i + 1] = x[0];
             }
         }
-        for (int i = 0; i < n; i++) {
-            int gcd = x[i];
-            for (int j = i + 1; j < n; j++) {
-                gcd = gcd(gcd, x[j]);
-                if (!have[gcd]) {
-                    out.println(-1);
-                    return;
-                }
-            }
-        }
-        out.println(n);
-        for (int i = 0; i < n; i++) {
-            out.print(x[i]);
+        out.println(2 * n - 1);
+        for (int value : result) {
+            out.print(value);
             out.print(' ');
         }
     }
