@@ -14,10 +14,11 @@ public class CowsAndSequence implements Closeable {
     private PrintWriter out = new PrintWriter(System.out);
     
     public void solve() {
-        int n = in.ni(), count = 1;
+        int n = in.ni();
+        int count = 1;
         long total = 0L;
-        long[] values = new long[200001];
-        long[] sum = new long[200001];
+        long[] values = new long[200002];
+        long[] sum = new long[200002];
         while (n-- > 0) {
             int t = in.ni();
             if (t == 1) {
