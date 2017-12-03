@@ -1,4 +1,4 @@
-package codeforces.contests501_600.problemset535;
+package codeforces.contests101_200.problemset160;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,48 +6,46 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
-import static java.lang.Math.max;
-
-public class TavasAndKarafs implements Closeable {
+public class FindPair implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        a = in.nl();
-        b = in.ni();
-        int q = in.ni();
-        while (q-- > 0) {
-            long l = in.nl(), t = in.nl(), m = in.nl();
-            long left = l, right = 3000001, result = -1;
-            while (left <= right) {
-                long mid = left + (right - left) / 2L;
-                long max = a + (mid - 1) * b;
-                long sum = sum(l, mid);
-                if (max <= t && sum <= m * t) {
-                    result = max(result, mid);
-                    left = mid + 1;
-                } else {
-                    right = mid - 1;
+        long n = in.nl(), k = in.nl();
+        Map<Integer, Long> map = new TreeMap<>();
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int value = in.ni();
+            map.put(value, map.getOrDefault(value, 0L) + 1);
+            list.add(value);
+        }
+        Collections.sort(list);
+        for (Map.Entry<Integer, Long> entry : map.entrySet()) {
+            long count = entry.getValue();
+            if (k > count * n) {
+                k -= n * count;
+            } else {
+                for (Map.Entry<Integer, Long> entry1 : map.entrySet()) {
+                    long c = entry1.getValue();
+                    if (k > count * c) {
+                        k -= count * c;
+                    } else {
+                        out.println(entry.getKey() + " " + entry1.getKey());
+                        return;
+                    }
                 }
             }
-            out.println(result);
         }
     }
 
-    private long a, b;
-    
-    private long sum(long left, long right) {
-        return sum(right) - sum(left - 1);
-    }
-
-    private long sum(long n) {
-        return n * a + ((n * (n - 1)) / 2L) * b;
-    }
-    
-    
     @Override
     public void close() throws IOException {
         in.close();
@@ -88,7 +86,7 @@ public class TavasAndKarafs implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (TavasAndKarafs instance = new TavasAndKarafs()) {
+        try (FindPair instance = new FindPair()) {
             instance.solve();
         }
     }
