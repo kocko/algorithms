@@ -1,39 +1,44 @@
-package codeforces.contests401_500.problemset424;
+package codeforces.contests301_400.problemset365;
 
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
-public class MagicFormulas implements Closeable {
+public class Matrix implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int n = in.ni();
-        long xor = 0;
+        int a = in.ni();
+        char[] s = in.next().toCharArray();
+        int n = s.length;
+        int[] prefix = new int[n + 1];
         for (int i = 0; i < n; i++) {
-            xor ^= in.nl();
+            prefix[i + 1] = prefix[i] + (s[i] - '0');
         }
-        long[] prefix = new long[2000001];
-        prefix[0] = 0;
-        for (int i = 1; i < prefix.length; i++) {
-            prefix[i] ^= prefix[i - 1] ^ i;
-        }
-        for (int i = n; i >= 1; i--) {
-            int times = n / i, rem = n % i;
-            if (times % 2 == 0) {
-                xor ^= prefix[rem];
-            } else {
-                xor ^= prefix[i - 1];
-                xor ^= prefix[rem];
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                int sum = prefix[j + 1] - prefix[i];
+                map.put(sum, map.getOrDefault(sum, 0) + 1);
             }
         }
-        out.print(xor);
+        long result = 0L;
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                int k = prefix[j + 1] - prefix[i];
+                if (k == 0) {
+                    if (a == 0) result += n * (n + 1) / 2;
+                } else {
+                    if (a % k == 0) {
+                        result += map.getOrDefault(a / k, 0);
+                    }
+                }
+            }
+        }
+        out.println(result);
     }
 
     @Override
@@ -76,7 +81,7 @@ public class MagicFormulas implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (MagicFormulas instance = new MagicFormulas()) {
+        try (Matrix instance = new Matrix()) {
             instance.solve();
         }
     }
