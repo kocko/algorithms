@@ -6,17 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import static java.lang.Long.max;
-import static java.lang.Long.min;
 
 public class LorenzoVonMatterhorn implements Closeable {
 
@@ -40,9 +34,9 @@ public class LorenzoVonMatterhorn implements Closeable {
             }
         }
     }
-    
+
     private Map<Long, Long> updates = new HashMap<>();
-    
+
     private long walk(long u, long v) {
         long result = 0;
         while (u != v) {
@@ -54,7 +48,6 @@ public class LorenzoVonMatterhorn implements Closeable {
         return result;
     }
     
-
     @Override
     public void close() throws IOException {
         in.close();
