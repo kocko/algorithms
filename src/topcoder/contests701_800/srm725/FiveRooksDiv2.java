@@ -21,5 +21,5 @@ public class FiveRooksDiv2 {
 		}
 		return result;
 	}
-	
+
 }
