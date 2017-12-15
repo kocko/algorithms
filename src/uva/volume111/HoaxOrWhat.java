@@ -1,4 +1,4 @@
-package uva.volume118;
+package uva.volume111;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,27 +6,40 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.HashSet;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
-import static java.lang.Integer.max;
-
-public class CD implements Closeable {
+public class HoaxOrWhat implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int n, m;
-        while ((n = in.ni()) != 0 | (m = in.ni()) != 0) {
-            Set<Long> set = new HashSet<>(); 
+        int n;
+        while ((n = in.ni()) != 0) {
+            TreeSet<Integer> set = new TreeSet<>();
+            int[] count = new int[1000001];
+            long result = 0;
             for (int i = 0; i < n; i++) {
-                set.add(in.nl() - 1);
-            }
-            int result = 0;
-            for (int i = 0; i < m; i++) {
-                if (set.contains(in.nl() - 1)) result++;
+                int k = in.ni();
+                for (int j = 0; j < k; j++) {
+                    int next = in.ni();
+                    count[next]++;
+                    set.add(next);
+                }
+                int max = set.last(), min = set.first();
+                count[max]--;
+                count[min]--;
+                if (count[max] == 0) {
+                    set.remove(max);
+                }
+                if (count[min] == 0) {
+                    set.remove(min);
+                }
+                result += ((long) max - min);
             }
             out.println(result);
         }
@@ -72,7 +85,7 @@ public class CD implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (CD instance = new CD()) {
+        try (HoaxOrWhat instance = new HoaxOrWhat()) {
             instance.solve();
         }
     }
