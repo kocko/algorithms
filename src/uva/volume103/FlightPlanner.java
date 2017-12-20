@@ -1,4 +1,4 @@
-package uva.volume115;
+package uva.volume103;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,14 +6,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.Arrays;
 import java.util.StringTokenizer;
-import java.util.TreeMap;
 
-public class UniqueSnowflakes implements Closeable {
+import static java.lang.Math.cos;
+import static java.lang.Math.min;
+import static java.util.Arrays.fill;
+
+public class FlightPlanner implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -22,31 +22,40 @@ public class UniqueSnowflakes implements Closeable {
         int t = in.ni();
         while (t-- > 0) {
             int n = in.ni();
-            if (n == 0) {
-                out.println(0);
-                continue;
-            }
-            int[] x = new int[n];
-            for (int i = 0; i < n; i++) {
-                x[i] = in.ni();
-            }
-            int result = 1;
-            int left = 0, right = 0;
-            Set<Integer> map = new HashSet<>();
-            map.add(x[0]);
-            while (left < n && ++right < n) {
-                if (map.contains(x[right])) {
-                    while (map.contains(x[right])) {
-                        map.remove(x[left]);
-                        left++;
-                    }
-                } else {
-                    result = Math.max(result, right - left + 1);
+            dp = new long[10][n / 100];
+            cost = new long[10][n / 100];
+            for (int i = 9; i >= 0; i--) {
+                for (int j = 0; j < n / 100; j++) {
+                    cost[i][j] = in.nl();
+                    dp[i][j] = -1;
                 }
-                map.add(x[right]);
             }
-            out.println(result);
+            out.println(recurse(0, 0));
+            out.println();
         }
+    }
+    
+    private long[][] dp;
+    private long[][] cost;
+    
+    private long recurse(int altitude, int idx) {
+        if (idx == cost[0].length) {
+            if (altitude == 0) {
+                return 0;
+            } else {
+                return (long) 1e9;
+            }
+        }
+        if (dp[altitude][idx] != -1) return dp[altitude][idx];
+        
+        long ans = 30 - cost[altitude][idx] + recurse(altitude, idx + 1);
+        if (altitude < 9) {
+            ans = min(ans, 60 - cost[altitude][idx] + recurse(altitude + 1, idx + 1));
+        }
+        if (altitude > 0) {
+            ans = min(ans, 20 - cost[altitude][idx] + recurse(altitude - 1, idx + 1));
+        }
+        return dp[altitude][idx] = ans;
     }
 
     @Override
@@ -89,7 +98,7 @@ public class UniqueSnowflakes implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (UniqueSnowflakes instance = new UniqueSnowflakes()) {
+        try (FlightPlanner instance = new FlightPlanner()) {
             instance.solve();
         }
     }
