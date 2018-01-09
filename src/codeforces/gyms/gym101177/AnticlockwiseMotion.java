@@ -1,4 +1,4 @@
-package acm.regionals.year2016.southpacific;
+package codeforces.gyms.gym101177;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
