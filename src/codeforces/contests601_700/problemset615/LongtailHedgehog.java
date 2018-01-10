@@ -1,59 +1,89 @@
 package codeforces.contests601_700.problemset615;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeSet;
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
-public class LongtailHedgehog {
+import static java.lang.Math.max;
 
-    static Map<Integer, Set<Integer>> graph = new HashMap<>();
+public class LongtailHedgehog implements Closeable {
 
-    static int ans = 0;
+    private InputReader in = new InputReader(System.in);
+    private PrintWriter out = new PrintWriter(System.out);
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        visited = new boolean[n + 1];
-        int m = sc.nextInt();
+    public void solve() {
+        int n = in.ni(), m = in.ni();
+        List<List<Integer>> graph = new ArrayList<>();
+        long[] dp = new long[n + 1];
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<>());
+            dp[i] = 1;
+        }
         for (int i = 0; i < m; i++) {
-            int start = sc.nextInt();
-            int end = sc.nextInt();
-            addInfo(start, end);
-            addInfo(end, start);
+            int u = in.ni(), v = in.ni();
+            graph.get(u).add(v);
+            graph.get(v).add(u);
         }
-        sc.close();
-        for (int i = 1; i <= n; i++) {
-            if (!visited[i]) {
-                dfs(i, 1);
-            }
-        }
-        System.out.println(ans);
-    }
-
-    static void addInfo(int start, int end) {
-        if (graph.containsKey(start)) {
-            Set<Integer> set = graph.get(start);
-            set.add(end);
-            graph.put(start, set);
-        } else {
-            graph.put(start, new TreeSet<Integer>(){{ add(end); }});
-        }
-    }
-
-    static boolean[] visited;
-
-    static void dfs(int i, int currentLength) {
-        visited[i] = true;
-        Set<Integer> neighbours = graph.get(i);
-        if (neighbours != null) {
-            for (Integer n : neighbours) {
-                if (!visited[n] && n > i) {
-                    ans = Math.max(ans, (currentLength + 1) * graph.get(n).size());
-                    dfs(n, currentLength + 1);
+        long ans = 0L;
+        for (int v = 1; v <= n; v++) {
+            for (int u : graph.get(v)) {
+                if (u < v) {
+                    dp[v] = max(dp[v], dp[u] + 1);
                 }
             }
+            ans = Math.max(ans, dp[v] * graph.get(v).size());
+        }
+        out.println(ans);
+    }
+
+    @Override
+    public void close() throws IOException {
+        in.close();
+        out.close();
+    }
+
+    static class InputReader {
+        public BufferedReader reader;
+        public StringTokenizer tokenizer;
+
+        public InputReader(InputStream stream) {
+            reader = new BufferedReader(new InputStreamReader(stream), 32768);
+            tokenizer = null;
+        }
+
+        public String next() {
+            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+                try {
+                    tokenizer = new StringTokenizer(reader.readLine());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return tokenizer.nextToken();
+        }
+
+        public int ni() {
+            return Integer.parseInt(next());
+        }
+
+        public long nl() {
+            return Long.parseLong(next());
+        }
+
+        public void close() throws IOException {
+            reader.close();
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        try (LongtailHedgehog instance = new LongtailHedgehog()) {
+            instance.solve();
         }
     }
 }
