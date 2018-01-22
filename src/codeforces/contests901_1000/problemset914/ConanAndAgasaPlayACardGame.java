@@ -1,4 +1,4 @@
-package codeforces.contests901_1000.problemset917;
+package codeforces.contests901_1000.problemset914;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
-
-import static java.lang.Math.*;
 
 public class ConanAndAgasaPlayACardGame implements Closeable {
 
