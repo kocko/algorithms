@@ -8,15 +8,55 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class PalindromicSupersequence implements Closeable {
+import static java.lang.Math.*;
+
+public class PermutationCycle implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        String s = in.next();
-        StringBuilder rev = new StringBuilder(s);
-        out.println(s + rev.reverse().toString());
+        int n = in.ni(), a = in.ni(), b = in.ni(), gcd = gcd(a, b);
+        if (n % gcd != 0) {
+            out.println(~0);
+            return;
+        } 
+        long x = -1, y = -1;
+        for (long k = 0; a * k <= n; k++) {
+            if ((n - a * k) % b == 0) {
+                x = k;
+                y = (n - k * a) / b;
+                break;
+            }
+        }
+        if (x == -1) {
+            out.println(~0);
+            return;
+        }
+        int start = 1;
+        for (int i = 0; i < x; i++) {
+            shift(start, a);
+            start += a;
+        }
+        for (int i = 0; i < y; i++) {
+            shift(start, b);
+            start += b;
+        }
+    }
+    
+    private int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);   
+    }
+    
+    private void shift(int start, int step) {
+        for (int i = start; i < start + step; i++) {
+            if (i == start + step - 1) {
+                out.print(start);
+            } else {
+                out.print(i + 1);
+            }
+            out.print(' ');
+        }
     }
 
     @Override
@@ -59,7 +99,7 @@ public class PalindromicSupersequence implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (PalindromicSupersequence instance = new PalindromicSupersequence()) {
+        try (PermutationCycle instance = new PermutationCycle()) {
             instance.solve();
         }
     }
