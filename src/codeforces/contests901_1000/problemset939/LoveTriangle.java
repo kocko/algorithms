@@ -1,4 +1,4 @@
-package codeforces.contests901_1000.problemset938;
+package codeforces.contests901_1000.problemset939;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,34 +8,23 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-import static java.lang.Math.*;
-
-public class WordCorrection implements Closeable {
+public class LoveTriangle implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
         int n = in.ni();
-        char[] x = in.next().toCharArray();
-        StringBuilder result = new StringBuilder();
-        boolean prevVowel = false;
-        for (char c : x) {
-            if (!prevVowel) {
-                result.append(c);
-                prevVowel = isVowel(c);
-            } else {
-                if (!isVowel(c)) {
-                    result.append(c);
-                    prevVowel = false;
-                }
-            }
+        int[] x = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            x[i] = in.ni();
         }
-        out.println(result.toString());
-    }
-    
-    private boolean isVowel(char c) {
-        return "aeoiuy".indexOf(c) >= 0;
+        boolean ok = false;
+        for (int a = 1; a <= n; a++) {
+            int b = x[a], c = x[b];
+            ok |= x[c] == a;
+        }
+        out.println(ok ? "YES" : "NO");
     }
 
     @Override
@@ -78,7 +67,7 @@ public class WordCorrection implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (WordCorrection instance = new WordCorrection()) {
+        try (LoveTriangle instance = new LoveTriangle()) {
             instance.solve();
         }
     }
