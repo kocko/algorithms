@@ -1,51 +1,51 @@
-#include <iostream>
+#include <bits/stdc++.h>
+
+#define endl '\n'
 
 using namespace std;
+typedef long long hyper;
 
-long long int query(long long int BIT[], int i){
-	long long int sum = 0;
-	for(int index = i; index > 0; index -= (index & -index)){
-		sum += BIT[index];
-	}
-	return sum;
+
+const int MAX = 1000000;
+hyper tree[MAX + 1];
+
+void update(int idx, hyper delta) {
+  for (; idx <= MAX; idx += (idx & -idx)) tree[idx] += delta;
 }
 
-void update(int arr[],long long int BIT[], int i, int val, int n){
-	for(int index = i; index <= n; index += (index & -index)){
-		BIT[index] = BIT[index] + val;
-	}
+hyper f(int idx) {
+  hyper result = 0;
+  for (; idx > 0; idx -= (idx & -idx)) result += tree[idx];
+  return result;
 }
 
-int main(){
-	//For Fast IO
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
+hyper query(int left, int right) {
+  return f(right) - f(left - 1);
+}
 
-	int N,x,Q,a,b;
-	char operation;
-	//Array to store the input values
-	int arr[1000001];
-	//Array to hold the Fenwick Tree, long long to hold large sums
-	long long int BIT[1000001];
-	cin>>N;
-	for(int i=1; i<=N; i++){
-		cin>>x;
-		arr[i] = x;
-	}
-	//Build the Fenwick Tree
-	for(int i=1; i<=N; i++){
-		update(arr,BIT,i,arr[i],N);
-	}
-	cin>>Q;
-	for(int i=0; i<Q; i++){
-		cin>>operation>>a>>b;
-		if(operation == 'q'){
-			//Sum of elements 4,5,6 means sum of first 6 - first 3
-			cout<<query(BIT,b) - query(BIT,a-1)<<"\n";
-		}
-		else if(operation == 'u'){
-			update(arr,BIT,a,b,N);
-		}
-	}
-	return 0;
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n, value, q;
+  cin >> n;
+  for (int i = 1; i <= n; i++) {
+    cin >> value;
+    update(i, value);
+  }
+  char type;
+  cin >> q;
+  while (q--) {
+    cin >> type;
+    if (type == 'u') {
+      int a; hyper b;
+      cin >> a >> b;
+      update(a, b);
+    } else {
+      int left, right;
+      cin >> left >> right;
+      cout << query(left, right) << endl;
+    }
+  }
+  return 0;
 }
