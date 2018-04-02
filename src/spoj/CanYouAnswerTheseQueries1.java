@@ -1,111 +1,90 @@
 package spoj;
 
-import java.io.BufferedReader;
-import java.io.Closeable;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.StringTokenizer;
 
-import static java.lang.Math.*;
+import static java.lang.Integer.max;
 
-public class CanYouAnswerTheseQueries1 implements Closeable {
+public class CanYouAnswerTheseQueries1 {
 
-    private InputReader in = new InputReader(System.in);
-    private PrintWriter out = new PrintWriter(System.out);
-    
-    private class SegmentTree {
-        private int[] lo, hi, sum, max, x;
-        
-        public SegmentTree(int[] x) {
-            int n = x.length;
-            this.x = x;
-            lo = new int[4 * n + 1];
-            hi = new int[4 * n + 1];
-            sum = new int[4 * n + 1];
-            max = new int[4 * n + 1];
-            init(1, 0, n - 1);
-        }
-        
-        private int init(int idx, int a, int b) {
-            lo[idx] = a;
-            hi[idx] = b;
-            if (a == b) {
-                return (sum[idx] = x[a]);
+    private Reader in;
+    private PrintWriter out;
+
+    public CanYouAnswerTheseQueries1() throws Exception {
+        in = new Reader();
+        out = new PrintWriter(System.out, true);
+    }
+
+    private int[] x;
+
+    private class IntervalTree {
+        private IntervalTree left, right;
+        private int start, end, prefix, suffix, ans, sum;
+
+        IntervalTree() {}
+
+        IntervalTree(int start, int end) {
+            this.start = start;
+            this.end = end;
+            if (start != end) {
+                int mid = (start + end) >> 1;
+                left = new IntervalTree(start, mid);
+                right = new IntervalTree(mid + 1, end);
+                join(this, left, right);
+            } else {
+                prefix = suffix = ans = sum = x[start];
             }
-            int mid = (a + b) / 2;
-            int left = init(2 * idx, a, mid), right = init(2 * idx + 1, mid + 1, b);
-            max[idx] = Math.max(left, right);
-            return sum[idx] = left + right;
         }
-        
-        private int query(int a, int b) {
-            return query(1, a, b);
+
+        private IntervalTree query(int a, int b) {
+            if (a == start && b == end) return this;
+            int mid = (start + end) >> 1;
+            if (a > mid) return right.query(a, b);
+            if (b <= mid) return left.query(a, b);
+            IntervalTree result = new IntervalTree();
+            join(result, left.query(a, mid), right.query(mid + 1, b));
+            return result;
         }
-        
-        private int query(int idx, int a, int b) {
-            if (a > hi[idx] || b < lo[idx]) return Integer.MIN_VALUE;
-            if (a <= lo[idx] && b >= hi[idx]) return max[idx];
-            return Math.max(query(2 * idx, a, b), query(2 * idx + 1, a, b));
+
+        private void join(IntervalTree parent, IntervalTree leftChild, IntervalTree rightChild) {
+            parent.sum = leftChild.sum + rightChild.suffix;
+            parent.prefix = max(leftChild.sum + rightChild.prefix, leftChild.prefix);
+            parent.suffix = max(rightChild.sum + leftChild.suffix, rightChild.suffix);
+            parent.ans = max(max(leftChild.ans, rightChild.ans), leftChild.suffix + rightChild.prefix);
         }
     }
 
-    public void solve() {
-        int n = in.ni();
-        int[] x = new int[n];
-        for (int i = 0; i < n; i++) {
-            x[i] = in.ni();
+    public void solve() throws IOException {
+        int n = in.nextInt();
+        x = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            x[i] = in.nextInt();
         }
-        SegmentTree tree = new SegmentTree(x);
-        int q = in.ni();
-        while(q-- > 0) {
-            out.println(tree.query(in.ni() - 1, in.ni() - 1));
-        }
-    }
-
-    @Override
-    public void close() throws IOException {
-        in.close();
-        out.close();
-    }
-
-    static class InputReader {
-        public BufferedReader reader;
-        public StringTokenizer tokenizer;
-
-        public InputReader(InputStream stream) {
-            reader = new BufferedReader(new InputStreamReader(stream), 32768);
-            tokenizer = null;
-        }
-
-        public String next() {
-            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    tokenizer = new StringTokenizer(reader.readLine());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            return tokenizer.nextToken();
-        }
-
-        public int ni() {
-            return Integer.parseInt(next());
-        }
-
-        public long nl() {
-            return Long.parseLong(next());
-        }
-
-        public void close() throws IOException {
-            reader.close();
+        IntervalTree tree = new IntervalTree(1, n);
+        int q = in.nextInt();
+        while (q-- > 0) {
+            out.println(tree.query(in.nextInt(), in.nextInt()).ans);
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        try (CanYouAnswerTheseQueries1 instance = new CanYouAnswerTheseQueries1()) {
-            instance.solve();
-        }
+    /** Faster input **/
+    class Reader {
+        final private int BUFFER_SIZE = 1 << 16;private DataInputStream din;private byte[] buffer;private int bufferPointer, bytesRead;
+        public Reader(){din=new DataInputStream(System.in);buffer=new byte[BUFFER_SIZE];bufferPointer=bytesRead=0;
+        }public Reader(String file_name) throws IOException{din=new DataInputStream(new FileInputStream(file_name));buffer=new byte[BUFFER_SIZE];bufferPointer=bytesRead=0;
+        }public String readLine() throws IOException{byte[] buf=new byte[64];int cnt=0,c;while((c=read())!=-1){if(c=='\n')break;buf[cnt++]=(byte)c;}return new String(buf,0,cnt);
+        }public int nextInt() throws IOException{int ret=0;byte c=read();while(c<=' ')c=read();boolean neg=(c=='-');if(neg)c=read();do{ret=ret*10+c-'0';}while((c=read())>='0'&&c<='9');if(neg)return -ret;return ret;
+        }public long nextLong() throws IOException{long ret=0;byte c=read();while(c<=' ')c=read();boolean neg=(c=='-');if(neg)c=read();do{ret=ret*10+c-'0';}while((c=read())>='0'&&c<='9');if(neg)return -ret;return ret;
+        }public double nextDouble() throws IOException{double ret=0,div=1;byte c=read();while(c<=' ')c=read();boolean neg=(c=='-');if(neg)c = read();do {ret=ret*10+c-'0';}while((c=read())>='0'&&c<='9');if(c=='.')while((c=read())>='0'&&c<='9')ret+=(c-'0')/(div*=10);if(neg)return -ret;return ret;
+        }private void fillBuffer() throws IOException{bytesRead=din.read(buffer,bufferPointer=0,BUFFER_SIZE);if(bytesRead==-1)buffer[0]=-1;
+        }private byte read() throws IOException{if(bufferPointer==bytesRead)fillBuffer();return buffer[bufferPointer++];
+        }public void close() throws IOException{if(din==null) return;din.close();}
     }
+
+    public static void main(String[] args) throws Exception {
+        new CanYouAnswerTheseQueries1().solve();
+    }
+
 }
