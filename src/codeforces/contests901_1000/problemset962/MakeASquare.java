@@ -8,29 +8,39 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-import static java.lang.Math.*;
+import static java.lang.Integer.bitCount;
+import static java.lang.Math.sqrt;
 
-public class Equator implements Closeable {
+public class MakeASquare implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
         int n = in.ni();
-        long sum = 0;
-        long[] x = new long[n];
-        for (int i = 0; i < n; i++) {
-            x[i] = in.nl();
-            sum += x[i];
-        }
-        long half = sum % 2 == 1 ? (sum + 1) / 2 : sum / 2, current = 0;
-        for (int i = 0; i < n; i++) {
-            current += x[i];
-            if (current >= half) {
-                out.println(i + 1);
-                return;
+        String s = String.valueOf(n);
+        int size = s.length(), result = 15;
+        int MAX = (1 << (size + 1)) - 1;
+        for (int mask = 0; mask <= MAX; mask++) {
+            StringBuilder value = new StringBuilder();
+            for (int j = size - 1; j >= 0; j--) {
+                if ((mask & (1 << j)) == 0) {
+                    value.append(s.charAt(size - j - 1));
+                }
+            }
+            String remaining = value.toString();
+            if (valid(remaining)) {
+                int x = Integer.valueOf(remaining), sqrt = (int) sqrt(x);
+                if (sqrt * sqrt == x) {
+                    result = Math.min(bitCount(mask), result);
+                }
             }
         }
+        out.println(result == 15 ? -1 : result);
+    }
+
+    private boolean valid(String s) {
+        return s.length() > 0 && s.charAt(0) != '0';
     }
 
     @Override
@@ -73,7 +83,7 @@ public class Equator implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Equator instance = new Equator()) {
+        try (MakeASquare instance = new MakeASquare()) {
             instance.solve();
         }
     }

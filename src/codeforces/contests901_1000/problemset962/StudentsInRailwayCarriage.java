@@ -10,27 +10,53 @@ import java.util.StringTokenizer;
 
 import static java.lang.Math.*;
 
-public class Equator implements Closeable {
+public class StudentsInRailwayCarriage implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int n = in.ni();
-        long sum = 0;
-        long[] x = new long[n];
+        int n = in.ni(), a = in.ni(), b = in.ni(), current = 0, result = 0;
+        char[] x = in.next().toCharArray();
         for (int i = 0; i < n; i++) {
-            x[i] = in.nl();
-            sum += x[i];
-        }
-        long half = sum % 2 == 1 ? (sum + 1) / 2 : sum / 2, current = 0;
-        for (int i = 0; i < n; i++) {
-            current += x[i];
-            if (current >= half) {
-                out.println(i + 1);
-                return;
+            if (x[i] == '.') current++;
+            else {
+                int max = current % 2 == 1 ? (current + 1) / 2 : current / 2;
+                int min = current - max;
+                if (a >= b) {
+                    int score = min(a, max);
+                    result += score;
+                    a -= score;
+                    score = min(b, min);
+                    result += score;
+                    b -= score;
+                } else {
+                    int score = min(b, max);
+                    result += score;
+                    b -= score;
+                    score = min(a, min);
+                    result += score;
+                    a -= score;
+                }
+                current = 0;
             }
         }
+        if (current > 0) {
+            int max = current % 2 == 1 ? (current + 1) / 2 : current / 2;
+            int min = current - max;
+            if (a >= b) {
+                int score = min(a, max);
+                result += score;
+                score = min(b, min);
+                result += score;
+            } else {
+                int score = min(b, max);
+                result += score;
+                score = min(a, min);
+                result += score;
+            }
+        }
+        out.println(result);
     }
 
     @Override
@@ -73,7 +99,7 @@ public class Equator implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Equator instance = new Equator()) {
+        try (StudentsInRailwayCarriage instance = new StudentsInRailwayCarriage()) {
             instance.solve();
         }
     }
