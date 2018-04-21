@@ -22,7 +22,7 @@ public class Messages implements Closeable {
         int result = n * a;
         if (c > b) {
             for (int i = 0; i < n; i++) {
-                int time = n - t[i];
+                int time = T - t[i];
                 result += (c - b) * time;
             }
         }
