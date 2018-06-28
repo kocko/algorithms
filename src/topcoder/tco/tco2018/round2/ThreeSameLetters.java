@@ -1,4 +1,4 @@
-package topcoder.tco.tco2018.round2a;
+package topcoder.tco.tco2018.round2;
 
 public class ThreeSameLetters {
 
