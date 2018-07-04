@@ -8,43 +8,36 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class BinaryStringConstructing implements Closeable {
+import static java.lang.Math.*;
+
+public class CoinsAndQueries implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int a = in.ni(), b = in.ni(), x = in.ni();
-        StringBuilder sb = new StringBuilder();
-        boolean flag = a >= b;
-        for (int i = 0; i < x + 1; i++) {
-            if (flag) {
-                if (i % 2 == 0) {
-                    sb.append(0);
-                    a--;
-                } else {
-                    sb.append(1);
-                    b--;
-                }
-            } else {
-                if (i % 2 == 0) {
-                    sb.append(1);
-                    b--;
-                } else {
-                    sb.append(0);
-                    a--;
-                }
+        int n = in.ni(), q = in.ni();
+        int[] count = new int[31];
+        for (int i = 0; i < n; i++) {
+            int next = in.ni();
+            int idx = -1;
+            while (next > 0) {
+                idx++;
+                next >>= 1;
             }
+            count[idx]++;
         }
-        for (int i = 0; i < sb.length(); i++) {
-            if (sb.charAt(i) == '0') {
-                for (int j = 0; j < a; j++) out.print(0);
-                a = 0;
-            } else {
-                for (int j = 0; j < b; j++) out.print(1);
-                b = 0;
+        while (q-- > 0) {
+            int next = in.ni();
+            int result = 0;
+            for (int i = 30; i >= 0; i--) {
+                int current = 1 << i;
+                int need = next / current;
+                int temp = min(need, count[i]);
+                result += temp;
+                next -= temp * current; 
             }
-            out.print(sb.charAt(i));
+            out.println(next == 0 ? result : -1);
         }
     }
 
@@ -88,7 +81,7 @@ public class BinaryStringConstructing implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (BinaryStringConstructing instance = new BinaryStringConstructing()) {
+        try (CoinsAndQueries instance = new CoinsAndQueries()) {
             instance.solve();
         }
     }

@@ -16,21 +16,19 @@ public class IntenseHeat implements Closeable {
     public void solve() {
         int n = in.ni(), k = in.ni();
         int[] x = new int[n];
-
         for (int i = 0; i < n; i++) {
             x[i] = in.ni();
-        }
-        int[] prefix = new int[n + 1];
-        for (int i = 1; i < n; i++) {
-            prefix[i] = prefix[i - 1] + x[i - 1];
+            if (i > 0) {
+                x[i] += x[i - 1];
+            }
         }
         double max = 0d;
         for (int i = 0; i < n; i++) {
-            for (int j = i; j < n; j++) {
+            for (int j = i + k - 1; j < n; j++) {
                 double size = j - i + 1.;
                 if (size >= k) {
-                    int total = prefix[j];
-                    if (i > 0) total -= prefix[i - 1];
+                    int total = x[j];
+                    if (i > 0) total -= x[i - 1];
                     double d = total / size;
                     if (d > max) max = d;
                 }
