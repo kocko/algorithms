@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class TroubleОf13Dots implements Closeable {
+import static java.lang.Integer.max;
+
+public class TroubleOf13Dots implements Closeable {
 
     private Scanner in = new Scanner(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -13,43 +15,42 @@ public class TroubleОf13Dots implements Closeable {
     public void solve() {
         while (in.hasNextLine()) {
             String[] line = in.nextLine().split("\\s+");
-            money = Integer.parseInt(line[0]);
-            n = Integer.parseInt(line[1]);
-            price = new int[n];
-            favour = new int[n];
+            int money = Integer.parseInt(line[0]);
+            int n = Integer.parseInt(line[1]);
+            int[] price = new int[n];
+            int[] favour = new int[n];
             for (int i = 0; i < n; i++) {
                 line = in.nextLine().split("\\s+");
                 price[i] = Integer.parseInt(line[0]);
                 favour[i] = Integer.parseInt(line[1]);
             }
-            dp = new int[n][money + 201];
+            
+            int limit = money;
+            if (money > 1800) limit += 200;
+            
+            int[] dp = new int[limit + 1];
             for (int i = 0; i < n; i++) {
-                for (int j = 0; j < money + 201; j++) {
-                    dp[i][j] = -1;
+                for (int j = limit; j >= price[i]; j--) {
+                    if (dp[j - price[i]] > 0 || j == price[i]) {
+                        dp[j] = max(dp[j], dp[j - price[i]] + favour[i]);
+                    }
                 }
             }
-            out.println(recurse(0, money));
+            int max = 0;
+            for (int i = 0; i <= money; i++) {
+                max = max(max, dp[i]);
+            }
+            if (money >= 1801 && money <= 2000) {
+                for (int i = 2001; i <= limit; i++) {
+                    max = max(max, dp[i]);
+                }
+            } else {
+                for (int i = 0; i <= limit; i++) {
+                    max = max(max, dp[i]);
+                }
+            }
+            out.println(max);
         }
-    }
-    
-    private int money, n;
-    private int[] price;
-    private int[] favour;
-    private int[][] dp;
-    
-    private int recurse(int idx, int total) {
-        if (idx == n || total < 0) return 0;
-        
-        if (dp[idx][total] != -1) return dp[idx][total];
-        
-        int ans;
-        if (total < price[idx]) {
-            ans = recurse(idx + 1, total);
-        } else {
-            ans = Math.max(recurse(idx + 1, total), favour[idx] + recurse(idx + 1, total - price[idx]));
-        }
-        
-        return dp[idx][total] = ans;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class TroubleОf13Dots implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (TroubleОf13Dots instance = new TroubleОf13Dots()) {
+        try (TroubleOf13Dots instance = new TroubleOf13Dots()) {
             instance.solve();
         }
     }
