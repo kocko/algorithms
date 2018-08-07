@@ -6,43 +6,43 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-import static java.lang.Long.parseLong;
 import static java.lang.Math.*;
+import static java.lang.String.valueOf;
+import static java.util.Arrays.sort;
 
-public class Unique implements Closeable {
+public class SubstringSorter implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        String left = in.next(), right = in.next();
-        if (left.length() <= 10) this.min = min(this.min, parseLong(left));
-        if (right.length() <= 10) this.max = min(this.max, parseLong(right));
-        recurse(0, 0);
-        out.println(result);
-    }
-
-    private int result;
-    private long min = 10000000000L, max = 10000000000L;
-    
-    private void recurse(long number, int mask) {
-        if (number >= min && number <= max) result++;
-        
-        for (int i = 1; i <= 9; i++) {
-            if ((mask & (1 << i)) == 0) {
-                long next = number * 10 + i;
-                if (next <= max) {
-                    recurse(next, mask | (1 << i));
-                }
+        int n = in.ni(), l = in.ni();
+        char[] x = in.next().toCharArray();
+        String best = valueOf(x);
+        for (int i = 0; i <= n - l; i++) {
+            char[] cp = new char[l];
+            System.arraycopy(x, i, cp, 0, l);
+            sort(cp);
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < i; j++) {
+                sb.append(x[j]);
+            }
+            for (int j = 0; j < l; j++) {
+                sb.append(cp[j]);
+            }
+            for (int j = i + l; j < n; j++) {
+                sb.append(x[j]);
+            }
+            if (sb.toString().compareTo(best) < 0) {
+                best = sb.toString();
             }
         }
-        if ((mask & 1) == 0 && number > 0 && number * 10 <= max) {
-            recurse(number * 10, mask | 1);
-        }
+        out.println(best);
     }
-    
+
     @Override
     public void close() throws IOException {
         in.close();
@@ -74,7 +74,7 @@ public class Unique implements Closeable {
         }
 
         public long nl() {
-            return parseLong(next());
+            return Long.parseLong(next());
         }
 
         public void close() throws IOException {
@@ -83,7 +83,7 @@ public class Unique implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Unique instance = new Unique()) {
+        try (SubstringSorter instance = new SubstringSorter()) {
             instance.solve();
         }
     }
