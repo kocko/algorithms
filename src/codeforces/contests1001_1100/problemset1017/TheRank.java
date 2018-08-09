@@ -8,9 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-import static java.lang.Math.*;
-
-public class A implements Closeable {
+public class TheRank implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -68,7 +66,7 @@ public class A implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (A instance = new A()) {
+        try (TheRank instance = new TheRank()) {
             instance.solve();
         }
     }

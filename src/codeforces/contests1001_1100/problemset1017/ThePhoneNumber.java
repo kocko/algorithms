@@ -8,31 +8,19 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class TheBits implements Closeable {
+import static java.lang.Integer.max;
+
+public class ThePhoneNumber implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int n = in.ni();
-        char[] x = in.next().toCharArray(), y = in.next().toCharArray();
-        long zeroZero = 0, zeroOne = 0, oneZero = 0, oneOne = 0;
-        
+        int n = in.ni(), m = (int) Math.sqrt(n);
         for (int i = 0; i < n; i++) {
-            if (x[i] == '0') {
-                if (y[i] == '0') zeroZero++;
-                else zeroOne++;
-            } else {
-                if (y[i] == '0') oneZero++;
-                else oneOne++;
-            }
+            out.print(max(n - m * (i / m + 1), 0) + i % m + 1);
+            out.print(' ');
         }
-        long result = 0;
-        result += zeroZero * (oneZero + oneOne);
-        result += zeroOne * (oneZero);
-        result += oneZero * (zeroZero + zeroOne);
-        result += oneOne * (zeroZero);
-        out.println(result >> 1);
     }
 
     @Override
@@ -75,7 +63,7 @@ public class TheBits implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (TheBits instance = new TheBits()) {
+        try (ThePhoneNumber instance = new ThePhoneNumber()) {
             instance.solve();
         }
     }
