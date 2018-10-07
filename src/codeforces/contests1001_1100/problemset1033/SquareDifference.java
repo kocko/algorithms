@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.math.BigInteger;
 import java.util.StringTokenizer;
 
 public class SquareDifference implements Closeable {
@@ -16,16 +15,22 @@ public class SquareDifference implements Closeable {
 
     public void solve() {
         int t = in.ni();
-        final BigInteger MINUS_ONE = BigInteger.valueOf(-1);
         while (t-- > 0) {
-            BigInteger a = BigInteger.valueOf(in.nl()), b = BigInteger.valueOf(in.nl());
-            BigInteger rem = a.add(b.multiply(MINUS_ONE)).multiply(a.add(b));
-            if (rem.isProbablePrime(1)) {
+            long a = in.nl(), b = in.nl();
+            if (a == b + 1 && isPrime(a + b)) {
                 out.println("YES");
             } else {
                 out.println("NO");
             }
         }
+    }
+
+    private boolean isPrime(long x) {
+        if (x < 2) return false;
+        for (long i = 2; i * i <= x; i++) {
+            if (x % i == 0) return false;
+        }
+        return true;
     }
     
     @Override
