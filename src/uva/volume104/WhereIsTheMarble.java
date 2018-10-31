@@ -1,4 +1,4 @@
-package uva.volume114;
+package uva.volume104;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,36 +6,48 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-import static java.lang.Integer.min;
+import static java.lang.Math.min;
 
-public class Squares implements Closeable {
+public class WhereIsTheMarble implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
-     public void solve() {
-        int q = in.ni();
-        while (q-- > 0) {
-            out.println(recurse(in.ni()));
+    public void solve() {
+        final int oo = (int) 1e9;
+        int n, q, testCase = 0;
+        while ((n = in.ni()) != 0 | (q = in.ni()) != 0) {
+            int[] x = new int[n];
+            for (int i = 0; i < n; i++) {
+                x[i] = in.ni();
+            }
+            Arrays.sort(x);
+            out.printf("CASE# %d:\n", ++testCase);
+            while (q-- > 0) {
+                int value = in.ni();
+                int left = 0, right = n - 1, result = oo;
+                while (left <= right) {
+                    int mid = left + (right - left) / 2;
+                    if (x[mid] > value) {
+                        right = mid - 1;
+                    } else if (x[mid] < value) {
+                        left = mid + 1;
+                    } else {
+                        result = min(result, mid + 1);
+                        right = mid - 1;
+                    }
+                }
+                if (result == oo) {
+                    out.printf("%d not found\n", value);
+                } else {
+                    out.printf("%d found at %d\n", value, result);
+                }
+            }
         }
     }
-
-    private Integer[] dp = new Integer[10001];
-
-    private Integer recurse(int x) {
-        if (x == 0) return 0;
-        if (x == 1) return 1;
-        if (dp[x] != null) return dp[x];
-
-        int ans = 100;
-        for (int i = 1; i * i <= x; i++) {
-            ans = min(ans, recurse(x - i * i) + 1);
-        }
-        return dp[x] = ans;
-    }
-
 
     @Override
     public void close() throws IOException {
@@ -77,7 +89,7 @@ public class Squares implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Squares instance = new Squares()) {
+        try (WhereIsTheMarble instance = new WhereIsTheMarble()) {
             instance.solve();
         }
     }
