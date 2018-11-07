@@ -1,4 +1,4 @@
-package timus.volume20;
+package timus.volume11;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,23 +8,35 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class OverturnedNumbers implements Closeable {
+public class AnotherDressRehearsal implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int n = in.ni();
-        if (n == 1) {
-            out.println("11");
-        } else if (n == 2) {
-            out.println("11 01");
-        } else if (n == 3) {
-            out.println("11 01 60");
-        } else if (n == 4) {
-            out.println("16 06 68 88");
+        int x = in.ni(), y = in.ni(), c = in.ni();
+        if (x + y < c) {
+            out.println("Impossible");
         } else {
-            out.println("Glupenky Pierre");
+            int max = Math.max(x, y), a, b;
+            if (c <= max) {
+                if (x < y) {
+                    a = 0;
+                    b = c;
+                } else {
+                    a = c;
+                    b = 0;
+                }
+            } else {
+                if (x < y) {
+                    a = c - max;
+                    b = max;
+                } else {
+                    a = max;
+                    b = c - max;
+                }
+            }
+            out.println(a + " " + b);
         }
     }
 
@@ -68,7 +80,7 @@ public class OverturnedNumbers implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (OverturnedNumbers instance = new OverturnedNumbers()) {
+        try (AnotherDressRehearsal instance = new AnotherDressRehearsal()) {
             instance.solve();
         }
     }

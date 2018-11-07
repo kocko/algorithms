@@ -1,4 +1,4 @@
-package timus.volume20;
+package timus.volume11;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,35 +8,28 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class AnotherDressRehearsal implements Closeable {
+public class LineFighting implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int x = in.ni(), y = in.ni(), c = in.ni();
-        if (x + y < c) {
-            out.println("Impossible");
-        } else {
-            int max = Math.max(x, y), a, b;
-            if (c <= max) {
-                if (x < y) {
-                    a = 0;
-                    b = c;
-                } else {
-                    a = c;
-                    b = 0;
-                }
-            } else {
-                if (x < y) {
-                    a = c - max;
-                    b = max;
-                } else {
-                    a = max;
-                    b = c - max;
-                }
-            }
-            out.println(a + " " + b);
+        int t = in.ni();
+        while (t-- > 0) {
+            int n = in.ni(), k = in.ni();
+            int teamSize = n / k, rem = n % k;
+
+            int ordinaryTeams = k - rem;
+            int ordinaryFighters = ordinaryTeams * teamSize;
+            int ordinaryOpponents = n - teamSize;
+
+            int unordinaryTeamSize = teamSize + 1;
+            int unordinaryFighters = rem * unordinaryTeamSize;
+            int unordinaryOpponents = n - unordinaryTeamSize;
+
+            int result = (ordinaryFighters * ordinaryOpponents + unordinaryFighters * unordinaryOpponents) >> 1;
+
+            out.println(result);
         }
     }
 
@@ -80,7 +73,7 @@ public class AnotherDressRehearsal implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (AnotherDressRehearsal instance = new AnotherDressRehearsal()) {
+        try (LineFighting instance = new LineFighting()) {
             instance.solve();
         }
     }

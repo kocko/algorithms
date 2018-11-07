@@ -1,4 +1,4 @@
-package timus.volume20;
+package timus.volume11;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,41 +6,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
-import static java.lang.Integer.max;
-import static java.lang.Integer.min;
-
-public class Devices implements Closeable {
+public class OverturnedNumbers implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        Map<String, Integer> devicesCount = new HashMap<>();
-        Map<String, Integer> lowestPrice = new HashMap<>();
-        int mostPopular = 0;
-        for (int i = 0; i < 6; i++) {
-            String friend = in.next(), device = in.next();
-            int price = in.ni();
-            devicesCount.put(device, devicesCount.getOrDefault(device, 0) + 1);
-            mostPopular = max(mostPopular, devicesCount.get(device));
-            lowestPrice.put(device, min(price, lowestPrice.getOrDefault(device, (int) 1e7)));
+        int n = in.ni();
+        if (n == 1) {
+            out.println("11");
+        } else if (n == 2) {
+            out.println("11 01");
+        } else if (n == 3) {
+            out.println("11 01 60");
+        } else if (n == 4) {
+            out.println("16 06 68 88");
+        } else {
+            out.println("Glupenky Pierre");
         }
-        int cheapest = (int) 1e7;
-        String result = "";
-        for (Map.Entry<String, Integer> entry : devicesCount.entrySet()) {
-            if (entry.getValue() == mostPopular) {
-                int price = lowestPrice.get(entry.getKey());
-                if (price < cheapest) {
-                    cheapest = price;
-                    result = entry.getKey();
-                }
-            }
-        }
-        out.println(result);
     }
 
     @Override
@@ -83,7 +68,7 @@ public class Devices implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (Devices instance = new Devices()) {
+        try (OverturnedNumbers instance = new OverturnedNumbers()) {
             instance.solve();
         }
     }
