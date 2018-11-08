@@ -23,11 +23,7 @@ public class Caravans implements Closeable {
         input();
         bfs(start, startDist);
         bfs(robbers, robberDist);
-
-        cache[start] = robberDist[start];
-        dfs(finish);
-        out.println(cache[finish]);
-
+        out.println(recurse(finish));
     }
 
     private void input() {
@@ -47,12 +43,12 @@ public class Caravans implements Closeable {
 
         startDist = new Integer[n];
         robberDist = new Integer[n];
-        cache = new Integer[n];
+        dp = new Integer[n];
     }
 
     private int start, finish, robbers;
     private List<List<Integer>> graph;
-    private Integer[] startDist, robberDist, cache;
+    private Integer[] startDist, robberDist, dp;
 
     private void bfs(int start, Integer[] arr) {
         ArrayDeque<Integer> queue = new ArrayDeque<>();
@@ -69,23 +65,17 @@ public class Caravans implements Closeable {
         }
     }
 
-    private void dfs(int u) {
-        if (cache[u] == null) {
-            int prev = -1;
-            for (int v : graph.get(u)) {
-                if (startDist[v] + 1 == startDist[u]) {
-                    dfs(v);
-                    prev = max(prev, cache[v]);
-                }
+    private Integer recurse(int u) {
+        if (u == start) return robberDist[start];
+        if (dp[u] != null) return dp[u];
+
+        int prev = -1;
+        for (int v : graph.get(u)) {
+            if (startDist[v] + 1 == startDist[u]) {
+                prev = max(prev, recurse(v));
             }
-            int mx;
-            if (prev != -1) {
-                mx = min(prev, robberDist[u]);
-            } else {
-                mx = robberDist[u];
-            }
-            cache[u] = mx;
         }
+        return dp[u] = prev != -1 ? min(prev, robberDist[u]) : robberDist[u];
     }
 
     @Override
