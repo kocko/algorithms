@@ -38,7 +38,7 @@ public class MemeProblem implements Closeable {
                     continue;
                 }
             }
-            out.printf("Y %f %f\n", a, b);
+            out.println("Y " + a + " " + b);
         }
     }
 

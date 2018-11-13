@@ -16,14 +16,15 @@ public class MinimizingTheString implements Closeable {
     public void solve() {
         int n = in.ni();
         char[] x = in.next().toCharArray();
-        int idx = 0;
-        for (int i = 0; i < n; i++) {
-            if (x[i] > x[idx]) {
-                idx = i;
+        int delete = n - 1;
+        for (int i = 0; i < n - 1; i++) {
+            if (x[i] > x[i + 1]) {
+                delete = i;
+                break;
             }
         }
         for (int i = 0; i < n; i++) {
-            if (i != idx) {
+            if (i != delete) {
                 out.print(x[i]);
             }
         }

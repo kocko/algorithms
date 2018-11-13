@@ -1,4 +1,4 @@
-package codeforces.contests1001_1100.problemset1076;
+package codeforces.contests1001_1100.problemset1065;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,50 +6,33 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
-public class DivisorSubtraction implements Closeable {
+public class VasyaAndIsolatedVertices implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        erathostenes();
-        out.println(recurse(in.nl()));
-    }
-
-    private List<Long> primes = new ArrayList<>();
-
-    private long recurse(long x) {
-        if (x % 2 == 0) {
-            return x / 2;
-        }
-        for (long d : primes) {
-            if (x % d == 0) {
-                return 1 + recurse(x - d);
+        long n = in.nl(), m = in.nl(), min, max;
+        long left = 0, right = m, mx = left;
+        while (left <= right) {
+            long mid = (left + right) / 2;
+            long edges = mid * (mid - 1) / 2;
+            if (edges > m) {
+                right = mid - 1;
+            } else {
+                mx = Math.max(mx, mid);
+                left = mid + 1;
             }
         }
-        return 1;
-    }
-
-    private void erathostenes() {
-        int MAX = 100000;
-        boolean[] prime = new boolean[MAX + 1];
-        for (int i = 2; i <= MAX; i++) {
-            prime[i] = true;
+        max = n - mx;
+        long remaining = m - (mx * (mx - 1) / 2);
+        if (remaining > 0) {
+            max--;
         }
-        for (long i = 2; i * i <= MAX; i++) {
-            if (prime[(int) i]) {
-                for (long j = i * i; j <= MAX; j += i) {
-                    prime[(int) j] = false;
-                }
-            }
-        }
-        for (int i = 2; i <= MAX; i++) {
-            if (prime[i]) primes.add((long) i);
-        }
+        min = n - Math.min(2 * m, n);
+        out.println(min + " " + max);
     }
 
     @Override
@@ -92,7 +75,7 @@ public class DivisorSubtraction implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (DivisorSubtraction instance = new DivisorSubtraction()) {
+        try (VasyaAndIsolatedVertices instance = new VasyaAndIsolatedVertices()) {
             instance.solve();
         }
     }
