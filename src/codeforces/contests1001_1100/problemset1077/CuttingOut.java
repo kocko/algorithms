@@ -52,6 +52,7 @@ public class CuttingOut implements Closeable {
                     }
                 }
             }
+	    ok &= idx == k;
             if (ok) {
                 if (mid > maxTimes) {
                     maxTimes = mid;
