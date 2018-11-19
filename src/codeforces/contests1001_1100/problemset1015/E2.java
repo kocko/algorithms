@@ -74,9 +74,9 @@ public class E2 implements Closeable {
                 if (x[i][j] == '*') {
                     int d = dist[i][j];
                     int p = i + d, q = j + d;
-                    int idx = p * n + q;
+                    int idx = p * m + q;
                     if (!added[idx]) {
-                        result.add(new int[]{p, q, d});
+                        result.add(new int[]{p + 1, q + 1, d});
                         added[idx] = true;
                     }
                 }

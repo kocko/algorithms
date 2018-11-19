@@ -1,4 +1,4 @@
-package codeforces.contests1001_1100.problemset1016;
+package codeforces.contests1001_1100.problemset1077;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,49 +6,45 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
-public class VasyaAndTheMushrooms implements Closeable {
+public class ThematicContests implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
         int n = in.ni();
-        long[][] grid = new long[2][n];
-        for (int row = 0; row < 2; row++) {
-            for (int i = 0; i < n; i++) {
-                grid[row][i] = in.ni();
-            }
-        }
-        
-        long[] a = new long[n + n], b = new long[n + n], up = new long[n + n], down = new long[n + n];
+        int[] type = new int[n];
+        Map<Integer, Integer> count = new HashMap<>();
         for (int i = 0; i < n; i++) {
-            a[i] = b[2 * n - i - 1] = grid[0][i];
+            type[i] = in.ni();
+            count.put(type[i], count.getOrDefault(type[i], 0) + 1);
         }
-        for (int i = 0; i < n; i++) {
-            b[i] = a[2 * n - i - 1] = grid[1][i];
+        List<Integer> types = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : count.entrySet()) {
+            types.add(entry.getValue());
         }
-
-        int start = n - 1;
-        if (start % 2 == 1) start--;
-        int jump = 4;
-        for (int idx = start; idx >= 0; idx -= 2) {
-            long value;
-            int t = 2 * idx;
-            if (idx == start) {
-                if (start % 2 == 1) {
-                    value = t * grid[0][start] + (t + 1) * grid[0][start + 1] + (t + 2) * grid[1][start + 1] + (t + 3) * grid[1][start];
-                } else {
-                    value = t * grid[0][start] + (t + 1) * grid[1][start];
-                }
-            } else {
-                value = t * grid[0][idx] + (t + 1) * grid[0][idx + 1] + up[idx + 2] + (t + jump) * grid[1][idx + 1] + (t + jump + 1) * grid[1][idx];
-                jump += 4;
+        types.sort(Comparator.naturalOrder());
+        int result = 0, p = types.size();
+        for (int base = 1; base <= types.get(p - 1); base++) {
+            int pos = p - 1;
+            int current = base;
+            int res = current;
+            while (current % 2 == 0 && pos > 0) {
+                current /= 2;
+                --pos;
+                if (types.get(pos) < current) break;
+                res += current;
             }
-            up[idx] = value;
+            result = Math.max(res, result);
         }
-        out.println(1);
+        out.println(result);
     }
 
     @Override
@@ -91,7 +87,7 @@ public class VasyaAndTheMushrooms implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (VasyaAndTheMushrooms instance = new VasyaAndTheMushrooms()) {
+        try (ThematicContests instance = new ThematicContests()) {
             instance.solve();
         }
     }
