@@ -87,9 +87,11 @@ public class SumOfSquaresWithSegmentTree implements Closeable {
         private void increment(int idx, int left, int right, long delta) {
             if (nodes[idx].lo > right || nodes[idx].hi < left) return;
             if (nodes[idx].lo >= left && nodes[idx].hi <= right) {
-                nodes[idx].flag = false;
-                nodes[idx].equalityValue = 0;
-                nodes[idx].delta += delta;
+                if (nodes[idx].flag) {
+                    nodes[idx].equalityValue += delta;
+                } else {
+                    nodes[idx].delta += delta;
+                }
             } else {
                 propagate(idx);
                 increment(idx << 1, left, right, delta);
