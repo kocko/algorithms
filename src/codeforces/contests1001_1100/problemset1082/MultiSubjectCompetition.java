@@ -10,58 +10,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class VovaAndTrophies implements Closeable {
+import static java.lang.Integer.max;
+import static java.util.Comparator.comparingInt;
+
+public class MultiSubjectCompetition implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int n = in.ni();
-        char[] x = (in.next() + "SS").toCharArray();
-        int g = 0, s = 0, result = 0;
-        int[] group = new int[n];
-        List<Integer> sizes = new ArrayList<>();
-        int idx = 0, current = 0;
+        int n = in.ni(), m = in.ni();
+        List<Student> list = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            if (x[i] == 'G') {
-                g++;
-                current++;
-                group[i] = idx;
-            } else {
-                if (current > 0) {
-                    sizes.add(current);
-                    result = Math.max(result, current);
-                    idx++;
-                }
-                current = 0;
+            list.add(new Student(in.ni() - 1, in.ni()));
+        }
+        list.sort(comparingInt((Student x) -> x.power).reversed());
+        int[] size = new int[m], subjectPrefix = new int[m], peopleMax = new int[n + 1];
+        int result = 0;
+        for (Student student : list) {
+            int subject = student.subject, power = student.power;
+            subjectPrefix[subject] += power;
+            size[subject]++;
+            if (subjectPrefix[subject] > 0) {
+                peopleMax[size[subject]] += subjectPrefix[subject];
+            }
+            result = max(peopleMax[size[subject]], result);
+        }
+        out.println(result);
+    }
 
-                s++;
-            }
-        }
-        if (current > 0) {
-            sizes.add(current);
-            result = Math.max(result, current);
-        }
-        if (g == n) {
-            out.println(n);
-        } else if (s == n) {
-            out.println(0);
-        } else {
-            int groups = sizes.size();
-            for (int i = 1; i <= n; i++) {
-                if (x[i - 1] == 'G' && x[i] == 'S' && x[i + 1] == 'G') {
-                    if (groups > 2) {
-                        result = Math.max(result, sizes.get(group[i - 1]) + sizes.get(group[i + 1]) + 1);
-                    } else if (groups == 2) {
-                        result = Math.max(result, sizes.get(0) + sizes.get(1));
-                    }
-                } else if (x[i - 1] == 'G' && x[i] == 'S') {
-                    if (groups > 1) {
-                        result = Math.max(result, sizes.get(group[i - 1]) + 1);
-                    }
-                }
-            }
-            out.println(result);
+    private class Student {
+        private int subject, power;
+
+        private Student(int subject, int power) {
+            this.subject = subject;
+            this.power = power;
         }
     }
 
@@ -105,7 +88,7 @@ public class VovaAndTrophies implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (VovaAndTrophies instance = new VovaAndTrophies()) {
+        try (MultiSubjectCompetition instance = new MultiSubjectCompetition()) {
             instance.solve();
         }
     }
