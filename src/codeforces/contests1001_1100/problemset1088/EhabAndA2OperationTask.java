@@ -6,20 +6,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
-public class EhabAndAnotherConstructionProblem implements Closeable {
+public class EhabAndA2OperationTask implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int x = in.ni();
-        if (x == 1) {
-            out.println(-1);
-            return;
+        int n = in.ni(), MAX = 1000000;
+        for (int i = 1; i <= n; i++) in.ni();
+        List<String> operations = new ArrayList<>();
+        operations.add(2 + " " + n + " 1");
+        operations.add(1 + " " + n + " " + MAX);
+        for (int i = 1; i < n; i++) {
+            operations.add(2 + " " + i + " " + (MAX - i));
         }
-        out.println(x + " " + x);
+        out.println(operations.size());
+        operations.forEach(out::println);
     }
 
     @Override
@@ -62,7 +68,7 @@ public class EhabAndAnotherConstructionProblem implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (EhabAndAnotherConstructionProblem instance = new EhabAndAnotherConstructionProblem()) {
+        try (EhabAndA2OperationTask instance = new EhabAndA2OperationTask()) {
             instance.solve();
         }
     }
