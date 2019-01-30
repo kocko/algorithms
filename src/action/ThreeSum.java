@@ -1,4 +1,4 @@
-package uva.volume123;
+package action;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,36 +8,33 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class AsLongAsILearnILive implements Closeable {
+public class ThreeSum implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
 
     public void solve() {
-        int t = in.ni();
-        for (int testCase = 1; testCase <= t; testCase++) {
-            int n = in.ni(), m = in.ni();
-
-            int[] value = new int[n], next = new int[n];
-            for (int i = 0; i < n; i++) {
-                value[i] = in.ni();
-                next[i] = -1;
-            }
-            for (int i = 0; i < m; i++) {
-                int u = in.ni(), v = in.ni();
-                if (next[u] == -1 || value[v] > value[next[u]]) {
-                    next[u] = v;
-                }
-            }
-            int sum = 0, last = 0;
-            while (true) {
-                sum += value[last];
-                if (next[last] == -1) break;
-                last = next[last];
-            }
-
-            out.printf("Case %d: %d %d\n", testCase, sum, last);
+        int n = in.ni();
+        final long MOD = (int) 1e9 + 7;
+        long[] dp = new long[n + 1];
+        long sn = s(n);
+        for (int i = 1; i <= n; i++) {
+            dp[i] = (i * (sn - s(i - 1))) % MOD;
         }
+        for (int i = n - 1; i >= 1; i--) {
+            dp[i] += dp[i + 1];
+            dp[i] %= MOD;
+        }
+        long total = 0;
+        for (int i = 1; i <= n; i++) {
+            total += ((i * dp[i]) % MOD);
+            total %= MOD;
+        }
+        out.println(total);
+    }
+
+    private long s(long n) {
+        return (n * (n + 1)) / 2;
     }
 
     @Override
@@ -80,7 +77,7 @@ public class AsLongAsILearnILive implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (AsLongAsILearnILive instance = new AsLongAsILearnILive()) {
+        try (ThreeSum instance = new ThreeSum()) {
             instance.solve();
         }
     }
