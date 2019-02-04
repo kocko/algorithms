@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class C implements Closeable {
+public class LunarNewYearAndNumberDivision implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -80,7 +80,7 @@ public class C implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (C instance = new C()) {
+        try (LunarNewYearAndNumberDivision instance = new LunarNewYearAndNumberDivision()) {
             instance.solve();
         }
     }

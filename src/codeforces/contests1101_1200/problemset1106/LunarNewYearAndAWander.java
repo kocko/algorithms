@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class D implements Closeable {
+public class LunarNewYearAndAWander implements Closeable {
 
     private InputReader in = new InputReader(System.in);
     private PrintWriter out = new PrintWriter(System.out);
@@ -88,7 +88,7 @@ public class D implements Closeable {
     }
 
     public static void main(String[] args) throws IOException {
-        try (D instance = new D()) {
+        try (LunarNewYearAndAWander instance = new LunarNewYearAndAWander()) {
             instance.solve();
         }
     }
