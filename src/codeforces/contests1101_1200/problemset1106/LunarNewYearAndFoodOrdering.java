@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
+import static java.util.Comparator.comparingLong;
+
 public class LunarNewYearAndFoodOrdering implements Closeable {
 
     private InputReader in = new InputReader(System.in);
@@ -20,10 +22,7 @@ public class LunarNewYearAndFoodOrdering implements Closeable {
         for (int i = 0; i < n; i++) a[i] = in.nl();
         for (int i = 0; i < n; i++) c[i] = in.nl();
 
-        TreeMap<Integer, Long> tree = new TreeMap<>((o1, o2) -> {
-            Integer x = Long.compare(c[o1], c[o2]);
-            return x != 0 ? x : Integer.compare(o1, o2);
-        });
+        TreeMap<Integer, Long> tree = new TreeMap<>(comparingLong((Integer o) -> c[o]).thenComparingInt(o -> o));
         for (int i = 0; i < n; i++) {
             tree.put(i, c[i]);
         }
