@@ -21,7 +21,7 @@ public class CoffeeAndCoursework implements Closeable {
     m = in.ni();
     list = new ArrayList<>();
     for (int i = 0; i < n; i++) {
-      list.add(in.ni());
+      list.add(in.nl());
     }
     list.sort(Comparator.reverseOrder());
     int left = 1, right = n, result = n + 5;
@@ -38,12 +38,13 @@ public class CoffeeAndCoursework implements Closeable {
   }
 
   private int m;
-  private List<Integer> list;
+  private List<Long> list;
 
   private boolean possible(int days) {
-    int[] data = new int[days];
-    int penalty = 0, total = 0, idx = 0;
-    for (int cup : list) {
+    long[] data = new long[days];
+    long penalty = 0, total = 0;
+    int idx = 0;
+    for (long cup : list) {
       if (idx == days) {
         idx = 0;
         penalty++;
