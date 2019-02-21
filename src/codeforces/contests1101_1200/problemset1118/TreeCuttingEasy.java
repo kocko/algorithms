@@ -32,47 +32,31 @@ public class TreeCuttingEasy implements Closeable {
       tree.get(u).add(v);
       tree.get(v).add(u);
     }
-    data = new int[n][2];
     visited = new boolean[n];
-    dfs1(0);
-    visited[0] = false;
-    for (int v : tree.get(0)) {
-      dfs2(v);
-    }
+    dfs(0);
     out.println(result);
   }
 
   private int red, blue, result;
   private int[] color;
-  private int[][] data;
   private boolean[] visited;
   private List<List<Integer>> tree = new ArrayList<>();
 
-  private int[] dfs1(int u) {
+  private int[] dfs(int u) {
     visited[u] = true;
-    int[] result = new int[2];
-    if (color[u] != 0) result[color[u] - 1]++;
+    int[] info = new int[2];
+    if (color[u] != 0) info[color[u] - 1]++;
     for (int v : tree.get(u)) {
       if (!visited[v]) {
-        int[] child = dfs1(v);
-        result[0] += child[0];
-        result[1] += child[1];
+        int[] child = dfs(v);
+        info[0] += child[0];
+        info[1] += child[1];
       }
     }
-    return data[u] = result;
-  }
-
-  private void dfs2(int u) {
-    visited[u] = false;
-    int[] info = data[u];
     if ((info[0] == red && info[1] == 0) || (info[0] == 0 && info[1] == blue)) {
       result++;
     }
-    for (int v : tree.get(u)) {
-      if (visited[v]) {
-        dfs2(v);
-      }
-    }
+    return info;
   }
 
   @Override
