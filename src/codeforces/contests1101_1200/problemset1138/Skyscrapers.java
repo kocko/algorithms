@@ -75,12 +75,12 @@ public class Skyscrapers implements Closeable {
         int a, b, offset;
         if (o1 >= o2) {
           offset = o1 - o2;
-          a = sizeByRow[i] + offset;
-          b = sizeByCol[j];
-        } else {
-          offset = o2 - o1;
           a = sizeByRow[i];
           b = sizeByCol[j] + offset;
+        } else {
+          offset = o2 - o1;
+          a = sizeByRow[i] + offset;
+          b = sizeByCol[j];
         }
         out.print(Math.max(a, b));
         out.print(' ');
