@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -20,32 +20,21 @@ public class Queen implements Closeable {
   public void solve() {
     int n = in.ni();
     boolean[] respectsParents = new boolean[n], respectedByChildren = new boolean[n];
-    List<List<Integer>> tree = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
-      tree.add(new ArrayList<>());
-      respectsParents[i] = true;
-    }
+    Arrays.fill(respectsParents, true);
     int root = -1;
     for (int child = 0; child < n; child++) {
       int parent = in.ni() - 1, respect = in.ni();
       if (parent < 0) {
         root = child;
       } else {
-        tree.get(parent).add(child);
         respectedByChildren[parent] |= (respect == 0);
       }
       respectsParents[child] = respect == 0;
     }
-    ArrayDeque<Integer> queue = new ArrayDeque<>();
-    queue.add(root);
     List<Integer> result = new ArrayList<>();
-    while (queue.size() > 0) {
-      int u = queue.pollFirst();
-      if (!respectsParents[u] && !respectedByChildren[u]) {
-        result.add(u);
-      }
-      for (int v : tree.get(u)) {
-        queue.offerLast(v);
+    for (int i = 0; i < n; i++) {
+      if (i != root && !respectedByChildren[i] && !respectsParents[i]) {
+        result.add(i);
       }
     }
     result.sort(Comparator.naturalOrder());
