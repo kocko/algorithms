@@ -3,6 +3,7 @@ package topcoder.contests601_700.srm658;
 import java.util.ArrayDeque;
 
 public class OddEvenTree {
+  
   public int[] getTree(String[] x) {
     int n = x.length, idx = 0;
     int[] result = new int[2 * n - 2];
@@ -39,14 +40,4 @@ public class OddEvenTree {
     return result;
   }
 
-  public static void main(String[] args) {
-    int[] tree = new OddEvenTree().getTree(new String[]{"EE", "EE"});
-    if (tree.length == 1) {
-      System.out.println(tree[0]);
-    } else {
-      for (int i = 0; i < tree.length; i += 2) {
-        System.out.println(tree[i] + " " + tree[i + 1]);
-      }
-    }
-  }
 }
