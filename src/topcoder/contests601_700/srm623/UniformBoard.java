@@ -23,7 +23,6 @@ public class UniformBoard {
         prefix[i][j]++;
       }
     }
-    final int oo = Integer.MAX_VALUE;
     int result = 0;
     for (int i = 1; i <= n; i++) {
       for (int j = 1; j <= n; j++) {
@@ -35,27 +34,23 @@ public class UniformBoard {
             int p = pears[l][m] - pears[i - 1][m] - pears[l][j - 1] + pears[i - 1][j - 1];
             int outsideEmpty = empty[n][n] - e;
             int outsideApples = apples[n][n] - a;
+            while (e > 0 && outsideApples > 0) {
+              moves++;
+              e--;
+              outsideEmpty++;
+              outsideApples--;
+              a++;
+            }
             if (outsideEmpty > 0) {
-              while (p > outsideEmpty && outsideApples > 0) {
+              while (p > 0 && outsideApples > 0) {
+                moves += 2;
                 p--;
                 a++;
                 outsideApples--;
-                moves += 2;
               }
             }
-            if (p <= outsideEmpty) {
-              moves += p;
-              e += p;
-              if (outsideApples >= e) {
-                moves += e;
-              } else {
-                moves = oo;
-              }
-            } else {
-              moves = oo;
-            }
-            if (moves <= k) {
-              int area = (l - i + 1) * (m - j + 1);
+            int area = (l - i + 1) * (m - j + 1);
+            if (a == area && moves <= k) {
               result = Math.max(area, result);
             }
           }
