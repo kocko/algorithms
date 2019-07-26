@@ -8,63 +8,41 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class RobotBreakout implements Closeable {
+import static java.lang.Math.min;
+
+public class RGBSubstring implements Closeable {
 
   private InputReader in = new InputReader(System.in);
   private PrintWriter out = new PrintWriter(System.out);
 
   public void solve() {
     int q = in.ni();
-    final int oo = 100000;
     while (q-- > 0) {
-      int n = in.ni();
-      int[] x = new int[n], y = new int[n];
-      int[][] action = new int[n][4];
-      for (int i = 0; i < n; i++) {
-        x[i] = in.ni();
-        y[i] = in.ni();
-        for (int j = 0; j < 4; j++) {
-          action[i][j] = in.ni();
-        }
-      }
-      
-      int maxX = oo, minX = -oo;
-      int maxY = oo, minY = -oo;
-      boolean ok = true;
-      for (int i = 0; i < n; i++) {
-        int mxx = x[i], mnx = x[i];
-        int mxy = y[i], mny = y[i];
-        //can move left
-        if (action[i][0] == 1) {
-          mnx = -oo;
-        }
-        //can move right
-        if (action[i][2] == 1) {
-          mxx = oo;
-        }
-        //can move up
-        if (action[i][1] == 1) {
-          mxy = oo;
-        }
-        //can move down
-        if (action[i][3] == 1) {
-          mny = -oo;
-        }
-        if ((mnx > maxX) || (mxx < minX)) ok = false;
-        if ((mny > maxY) || (mxy < minY)) ok = false;
-        maxX = Math.min(maxX, mxx);
-        minX = Math.max(minX, mnx);
-        maxY = Math.min(maxY, mxy);
-        minY = Math.max(minY, mny);
-      }
-      if (ok) {
-        out.printf("1 %d %d\n", maxX, maxY);
-      } else {
-        out.println(0);
-      }
+      n = in.ni();
+      k = in.ni(); 
+      char[] x = in.next().toCharArray();
+      out.println(min(min(check(x, "RGB".toCharArray()), check(x, "GBR".toCharArray())), check(x, "BRG".toCharArray())));
     }
   }
+  
+  private int n, k;
 
+  private int check(char[] x, char[] y) {
+    int result = 0;
+    for (int i = 0; i < k; i++) {
+      if (x[i] != y[i % 3]) {
+        result++;
+      }
+    }
+    int ans = result;
+    for (int i = k; i < n; i++) {
+      if (x[i - k] != y[(i - k) % 3]) result--;
+      if (x[i] != y[i % 3]) result++;
+      ans = Math.min(ans, result);
+    }
+    return ans;
+  }
+  
   @Override
   public void close() throws IOException {
     in.close();
@@ -105,7 +83,7 @@ public class RobotBreakout implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (RobotBreakout instance = new RobotBreakout()) {
+    try (RGBSubstring instance = new RGBSubstring()) {
       instance.solve();
     }
   }
