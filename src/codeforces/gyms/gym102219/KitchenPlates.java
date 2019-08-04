@@ -1,4 +1,4 @@
-package codeforces.gyms.gym102157;
+package codeforces.gyms.gym102219;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class SoccerBalls implements Closeable {
+public class KitchenPlates implements Closeable {
 
   private InputReader in = new InputReader(System.in);
   private PrintWriter out = new PrintWriter(System.out);
@@ -113,7 +113,7 @@ public class SoccerBalls implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (SoccerBalls instance = new SoccerBalls()) {
+    try (KitchenPlates instance = new KitchenPlates()) {
       instance.solve();
     }
   }
