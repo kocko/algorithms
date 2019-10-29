@@ -17,11 +17,17 @@ public class PaintingASquare implements Closeable {
     long a = in.nl(), b = in.nl();
     long result = 0;
     while (a > 0) {
+      if (a <= b) break;
       if (2 * b >= a) {
         result += 3 * (a - b);
         break;
       } else {
-        result += 4 * (a - b);
+        result += 3 * (a - b) + a - 2 * b;
+        if (a - 2 * b <= b) {
+          result += a - 2 * b;
+        } else {
+          result += b;
+        }
         a -= 2 * b;
       }
     }
