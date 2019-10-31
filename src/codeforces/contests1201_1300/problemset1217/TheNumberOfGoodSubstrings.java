@@ -1,4 +1,4 @@
-package codeforces.gyms.gym102215;
+package codeforces.contests1201_1300.problemset1217;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,30 +8,37 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class PaintingASquare implements Closeable {
+public class TheNumberOfGoodSubstrings implements Closeable {
 
   private InputReader in = new InputReader(System.in);
   private PrintWriter out = new PrintWriter(System.out);
 
   public void solve() {
-    long a = in.nl(), b = in.nl();
-    long result = 0;
-    while (a > 0) {
-      if (a <= b) break;
-      if (2 * b >= a) {
-        result += 3 * (a - b);
-        break;
-      } else {
-        result += 3 * (a - b) + a - 2 * b;
-        if (a - 2 * b <= b) {
-          result += a - 2 * b;
-        } else {
-          result += b;
+    int t = in.ni();
+    while (t-- > 0) {
+      char[] x = in.next().toCharArray();
+      int result = 0, n = x.length, lastOne = -1;
+      for (int start = 0; start < n; start++) {
+        long value = 0;
+        if (x[start] == '1') {
+          for (int end = start; end <= Math.min(n - 1, start + 18); end++) {
+            value <<= 1;
+            value += (x[end] - '0');
+            int size = end - start + 1;
+            int dist = start - lastOne - 1;
+            if (value > size) {
+              if (size + dist >= value) {
+                result++;
+              }
+            } else if (value == size) {
+              result++;
+            }
+          }
+          lastOne = start;
         }
-        a -= 2 * b;
       }
+      out.println(result);
     }
-    out.println(result);
   }
 
   @Override
@@ -74,7 +81,7 @@ public class PaintingASquare implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (PaintingASquare instance = new PaintingASquare()) {
+    try (TheNumberOfGoodSubstrings instance = new TheNumberOfGoodSubstrings()) {
       instance.solve();
     }
   }
