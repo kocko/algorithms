@@ -1,6 +1,6 @@
 package topcoder.contests201_300.srm286;
 
-public class ExtraBall  {
+public class ExtraBall {
 
   public double expectedPayout(int[] card, int[] balls, String[] patterns, int[] prizes) {
     double result = 0d;
@@ -20,9 +20,7 @@ public class ExtraBall  {
           }
         }
       }
-      if (misses == 0) {
-        result += prizes[i] * possibility;
-      } else if (misses == 1) {
+      if (misses == 1) {
         result += prizes[i];
       }
     }
