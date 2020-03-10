@@ -1,4 +1,4 @@
-package codeforces.contests1301_1400.problemset1312;
+package codeforces.contests1301_1400.problemset1321;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,40 +6,39 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
-public class AddingPowers implements Closeable {
+public class JourneyPlanning implements Closeable {
 
   private InputReader in = new InputReader(System.in);
   private PrintWriter out = new PrintWriter(System.out);
 
   public void solve() {
-    int T = in.ni();
-    while (T-- > 0) {
-      int n = in.ni();
-      long k = in.nl();
-      long[] power = new long[61];
-      long current = 1L;
-      final long MAX_N = (long) 1e16;
-      for (int i = 0; current > 0 && current <= MAX_N && i <= 60; i++) {
-        power[i] = current;
-        current *= k;
-      }
-      boolean ok = true;
-      for (int i = 0; i < n; i++) {
-        long next = in.nl();
-        if (next > 0) {
-          for (int j = 60; j >= 0; j--) {
-            if (power[j] > 0 && next > 0 && next >= power[j]) {
-              next -= power[j];
-              power[j] = 0;
-            }
-          }
-        }
-        ok &= next == 0;
-      }
-      out.println(ok ? "YES" : "NO");
+    int n = in.ni();
+    long[] b = new long[n];
+    for (int i = 0; i < n; i++) {
+      b[i] = in.nl();
     }
+    long[] cost = new long[n];
+    for (int i = 0; i < n; i++) {
+      cost[i] = i + 1 - b[i];
+    }
+    Map<Long, Integer> closest = new HashMap<>();
+    long[] dp = new long[n];
+    long max = 0;
+    for (int i = n - 1; i >= 0; i--) {
+      int next = closest.getOrDefault(cost[i], -1);
+      if (next == -1) {
+        dp[i] = b[i];
+      } else {
+        dp[i] = b[i] + dp[next];
+      }
+      closest.put(cost[i], i);
+      max = Math.max(max, dp[i]);
+    }
+    out.println(max);
   }
 
   @Override
@@ -82,7 +81,7 @@ public class AddingPowers implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (AddingPowers instance = new AddingPowers()) {
+    try (JourneyPlanning instance = new JourneyPlanning()) {
       instance.solve();
     }
   }
