@@ -1,4 +1,4 @@
-package codeforces.contests101_200.problemset118;
+package codeforces.contests1201_1300.problemset1277;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -10,60 +10,54 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class BertownRoads implements Closeable {
+public class TwoFairs implements Closeable {
 
   private InputReader in = new InputReader(System.in);
   private PrintWriter out = new PrintWriter(System.out);
 
   public void solve() {
-    int n = in.ni(), m = in.ni();
-    for (int i = 0; i <= n; i++) {
-      graph.add(new ArrayList<>());
-    }
-    for (int i = 0; i < m; i++) {
-      int u = in.ni(), v = in.ni();
-      graph.get(u).add(v);
-      graph.get(v).add(u);
-    }
-    level = new int[n + 1];
-    dp = new int[n + 1];
-    level[1] = 1;
-    visit(1);
-    if (bridges) {
-      for (int[] edge : result) {
-        out.println(edge[0] + " " + edge[1]);
+    int t = in.ni();
+    while (t-- > 0) {
+      graph = new ArrayList<>();
+      n = in.ni();
+      int m = in.ni(), x = in.ni(), y = in.ni();
+      for (int i = 0; i <= n; i++) {
+        graph.add(new ArrayList<>());
       }
-    } else {
-      out.println(0);
+      for (int i = 0; i < m; i++) {
+        int u = in.ni(), v = in.ni();
+        graph.get(u).add(v);
+        graph.get(v).add(u);
+      }
+      out.println(solve(x, y));
     }
   }
 
-  private boolean bridges;
-  private List<List<Integer>> graph = new ArrayList<>();
-  private List<int[]> result = new ArrayList<>();
-  private int[] level, dp;
+  private long solve(int x, int y) {
+    visited = new boolean[n + 1];
+    visited[y] = true;
+    dfs(x);
+    long p = n - 1 - count;
+    count = 0;
 
-  private void visit(int vertex) {
-    dp[vertex] = 0;
-    for (int next : graph.get(vertex)) {
-      if (level[next] == 0) {
-        level[next] = level[vertex] + 1;
-        visit(next);
-        dp[vertex] += dp[next];
-        result.add(new int[]{vertex, next});
-      } else if (level[next] < level[vertex]) {
-        dp[vertex]++;
-        if (level[next] + 1 < level[vertex]) {
-          result.add(new int[]{vertex, next});
-        }
-      } else if (level[next] > level[vertex]) {
-        dp[vertex]--;
-      }
-    }
+    visited = new boolean[n + 1];
+    visited[x] = true;
+    dfs(y);
+    long q = n - 1 - count;
+    count = 0;
 
-    dp[vertex]--;
+    return p * q;
+  }
 
-    bridges &= level[vertex] > 0 && dp[vertex] == 0;
+  private List<List<Integer>> graph;
+  private int n, count;
+  private boolean[] visited;
+
+  private void dfs(int u) {
+    if (visited[u]) return;
+    visited[u] = true;
+    count++;
+    for (int v : graph.get(u)) if (!visited[v]) dfs(v);
   }
 
   @Override
@@ -106,7 +100,7 @@ public class BertownRoads implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (BertownRoads instance = new BertownRoads()) {
+    try (TwoFairs instance = new TwoFairs()) {
       instance.solve();
     }
   }

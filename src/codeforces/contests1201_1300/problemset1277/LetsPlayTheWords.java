@@ -1,3 +1,5 @@
+package codeforces.contests1201_1300.problemset1277;
+
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
