@@ -12,6 +12,9 @@ import java.util.StringTokenizer;
 
 public class AdjustmentOffice implements Closeable {
 
+//  private InputReader in = new InputReader(System.in);
+//  private PrintWriter out = new PrintWriter(System.out);
+
   private InputReader in;
   private PrintWriter out;
 
@@ -23,34 +26,31 @@ public class AdjustmentOffice implements Closeable {
   public void solve() {
     int n = in.ni(), q = in.ni();
     long sum = ((long) n * (n + 1)) / 2;
-    long[] row = new long[n + 1];
-    long[] col = new long[n + 1];
+    long[] row = new long[n + 1], col = new long[n + 1];
     for (int i = 1; i <= n; i++) {
-      row[i] = col[i] = sum + n * i;
+      row[i] = col[i] = sum + (long) n * i;
     }
     long colSum = 0, rowSum = 0, deletedCols = 0, deletedRows = 0;
     while (q-- > 0) {
       char type = in.next().charAt(0);
       int idx = in.ni();
+      long result = 0;
       if (type == 'R') {
         if (row[idx] != 0) {
-          out.println(row[idx] - deletedCols * idx - colSum);
+          result = row[idx] - deletedCols * idx - colSum;
           deletedRows++;
           rowSum += idx;
-        } else {
-          out.println(0);
         }
         row[idx] = 0;
       } else {
         if (col[idx] != 0) {
-          out.println(col[idx] - deletedRows * idx - rowSum);
+          result = col[idx] - deletedRows * idx - rowSum;
           deletedCols++;
           colSum += idx;
-        } else {
-          out.println(0);
         }
         col[idx] = 0;
       }
+      out.println(result);
     }
   }
 
