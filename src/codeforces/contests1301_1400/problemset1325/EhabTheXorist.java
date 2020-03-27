@@ -8,27 +8,30 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class EhabAndPatheticMexs implements Closeable {
+public class EhabTheXorist implements Closeable {
 
   private InputReader in = new InputReader(System.in);
   private PrintWriter out = new PrintWriter(System.out);
 
   public void solve() {
-    int n = in.ni();
-    int[][] edges = new int[n][2];
-    int[] degree = new int[n + 1];
-    for (int idx = 1; idx < n; idx++) {
-      edges[idx][0] = in.ni();
-      edges[idx][1] = in.ni();
-      degree[edges[idx][0]]++;
-      degree[edges[idx][1]]++;
-    }
-    int hi = n - 2, lo = 0;
-    for (int i = 1; i < n; i++) {
-      if (degree[edges[i][0]] == 1 || degree[edges[i][1]] == 1) {
-        out.println(lo++);
+    long xor = in.nl(), sum = in.nl();
+    if (xor % 2 != sum % 2 || xor > sum) {
+      out.println(-1);
+    } else if (xor == sum) {
+      if (sum == 0) {
+        out.println(0);
       } else {
-        out.println(hi--);
+        out.println(1);
+        out.println(sum);
+      }
+    } else {
+      long x = (sum - xor) / 2;
+      if ((xor & x) != 0) {
+        out.println(3);
+        out.println(xor + " " + x + " " + x);
+      } else {
+        out.println(2);
+        out.println((xor ^ x) + " " + x);
       }
     }
   }
@@ -73,7 +76,7 @@ public class EhabAndPatheticMexs implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (EhabAndPatheticMexs instance = new EhabAndPatheticMexs()) {
+    try (EhabTheXorist instance = new EhabTheXorist()) {
       instance.solve();
     }
   }
