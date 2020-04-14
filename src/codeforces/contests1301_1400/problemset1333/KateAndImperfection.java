@@ -1,4 +1,4 @@
-package codeforces.contests1301_1400.problemset1335;
+package codeforces.contests1301_1400.problemset1333;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,38 +6,42 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.StringTokenizer;
 
-public class AntiSudoku implements Closeable {
+public class KateAndImperfection implements Closeable {
 
   private InputReader in = new InputReader(System.in);
   private PrintWriter out = new PrintWriter(System.out);
 
   public void solve() {
-    int T = in.ni();
-    while (T-- > 0) {
-      int[][] sq = new int[9][9];
-      for (int i = 0; i < 9; i++) {
-        char[] next = in.next().toCharArray();
-        for (int j = 0; j < 9; j++) {
-          sq[i][j] = next[j] - '0';
+    sieve();
+    int n = in.ni();
+    List<Integer> result = new ArrayList<>();
+    for (int i = 1; i <= n; i++) {
+      result.add(sieve[i]);
+    }
+    result.sort(Comparator.naturalOrder());
+    for (int i = 1; i < n; i++) {
+      out.print(result.get(i));
+      out.print(' ');
+    }
+  }
+
+  private final int MAX_N = (int) 5e5;
+  private int[] sieve = new int[MAX_N + 1];
+
+  private void sieve() {
+    sieve[1] = 1;
+    for (int i = 2; i <= MAX_N; i++) {
+      if (sieve[i] == 0) {
+        for (int j = i; j <= MAX_N; j += i) {
+          if (sieve[j] == 0) {
+            sieve[j] = j / i;
+          }
         }
-      }
-      int[][] centers = {{0, 0}, {1, 3}, {2, 6},
-                         {3, 1}, {4, 4}, {5, 7},
-                         {6, 2}, {7, 5}, {8, 8}};
-      for (int[] center : centers) {
-        int row = center[0], col = center[1];
-        sq[row][col]++;
-        if (sq[row][col] == 10) {
-          sq[row][col] = 1;
-        }
-      }
-      for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-          out.print(sq[i][j]);
-        }
-        out.println();
       }
     }
   }
@@ -82,7 +86,7 @@ public class AntiSudoku implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (AntiSudoku instance = new AntiSudoku()) {
+    try (KateAndImperfection instance = new KateAndImperfection()) {
       instance.solve();
     }
   }
