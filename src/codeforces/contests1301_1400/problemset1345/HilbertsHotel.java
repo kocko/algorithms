@@ -26,8 +26,6 @@ public class HilbertsHotel implements Closeable {
       }
       out.println(set.size() == n ? "YES" : "NO");
     }
-
-
   }
 
   @Override
