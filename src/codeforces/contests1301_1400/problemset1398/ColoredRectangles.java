@@ -62,10 +62,10 @@ public class ColoredRectangles implements Closeable {
     if (g < G && b < B) {
       ans = Math.max(ans, green[g] * blue[b] + recurse(r, g + 1, b + 1));
     }
-    for (int skip = 1; skip <= 7; skip++) {
-      int p = (skip & 1) != 0 ? 1 : 0;
-      int q = (skip & 2) != 0 ? 1 : 0;
-      int t = (skip & 4) != 0 ? 1 : 0;
+    for (int i = 0; i < 3; i++) {
+      int p = ((1 << i) & 1) != 0 ? 1 : 0;
+      int q = ((1 << i) & 2) != 0 ? 1 : 0;
+      int t = ((1 << i) & 4) != 0 ? 1 : 0;
       if (r + p < R && g + q < G && b + t < B) {
         ans = Math.max(ans, recurse(r + p, g + q, b + t));
       }
