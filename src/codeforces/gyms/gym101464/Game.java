@@ -1,7 +1,9 @@
-package acm.regionals.year2010.europe.southeast;
+package codeforces.gyms.gym101464;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,8 +12,12 @@ import java.util.StringTokenizer;
 
 public class Game implements Closeable {
 
-  private InputReader in = new InputReader(System.in);
+  private InputReader in;
   private PrintWriter out = new PrintWriter(System.out);
+
+  public Game() throws IOException {
+    in = new InputReader(new FileInputStream(new File("h.in")));
+  }
 
   public void solve() {
     try {
