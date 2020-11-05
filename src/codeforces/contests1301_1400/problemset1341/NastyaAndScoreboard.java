@@ -15,9 +15,16 @@ public class NastyaAndScoreboard implements Closeable {
 
   public void solve() {
     final char[][] DIGITS = {
-            "1110111".toCharArray(), "0010010".toCharArray(), "1011101".toCharArray(),
-            "1011011".toCharArray(), "0111010".toCharArray(), "1101011".toCharArray(),
-            "1101111".toCharArray(), "1010010".toCharArray(), "1111111".toCharArray(), "1111011".toCharArray()
+      "1110111".toCharArray(),
+      "0010010".toCharArray(),
+      "1011101".toCharArray(),
+      "1011011".toCharArray(),
+      "0111010".toCharArray(),
+      "1101011".toCharArray(),
+      "1101111".toCharArray(),
+      "1010010".toCharArray(),
+      "1111111".toCharArray(),
+      "1111011".toCharArray()
     };
     int n = in.ni(), k = in.ni();
     int[][] cost = new int[n][10];
@@ -38,9 +45,7 @@ public class NastyaAndScoreboard implements Closeable {
 
     boolean[][] dp = new boolean[n + 1][k + 1];
     dp[n][0] = true;
-    for (
-            int idx = n;
-            idx > 0; idx--) {
+    for (int idx = n; idx > 0; idx--) {
       for (int remaining = 0; remaining <= k; remaining++) {
         if (dp[idx][remaining]) {
           for (int digit = 0; digit < 10; digit++) {
