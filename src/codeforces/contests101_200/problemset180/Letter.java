@@ -1,4 +1,4 @@
-package codeforces.contests1401_1500.problemset1452;
+package codeforces.contests101_200.problemset180;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,26 +8,38 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class RobotProgram implements Closeable {
+public class Letter implements Closeable {
 
   private InputReader in = new InputReader(System.in);
   private PrintWriter out = new PrintWriter(System.out);
 
   public void solve() {
-    int t = in.ni();
-    while (t-- > 0) {
-      int x = in.ni(), y = in.ni();
-      int min = Math.min(x, y);
-      int result = 2 * min;
-      x -= min;
-      y -= min;
-      if (x + y > 1) {
-        result += (x + y) + (x + y - 1);
-      } else if (x + y == 1) {
-        result++;
+    char[] x = in.next().toCharArray();
+    int n = x.length;
+    int[] lower = new int[n], upper = new int[n];
+    for (int i = 0; i < n; i++) {
+      if (x[i] >= 'a' && x[i] <= 'z') {
+        lower[i]++;
       }
-      out.println(result);
+      if (i > 0) {
+        lower[i] += lower[i - 1];
+      }
     }
+    for (int i = n - 1; i >= 0; i--) {
+      if (x[i] >= 'A' && x[i] <= 'Z') {
+        upper[i]++;
+      }
+      if (i < n - 1) {
+        upper[i] += upper[i + 1];
+      }
+    }
+    int result = Integer.MAX_VALUE;
+    for (int i = 0; i < n - 1; i++) {
+      result = Math.min(lower[i] + upper[i + 1], result);
+    }
+    result = Math.min(result, upper[0]);
+    result = Math.min(result, lower[n - 1]);
+    out.println(result);
   }
 
   @Override
@@ -70,7 +82,7 @@ public class RobotProgram implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (RobotProgram instance = new RobotProgram()) {
+    try (Letter instance = new Letter()) {
       instance.solve();
     }
   }
