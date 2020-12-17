@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,7 +55,7 @@ public class KeepGraphConnected implements Closeable {
     for (int i = 0; i <= n; i++) {
       tree.add(new ArrayList<>());
     }
-    unused = new HashSet<>();
+    Set<Integer> unused = new HashSet<>();
     for (int c = 1; c <= n; c++) {
       unused.add(c);
     }
@@ -65,6 +66,10 @@ public class KeepGraphConnected implements Closeable {
         tree.get(v).add(new int[]{u, w});
         unused.remove(w);
       }
+    }
+    this.unused = new ArrayDeque<>();
+    for (int value : unused) {
+      this.unused.addLast(value);
     }
     if (dsu.size[dsu.root(1)] != n) {
       out.println(-1);
@@ -78,7 +83,7 @@ public class KeepGraphConnected implements Closeable {
     }
   }
 
-  private Set<Integer> unused;
+  private ArrayDeque<Integer> unused;
   private List<List<int[]>> tree;
   private int[] color;
 
@@ -87,9 +92,7 @@ public class KeepGraphConnected implements Closeable {
       if (v[1] != color[u]) {
         color[v[0]] = v[1];
       } else {
-        int random = unused.iterator().next();
-        unused.remove(random);
-        color[v[0]] = random;
+        color[v[0]] = unused.pollFirst();
       }
       dfs(v[0], u);
     }
