@@ -1,4 +1,4 @@
-package codeforces.contests1401_1500.problemset1463;
+package codeforces.contests1401_1500.problemset1457;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class Dungeon implements Closeable {
+public class PrisonBreak implements Closeable {
 
   private InputReader in = new InputReader(System.in);
   private PrintWriter out = new PrintWriter(System.out);
@@ -16,18 +16,10 @@ public class Dungeon implements Closeable {
   public void solve() {
     int t = in.ni();
     while (t-- > 0) {
-      int a = in.ni(), b = in.ni(), c = in.ni();
-      if ((a + b + c) % 9 != 0) {
-        out.println("NO");
-      } else {
-        int p = (a + b + c) / 9;
-        int min = Math.min(a, Math.min(b, c));
-        if (min < p) {
-          out.println("NO");
-        } else {
-          out.println("YES");
-        }
-      }
+      int n = in.ni(), m = in.ni(), r = in.ni(), c = in.ni();
+      int m1 = Math.max(n - r, r - 1);
+      int m2 = Math.max(m - c, c - 1);
+      out.println(m1 + m2);
     }
   }
 
@@ -71,7 +63,7 @@ public class Dungeon implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (Dungeon instance = new Dungeon()) {
+    try (PrisonBreak instance = new PrisonBreak()) {
       instance.solve();
     }
   }
