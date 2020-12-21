@@ -1,4 +1,4 @@
-package codeforces.contests1401_1500.problemset1465;
+package codeforces.contests1401_1500.problemset1459;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,30 +8,19 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class FairNumbers implements Closeable {
+public class MoveAndTurn implements Closeable {
 
   private InputReader in = new InputReader(System.in);
   private PrintWriter out = new PrintWriter(System.out);
 
   public void solve() {
-    int t = in.ni();
-    while (t-- > 0) {
-      long n = in.nl();
-      while (!isFair(n)) {
-        n++;
-      }
-      out.println(n);
+    int n = in.ni();
+    int h = n / 2;
+    if (n % 2 == 0) {
+      out.println((h + 1) * (h + 1));
+    } else {
+      out.println((h + 1) * (h + 2) * 2);
     }
-  }
-
-  private boolean isFair(long n) {
-    long m = n;
-    while (m > 0) {
-      long d = m % 10;
-      if (d > 0 && n % d != 0) return false;
-      m /= 10;
-    }
-    return true;
   }
 
   @Override
@@ -74,7 +63,7 @@ public class FairNumbers implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (FairNumbers instance = new FairNumbers()) {
+    try (MoveAndTurn instance = new MoveAndTurn()) {
       instance.solve();
     }
   }
