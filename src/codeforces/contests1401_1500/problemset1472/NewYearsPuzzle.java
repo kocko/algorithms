@@ -20,13 +20,11 @@ public class NewYearsPuzzle implements Closeable {
     int t = in.ni();
     while (t-- > 0) {
       int n = in.ni(), m = in.ni();
-      List<int[]> blocked = new ArrayList<>();
       TreeMap<Integer, Integer> map = new TreeMap<>();
       map.put(0, 3);
       map.put(n + 1, 3);
       for (int i = 0; i < m; i++) {
         int r = in.ni(), c = in.ni();
-        blocked.add(new int[]{r, c});
         map.put(c, map.getOrDefault(c, 0) | r);
       }
       boolean can = true;
@@ -69,7 +67,6 @@ public class NewYearsPuzzle implements Closeable {
       out.println(can ? "YES" : "NO");
     }
   }
-
 
   @Override
   public void close() throws IOException {
