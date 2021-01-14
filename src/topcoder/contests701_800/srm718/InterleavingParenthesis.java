@@ -24,7 +24,12 @@ public class InterleavingParenthesis {
     if (prefix_x[n - 1] + prefix_y[m - 1] != 0) {
       return 0;
     }
-    dp = new Long[n + 1][m + 1];
+    dp = new long[n + 1][m + 1];
+    for (int i = 0; i <= n; i++) {
+      for (int j = 0; j <= m; j++) {
+        dp[i][j] = -1;
+      }
+    }
     return (int) recurse(0, 0);
   }
 
@@ -32,12 +37,12 @@ public class InterleavingParenthesis {
   private int n, m;
   private char[] x, y;
   private int[] prefix_x, prefix_y;
-  private Long[][] dp;
+  private long[][] dp;
 
   private long recurse(int i, int j) {
     if (i == n && j == m) return 1;
 
-    if (dp[i][j] != null) return dp[i][j];
+    if (dp[i][j] != -1) return dp[i][j];
 
     int balance = 0;
     balance += i >= 1 ? prefix_x[i - 1] : 0;
