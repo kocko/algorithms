@@ -1,4 +1,4 @@
-package codeforces.gyms.gym102569;
+package codeforces.gyms.gym102942;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -6,34 +6,33 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class TheDragonLand implements Closeable {
+public class MakeAllOdd implements Closeable {
 
   private InputReader in = new InputReader(System.in);
   private PrintWriter out = new PrintWriter(System.out);
 
   public void solve() {
-    int n = in.ni();
-    PriorityQueue<Long> queue = new PriorityQueue<>();
-    for (int i = 0; i < n; i++) {
-      long next = in.nl();
-      queue.add(next);
-      while (queue.size() > 0) {
-        long smallest = queue.peek(), k = queue.size();
-        if (smallest <= k) {
-          queue.poll();
-        } else break;
+    int t = in.ni();
+    while (t-- > 0) {
+      int n = in.ni();
+      int[] x = new int[n];
+      int even = 0, odd = 0;
+      for (int i = 0; i < n; i++) {
+        x[i] = in.ni();
+        if (x[i] % 2 == 1) {
+          odd++;
+        } else {
+          even++;
+        }
+      }
+      if (even == n) {
+        out.println(-1);
+      } else {
+        out.println(even);
       }
     }
-    long gold = 0, k = 1;
-    while (queue.size() > 0) {
-      gold += queue.poll();
-      gold -= k;
-      k++;
-    }
-    out.println(gold);
   }
 
   @Override
@@ -76,7 +75,7 @@ public class TheDragonLand implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (TheDragonLand instance = new TheDragonLand()) {
+    try (MakeAllOdd instance = new MakeAllOdd()) {
       instance.solve();
     }
   }
