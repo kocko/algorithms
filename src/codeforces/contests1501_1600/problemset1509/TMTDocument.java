@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.*;
-
-import static java.lang.Math.*;
+import java.util.ArrayDeque;
+import java.util.StringTokenizer;
 
 public class TMTDocument implements Closeable {
 
@@ -20,33 +19,37 @@ public class TMTDocument implements Closeable {
     while (t-- > 0) {
       int n = in.ni();
       char[] x = in.next().toCharArray();
-      ArrayDeque<Integer> deque = new ArrayDeque<>();
-      for (int i = 0; i < n; i++) {
-        if (x[i] == 'T') {
-          deque.add(i);
-        }
-      }
       boolean possible = true;
+      ArrayDeque<Integer> unmatchedT = new ArrayDeque<>();
+      ArrayDeque<Integer> unmatchedM = new ArrayDeque<>();
+      boolean[] matched = new boolean[n];
       for (int i = 0; i < n; i++) {
         if (x[i] == 'M') {
-          if (deque.size() > 0) {
-            int left = deque.pollFirst();
-            possible &= left < i;
-          } else {
+          if (unmatchedT.size() == 0) {
             possible = false;
             break;
+          } else {
+            int with = unmatchedT.pollFirst();
+            matched[with] = matched[i] = true;
+            unmatchedM.offerLast(i);
           }
-          if (deque.size() > 0) {
-            int right = deque.pollLast();
-            possible &= right > i;
-          } else {
+        } else {
+          unmatchedT.offerLast(i);
+        }
+      }
+      if (possible) {
+        while (unmatchedT.size() > 0) {
+          int idx = unmatchedT.pollFirst();
+          if (unmatchedM.size() == 0) {
             possible = false;
             break;
+          } else {
+            int with = unmatchedM.pollFirst();
+            possible &= idx > with;
           }
         }
-        if (!possible) break;
       }
-      possible &= deque.size() == 0;
+      possible &= unmatchedM.size() == 0 && unmatchedT.size() == 0;
       out.println(possible ? "YES" : "NO");
     }
   }
