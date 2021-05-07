@@ -1,4 +1,4 @@
-package codeforces.contests1501_1600.problemset1519;
+package codeforces.contests1501_1600.problemset1520;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,8 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.*;
-
-import static java.lang.Math.*;
 
 public class GuessTheKthZeroEasy implements Closeable {
 
