@@ -3,6 +3,7 @@ package usaco.year2015.december;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,43 +11,37 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class BlockedBillboard implements Closeable {
+public class BreedCounting implements Closeable {
 
   private final InputReader in;
   private final PrintWriter out;
 
-  public BlockedBillboard() throws IOException {
-    in = new InputReader(new FileInputStream("billboard.in"));
-    out = new PrintWriter(new FileOutputStream("billboard.out"));
-  }
-
-  private class Rectangle {
-    private int x1, y1, x2, y2;
-
-    private Rectangle(int x1, int y1, int x2, int y2) {
-      this.x1 = x1;
-      this.y1 = y1;
-      this.x2 = x2;
-      this.y2 = y2;
-    }
-
-    private int area() {
-      return (x2 - x1) * (y2 - y1);
-    }
+  public BreedCounting() throws FileNotFoundException {
+    in = new InputReader(new FileInputStream("bcount.in"));
+    out = new PrintWriter(new FileOutputStream("bcount.out"));
   }
 
   public void solve() {
-    Rectangle a = new Rectangle(in.ni(), in.ni(), in.ni(), in.ni());
-    Rectangle b = new Rectangle(in.ni(), in.ni(), in.ni(), in.ni());
-    Rectangle c = new Rectangle(in.ni(), in.ni(), in.ni(), in.ni());
-    int result = a.area() + b.area() - intersection(a, c) - intersection(b, c);
-    out.println(result);
-  }
-
-  private int intersection(Rectangle p, Rectangle q) {
-    int xOverlap = Math.max(0, Math.min(p.x2, q.x2) - Math.max(p.x1, q.x1));
-    int yOverlap = Math.max(0, Math.min(p.y2, q.y2) - Math.max(p.y1, q.y1));
-    return xOverlap * yOverlap;
+    int n = in.ni(), q = in.ni();
+    int[][] prefix = new int[3][n + 1];
+    for (int i = 1; i <= n; i++) {
+      int type = in.ni();
+      for (int j = 0; j < 3; j++) {
+        prefix[j][i] = prefix[j][i - 1];
+      }
+      prefix[type - 1][i]++;
+    }
+    while (q-- > 0) {
+      int left = in.ni(), right = in.ni();
+      for (int type = 0; type < 3; type++) {
+        int count = prefix[type][right] - prefix[type][left - 1];
+        out.print(count);
+        if (type < 2) {
+          out.print(' ');
+        }
+      }
+      out.println();
+    }
   }
 
   @Override
@@ -89,7 +84,7 @@ public class BlockedBillboard implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (BlockedBillboard instance = new BlockedBillboard()) {
+    try (BreedCounting instance = new BreedCounting()) {
       instance.solve();
     }
   }
