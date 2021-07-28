@@ -36,14 +36,17 @@ public class AlphabeticalStrings implements Closeable {
       int left = 0, right = n - 1;
       char expected = (char) ('a' + n - 1);
       boolean alphabetical = true;
-      if (x[left] == expected) {
-        left++;
-        expected--;
-      } else if (x[right] == expected) {
-        right--;
-        expected--;
-      } else {
-        alphabetical = false;
+      while (expected >= 'a') {
+        if (x[left] == expected) {
+          left++;
+          expected--;
+        } else if (x[right] == expected) {
+          right--;
+          expected--;
+        } else {
+          alphabetical = false;
+          break;
+        }
       }
       out.println(alphabetical ? "YES" : "NO");
     }

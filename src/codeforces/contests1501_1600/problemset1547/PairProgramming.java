@@ -9,22 +9,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.StringTokenizer;
+import java.util.*;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
-public class ShortestPathWithObstacle implements Closeable {
+public class PairProgramming implements Closeable {
 
   private final InputReader in;
   private final PrintWriter out;
 
-  public ShortestPathWithObstacle() {
+  public PairProgramming() {
     in = new InputReader(System.in);
     out = new PrintWriter(System.out);
   }
 
-  public ShortestPathWithObstacle(String input, String output) throws FileNotFoundException {
+  public PairProgramming(String input, String output) throws FileNotFoundException {
     in = new InputReader(new FileInputStream(input));
     out = new PrintWriter(new FileOutputStream(output));
   }
@@ -32,24 +31,56 @@ public class ShortestPathWithObstacle implements Closeable {
   public void solve() {
     int t = in.ni();
     while (t-- > 0) {
-      int x1 = in.ni(), y1 = in.ni(), x2 = in.ni(), y2 = in.ni(), xf = in.ni(), yf = in.ni();
-      int result = Math.abs(x1 - x2) + Math.abs(y1 - y2);
-      boolean between = false;
-      if (x1 == x2) {
-        if (x1 == xf && min(y1, y2) < yf && max(y1, y2) > yf) {
-          result += 2;
+      int size = in.ni(), N = in.ni(), M = in.ni();
+      int[] mono = new int[N];
+      int[] poly = new int[M];
+      for (int i = 0; i < N; i++) {
+        mono[i] = in.ni();
+      }
+      for (int i = 0; i < M; i++) {
+        poly[i] = in.ni();
+      }
+      List<Integer> result = new ArrayList<>();
+      int p = 0, m = 0;
+      boolean possible = true;
+      while (m < N || p < M) {
+        boolean added = false;
+        while (m < N && mono[m] == 0) {
+          result.add(0);
+          size++;
+          m++;
+          added = true;
+        }
+        while (p < M && poly[p] == 0) {
+          result.add(0);
+          size++;
+          p++;
+          added = true;
+        }
+        if (m < N && mono[m] <= size) {
+          result.add(mono[m]);
+          m++;
+          added = true;
+        }
+        if (p < M && poly[p] <= size) {
+          result.add(poly[p]);
+          p++;
+          added = true;
+        }
+        if (!added) {
+          possible = false;
+          break;
         }
       }
-      if (y1 == y2) {
-        if (y1 == yf && min(x1, x2) < xf && max(x1, x2) > xf) {
-          result += 2;
+      if (possible) {
+        for (int action : result) {
+          out.print(action);
+          out.print(' ');
         }
+        out.println();
+      } else {
+        out.println(-1);
       }
-
-      if (between) {
-        result += 2;
-      }
-      out.println(result);
     }
   }
 
@@ -93,7 +124,7 @@ public class ShortestPathWithObstacle implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (ShortestPathWithObstacle instance = new ShortestPathWithObstacle()) {
+    try (PairProgramming instance = new PairProgramming()) {
       instance.solve();
     }
   }
