@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-public class LCA implements Closeable {
+public class LowestCommonAncestorTarjan implements Closeable {
 
   private InputReader in;
   private PrintWriter out;
 
-  public LCA() {
+  public LowestCommonAncestorTarjan() {
     in = new InputReader(System.in);
     out = new PrintWriter(System.out);
   }
@@ -166,7 +166,7 @@ public class LCA implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (LCA instance = new LCA()) {
+    try (LowestCommonAncestorTarjan instance = new LowestCommonAncestorTarjan()) {
       instance.solve();
     }
   }
