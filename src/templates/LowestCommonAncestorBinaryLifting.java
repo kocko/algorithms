@@ -18,9 +18,6 @@ public class LowestCommonAncestorBinaryLifting {
     this.n = tree.size();
     parent = new int[n + 1][MAX_LOG_N + 1];
     depth = new int[n + 1];
-    for (int i = 0; i <= n; i++) {
-      Arrays.fill(parent[i], -1);
-    }
     dfs(1, -1, 1);
     sparseTable();
   }
