@@ -61,4 +61,15 @@ public class LowestCommonAncestorBinaryLifting {
     return parent[u][0];
   }
 
+  public int findKth(int u, int k) {
+    for (int i = MAX_LOG_N; i >= 0; i--) {
+      int bit = 1 << i;
+      if (k >= bit) {
+        u = parent[u][i];
+        k -= bit;
+      }
+    }
+    return u;
+  }
+
 }
