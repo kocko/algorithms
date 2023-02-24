@@ -1,4 +1,4 @@
-package atcoder.beginner.contest269;
+package codeforces.gyms.gym409982;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -10,51 +10,41 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
-import java.util.function.Function;
 
 import static java.lang.Math.*;
 
-public class LastRook implements Closeable {
+public class ZeroFactorial implements Closeable {
 
   private InputReader in;
   private PrintWriter out;
 
-  public LastRook() {
+  public ZeroFactorial() {
     in = new InputReader(System.in);
     out = new PrintWriter(System.out);
   }
 
   public void solve() {
-    int n = in.ni();
-    int row = find(n, (mid) -> ask(1, mid, 1, n));
-    int col = find(n, (mid) -> ask(1, n, 1, mid));
-    answer(row, col);
-  }
-
-  private int ask(int a, int b, int c, int d) {
-    out.printf("? %d %d %d %d\n", a, b, c, d);
-    out.flush();
-    return in.ni();
-  }
-
-  private void answer(int x, int y) {
-    out.printf("! %d %d\n", x, y);
-    out.flush();
-  }
-
-  private int find(int n, Function<Integer, Integer> f) {
-    int left = 1, right = n;
-    int result = n + 1;
-    while (left <= right) {
-      int mid = left + (right - left) / 2;
-      int count = f.apply(mid);
-      if (count < mid) {
-        result = min(result, mid);
-        right = mid - 1;
-      } else {
-        left = mid + 1;
+    int T = in.ni();
+    while (T-- > 0) {
+      int a = in.ni(), b = in.ni();
+      if (a > 0) a--;
+      long ans = 0;
+      for (long i = 5; i < 1e9; i *= 5) {
+        ans += f(i, b) - f(i, a);
+        ans = (ans + MOD) % MOD;
       }
+      out.println(ans);
     }
+  }
+
+  private final long MOD = (long) 1e9 + 7;
+
+  private long f(long a, long b) {
+    long t = (b + 1L) / a;
+    long result = a * t % MOD * (t - 1L) / 2L;
+    result %= MOD;
+    result += (b + 1 - a * t) * t;
+    result %= MOD;
     return result;
   }
 
@@ -98,7 +88,7 @@ public class LastRook implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (LastRook instance = new LastRook()) {
+    try (ZeroFactorial instance = new ZeroFactorial()) {
       instance.solve();
     }
   }
