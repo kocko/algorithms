@@ -13,12 +13,12 @@ import java.util.StringTokenizer;
 
 import static java.lang.Math.*;
 
-public class InsertDigit implements Closeable {
+public class ConveyorBelts implements Closeable {
 
   private InputReader in;
   private PrintWriter out;
 
-  public InsertDigit() {
+  public ConveyorBelts() {
     in = new InputReader(System.in);
     out = new PrintWriter(System.out);
   }
@@ -26,27 +26,10 @@ public class InsertDigit implements Closeable {
   public void solve() {
     int T = in.ni();
     while (T-- > 0) {
-      int n = in.ni(), k = in.ni();
-      char[] x = in.next().toCharArray();
-      boolean inserted = false;
-      StringBuilder result = new StringBuilder();
-      for (char c : x) {
-        if (!inserted) {
-          if ((c - '0') >= k) {
-            result.append(c);
-          } else {
-            result.append(k);
-            result.append(c);
-            inserted = true;
-          }
-        } else {
-          result.append(c);
-        }
-      }
-      if (!inserted) {
-        result.append(k);
-      }
-      out.println(result);
+      int n = in.ni(), x1 = in.ni(), y1 = in.ni(), x2 = in.ni(), y2 = in.ni();
+      int a = min(min(x1, n - x1 + 1), min(y1, n - y1 + 1));
+      int b = min(min(x2, n - x2 + 1), min(y2, n - y2 + 1));
+      out.println(abs(a - b));
     }
   }
 
@@ -90,7 +73,7 @@ public class InsertDigit implements Closeable {
   }
 
   public static void main(String[] args) throws IOException {
-    try (InsertDigit instance = new InsertDigit()) {
+    try (ConveyorBelts instance = new ConveyorBelts()) {
       instance.solve();
     }
   }
